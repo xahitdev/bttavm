@@ -1,11 +1,11 @@
 <?php
 require_once 'settings.php';
 
-if (isset($_POST['userlogin'])) {
+if (isset($_POST['sellerlogin'])) {
     $username = trim($_POST['mail']);
     $password = trim($_POST['password']);
 
-    $sql = "SELECT * FROM Customers WHERE customer_mail = ?";
+    $sql = "SELECT * FROM sellers WHERE seller_mail = ?";
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "s", $username);
     mysqli_stmt_execute($stmt);
@@ -14,8 +14,8 @@ if (isset($_POST['userlogin'])) {
     if ($row = mysqli_fetch_assoc($result)) {
         if (md5($password) == $row['password_hashed']) {
             session_start();
-            $_SESSION['user_id'] = $row['customer_id'];
-            $_SESSION['username'] = $row['customer_mail'];
+            $_SESSION['seller_id'] = $row['seller_id'];
+            $_SESSION['seller_mail'] = $row['seller_mail'];
             header("Location: index.php");
             // exit();
         } else {
@@ -148,7 +148,7 @@ if (isset($_POST['userlogin'])) {
                                 </div>
                                 <div class="col-md-12">
                                     <!-- <button class="btn">Submit</button> -->
-                                    <input class="btn" type="submit" name="userlogin" value="Submit">
+                                    <input class="btn" type="submit" name="sellerlogin" value="Submit">
                                 </div>
                             </div>
                         </form>

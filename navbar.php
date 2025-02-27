@@ -1,3 +1,7 @@
+<?php
+session_start();
+ob_start();
+?>
 <!-- Nav Bar Start -->
 <div class="nav">
     <div class="container-fluid">
@@ -21,15 +25,59 @@
                             <a href="wishlist.html" class="dropdown-item">Wishlist</a>
                             <a href="login.php" class="dropdown-item">Login & Register</a>
                             <a href="contact.html" class="dropdown-item">Contact Us</a>
+                            <?php
+                            if (!isset($_SESSION['seller_id']) && !isset($_SESSION['user_id'])) {
+                                ?>
+                                <a href="sellerlogin.php" class="dropdown-item">Seller Login</a>
+                                <?php
+                            }
+                            ?>
                         </div>
                     </div>
                 </div>
                 <div class="navbar-nav ml-auto">
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">User Account</a>
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                            <?php
+                            if (!isset($_SESSION['user_id']) && !isset($_SESSION['seller_id'])) {
+                                ?>
+								Log in
+                                <?php
+                            }
+                            ?>
+                            <?php
+                            if (isset($_SESSION['seller_id'])) {
+                                echo "Seller Account";
+                            } elseif (isset($_SESSION['user_id'])) {
+                                echo "User Account";
+                            }
+                            ?> </a>
                         <div class="dropdown-menu">
-                            <a href="login.php" class="dropdown-item">Login</a>
-                            <a href="login.php" class="dropdown-item">Register</a>
+                            <?php
+                            if (isset($_SESSION['seller_id'])) {
+                                ?>
+                                <?php
+                            }
+                            ?>
+                            <?php
+                            if (isset($_SESSION['user_id'])) {
+								echo $_SESSION['username'];
+								?>
+                                <a href="logout.php" class="btn">Logout</a>
+								<?php
+                            } elseif (isset($_SESSION['seller_id'])) {
+                                echo $_SESSION['seller_mail'];
+                                ?>
+                                <a href="logout.php" class="btn">Logout</a>
+                            <?php } else {
+                                ?>
+                                <a href="login.php" class="dropdown-item">Login</a>
+                                <a href="register.php" class="dropdown-item">Register</a>
+                                <?php
+                            }
+                            ?>
+                            <!-- <a href="login.php" class="dropdown-item">Login</a>
+                            <a href="register.php" class="dropdown-item">Register</a> -->
                         </div>
                     </div>
                 </div>
