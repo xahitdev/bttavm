@@ -10,7 +10,7 @@ if(isset($_POST['register'])){
     $phone = $_POST['phone_number'];
     
     //cehcking if email address already exists.
-    $sql = "SELECT id FROM customers where customer_mail = ?";
+    $sql = "SELECT customer_id FROM customers where customer_mail = ?";
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "s", $mail);
     mysqli_stmt_execute($stmt);
