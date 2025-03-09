@@ -94,7 +94,7 @@ if (isset($_POST['userlogin'])) {
     <!-- Login Start -->
     <div class="login">
         <div class="container-fluid">
-            <div class="row">
+            <div class="row justify-content-center">
                 <div class="col-lg-6">
                     <div class="login-form">
                         <form action="" method="POST">
