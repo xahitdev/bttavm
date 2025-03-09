@@ -233,9 +233,40 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="address-edit-tab" role="tabpanel" aria-labelledby="address-nav">
+                            <form>
+                                <!-- Ülke Seçimi -->
+                                <div class="mb-3">
+                                    <label class="form-label">Ülke:</label>
+                                    <select id="country" class="form-select">
+                                        <option value="">Ülke Seçiniz</option>
+                                        <?php
+                                        include "db.php";
+                                        $result = mysqli_query($conn, "SELECT * FROM countries");
+                                        while ($row = mysqli_fetch_assoc($result)) {
+                                            echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+
+                                <!-- Şehir Seçimi -->
+                                <div class="mb-3">
+                                    <label class="form-label">Şehir:</label>
+                                    <select id="city" class="form-select" disabled>
+                                        <option value="">Önce Ülke Seçiniz</option>
+                                    </select>
+                                </div>
+
+                                <!-- İlçe Seçimi -->
+                                <div class="mb-3">
+                                    <label class="form-label">İlçe:</label>
+                                    <select id="district" class="form-select" disabled>
+                                        <option value="">Önce Şehir Seçiniz</option>
+                                    </select>
+                                </div>
+                            </form>
 
                         </div>
-
                         <div class="tab-pane fade" id="account-tab" role="tabpanel" aria-labelledby="account-nav">
                             <h4>Account Details</h4>
                             <div class="row">
