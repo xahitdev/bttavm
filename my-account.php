@@ -1,3 +1,17 @@
+<?php
+error_reporting(E_ALL & ~E_NOTICE);
+
+session_start();
+ob_start();
+
+/* error_reporting(E_NOTICE); */
+
+if(!isset($_SESSION['user_id'])){
+	header("Location: login.php");
+	exit();
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,98 +40,9 @@
 </head>
 
 <body>
-    <!-- Top bar Start -->
-    <div class="top-bar">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-6">
-                    <i class="fa fa-envelope"></i>
-                    support@email.com
-                </div>
-                <div class="col-sm-6">
-                    <i class="fa fa-phone-alt"></i>
-                    +012-345-6789
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Top bar End -->
-
-    <!-- Nav Bar Start -->
-    <div class="nav">
-        <div class="container-fluid">
-            <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-                <a href="#" class="navbar-brand">MENU</a>
-                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-                    <div class="navbar-nav mr-auto">
-                        <a href="index.html" class="nav-item nav-link">Home</a>
-                        <a href="product-list.html" class="nav-item nav-link">Products</a>
-                        <a href="product-detail.html" class="nav-item nav-link">Product Detail</a>
-                        <a href="cart.html" class="nav-item nav-link">Cart</a>
-                        <a href="checkout.html" class="nav-item nav-link">Checkout</a>
-                        <a href="my-account.html" class="nav-item nav-link active">My Account</a>
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">More Pages</a>
-                            <div class="dropdown-menu">
-                                <a href="wishlist.html" class="dropdown-item">Wishlist</a>
-                                <a href="login.html" class="dropdown-item">Login & Register</a>
-                                <a href="contact.html" class="dropdown-item">Contact Us</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="navbar-nav ml-auto">
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">User Account</a>
-                            <div class="dropdown-menu">
-                                <a href="#" class="dropdown-item">Login</a>
-                                <a href="#" class="dropdown-item">Register</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-        </div>
-    </div>
-    <!-- Nav Bar End -->
-
-    <!-- Bottom Bar Start -->
-    <div class="bottom-bar">
-        <div class="container-fluid">
-            <div class="row align-items-center">
-                <div class="col-md-3">
-                    <div class="logo">
-                        <a href="index.html">
-                            <img src="img/logo.png" alt="Logo">
-                        </a>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="search">
-                        <input type="text" placeholder="Search">
-                        <button><i class="fa fa-search"></i></button>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="user">
-                        <a href="wishlist.html" class="btn wishlist">
-                            <i class="fa fa-heart"></i>
-                            <span>(0)</span>
-                        </a>
-                        <a href="cart.html" class="btn cart">
-                            <i class="fa fa-shopping-cart"></i>
-                            <span>(0)</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Bottom Bar End -->
-
+    <?php
+    include 'navbar.php';
+    ?>
     <!-- Breadcrumb Start -->
     <div class="breadcrumb-wrap">
         <div class="container-fluid">
@@ -143,10 +68,10 @@
                         <a class="nav-link" id="payment-nav" data-toggle="pill" href="#payment-tab" role="tab"><i
                                 class="fa fa-credit-card"></i>Payment Method</a>
                         <a class="nav-link" id="address-nav" data-toggle="pill" href="#address-tab" role="tab"><i
-                                class="fa fa-map-marker-alt"></i>address</a>
+                                class="fa fa-map-marker-alt"></i>Address</a>
                         <a class="nav-link" id="account-nav" data-toggle="pill" href="#account-tab" role="tab"><i
                                 class="fa fa-user"></i>Account Details</a>
-                        <a class="nav-link" href="index.html"><i class="fa fa-sign-out-alt"></i>Logout</a>
+                        <a class="nav-link" href="index.php"><i class="fa fa-sign-out-alt"></i>Logout</a>
                     </div>
                 </div>
                 <div class="col-md-9">
@@ -165,7 +90,8 @@
                         <div class="tab-pane fade" id="orders-tab" role="tabpanel" aria-labelledby="orders-nav">
                             <div class="table-responsive">
                                 <table class="table table-bordered">
-                                    <thead class="thead-dark">
+
+                                    <head class="thead-dark">
                                         <tr>
                                             <th>No</th>
                                             <th>Product</th>
@@ -174,8 +100,9 @@
                                             <th>Status</th>
                                             <th>Action</th>
                                         </tr>
-                                    </thead>
-                                    <tbody>
+                                    </head>
+
+                                    <body>
                                         <tr>
                                             <td>1</td>
                                             <td>Product Name</td>
@@ -200,7 +127,7 @@
                                             <td>Approved</td>
                                             <td><button class="btn">View</button></td>
                                         </tr>
-                                    </tbody>
+                                    </body>
                                 </table>
                             </div>
                         </div>
@@ -233,39 +160,29 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="address-edit-tab" role="tabpanel" aria-labelledby="address-nav">
-                            <form>
-                                <!-- Ülke Seçimi -->
-                                <div class="mb-3">
-                                    <label class="form-label">Ülke:</label>
-                                    <select id="country" class="form-select">
-                                        <option value="">Ülke Seçiniz</option>
-                                        <?php
-                                        include "db.php";
-                                        $result = mysqli_query($conn, "SELECT * FROM countries");
-                                        while ($row = mysqli_fetch_assoc($result)) {
-                                            echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
+                            <div class="row">
+                                <form>
+                                    <div class="mb-3">
+                                        <label class="form-label">City:</label>
+                                        <select id="city" class="form-select">
+                                            <option value="">Select a city:</option>
+                                            <?php
+                                            $result = mysqli_query($conn, "SELECT * FROM iller");
+                                            while ($row = mysqli_fetch_assoc($result)) {
+                                                echo "<option value='" . $row['id'] . "'>" . $row['il_adi'] . "</option>";
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
 
-                                <!-- Şehir Seçimi -->
-                                <div class="mb-3">
-                                    <label class="form-label">Şehir:</label>
-                                    <select id="city" class="form-select" disabled>
-                                        <option value="">Önce Ülke Seçiniz</option>
-                                    </select>
-                                </div>
-
-                                <!-- İlçe Seçimi -->
-                                <div class="mb-3">
-                                    <label class="form-label">İlçe:</label>
-                                    <select id="district" class="form-select" disabled>
-                                        <option value="">Önce Şehir Seçiniz</option>
-                                    </select>
-                                </div>
-                            </form>
-
+                                    <div class="mb-3">
+                                        <label class="form-label">İlçe:</label>
+                                        <select id="district" class="form-select" disabled>
+                                            <option value="">Önce Şehir Seçiniz</option>
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                         <div class="tab-pane fade" id="account-tab" role="tabpanel" aria-labelledby="account-nav">
                             <h4>Account Details</h4>

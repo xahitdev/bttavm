@@ -1,11 +1,12 @@
 <?php
 require_once 'settings.php';
 
+
 if (isset($_POST['userlogin'])) {
     $username = trim($_POST['mail']);
     $password = trim($_POST['password']);
 
-    $sql = "SELECT * FROM Customers WHERE customer_mail = ?";
+    $sql = "SELECT * FROM customers WHERE customer_mail = ?";
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "s", $username);
     mysqli_stmt_execute($stmt);
@@ -58,22 +59,6 @@ if (isset($_POST['userlogin'])) {
 </head>
 
 <body>
-    <!-- Top bar Start -->
-    <div class="top-bar">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-6">
-                    <i class="fa fa-envelope"></i>
-                    support@email.com
-                </div>
-                <div class="col-sm-6">
-                    <i class="fa fa-phone-alt"></i>
-                    +012-345-6789
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Top bar End -->
     <?php
     include 'navbar.php';
     ?>

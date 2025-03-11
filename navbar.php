@@ -1,7 +1,27 @@
 <?php
+require_once 'settings.php';
+
 session_start();
 ob_start();
+
 ?>
+<!-- Top bar Start -->
+<div class="top-bar">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                <i class="fa fa-envelope"></i>
+                support@email.com
+            </div>
+            <div class="col-sm-6">
+                <i class="fa fa-phone-alt"></i>
+                +012-345-6789
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Top bar End -->
+
 <!-- Nav Bar Start -->
 <div class="nav">
     <div class="container-fluid">
@@ -41,7 +61,7 @@ ob_start();
                             <?php
                             if (!isset($_SESSION['user_id']) && !isset($_SESSION['seller_id'])) {
                                 ?>
-								Log in
+                                Log in
                                 <?php
                             }
                             ?>
@@ -61,10 +81,10 @@ ob_start();
                             ?>
                             <?php
                             if (isset($_SESSION['user_id'])) {
-								echo $_SESSION['username'];
-								?>
+                                echo $_SESSION['username'];
+                                ?>
                                 <a href="logout.php" class="btn">Logout</a>
-								<?php
+                                <?php
                             } elseif (isset($_SESSION['seller_id'])) {
                                 echo $_SESSION['seller_mail'];
                                 ?>
@@ -85,35 +105,34 @@ ob_start();
         </nav>
     </div>
 </div>
-    <div class="bottom-bar">
-        <div class="container-fluid">
-            <div class="row align-items-center">
-                <div class="col-md-3">
-                    <div class="logo">
-                        <a href="index.php">
-                            <img src="img/logo.png" alt="Logo">
-                        </a>
-                    </div>
+<div class="bottom-bar">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-md-3">
+                <div class="logo">
+                    <a href="index.php">
+                        <img src="img/logo.png" alt="Logo">
+                    </a>
                 </div>
-                <div class="col-md-6">
-                    <div class="search">
-                        <input type="text" placeholder="Search">
-                        <button><i class="fa fa-search"></i></button>
-                    </div>
+            </div>
+            <div class="col-md-6">
+                <div class="search">
+                    <input type="text" placeholder="Search">
+                    <button><i class="fa fa-search"></i></button>
                 </div>
-                <div class="col-md-3">
-                    <div class="user">
-                        <a href="wishlist.html" class="btn wishlist">
-                            <i class="fa fa-heart"></i>
-                            <span>(0)</span>
-                        </a>
-                        <a href="cart.html" class="btn cart">
-                            <i class="fa fa-shopping-cart"></i>
-                            <span>(0)</span>
-                        </a>
-                    </div>
+            </div>
+            <div class="col-md-3">
+                <div class="user">
+                    <a href="wishlist.html" class="btn wishlist">
+                        <i class="fa fa-heart"></i>
+                        <span>(0)</span>
+                    </a>
+                    <a href="cart.html" class="btn cart">
+                        <i class="fa fa-shopping-cart"></i>
+                        <span>(0)</span>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
-
+</div>
