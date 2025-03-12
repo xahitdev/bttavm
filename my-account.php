@@ -6,9 +6,9 @@ ob_start();
 
 /* error_reporting(E_NOTICE); */
 
-if(!isset($_SESSION['user_id'])){
-	header("Location: login.php");
-	exit();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
 }
 
 ?>
@@ -174,11 +174,16 @@ if(!isset($_SESSION['user_id'])){
                                             ?>
                                         </select>
                                     </div>
-
                                     <div class="mb-3">
-                                        <label class="form-label">İlçe:</label>
+                                        <label class="form-label">District:</label>
                                         <select id="district" class="form-select" disabled>
-                                            <option value="">Önce Şehir Seçiniz</option>
+                                            <option value="">select a city first...</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Semt:</label>
+                                        <select id="semt" class="form-select" disabled>
+                                            <option value="">select a district first...</option>
                                         </select>
                                     </div>
                                 </form>
@@ -332,25 +337,6 @@ if(!isset($_SESSION['user_id'])){
     <script src="js/main.js"></script>
     <script>
         $(document).ready(function () {
-            // Ülke seçildiğinde şehirleri getir
-            $("#country").change(function () {
-                var countryId = $(this).val();
-                $("#city").html('<option value="">Şehirler Yükleniyor...</option>').prop("disabled", true);
-                $("#district").html('<option value="">Önce Şehir Seçiniz</option>').prop("disabled", true);
-
-                if (countryId !== "") {
-                    $.ajax({
-                        url: "get_cities.php",
-                        type: "POST",
-                        data: { country_id: countryId },
-                        success: function (data) {
-                            $("#city").html(data).prop("disabled", false);
-                        }
-                    });
-                }
-            });
-
-            // Şehir seçildiğinde ilçeleri getir
             $("#city").change(function () {
                 var cityId = $(this).val();
                 $("#district").html('<option value="">İlçeler Yükleniyor...</option>').prop("disabled", true);
@@ -366,6 +352,22 @@ if(!isset($_SESSION['user_id'])){
                     });
                 }
             });
+            $("#district").change(function () {
+                var districtId = $(this).val();
+                $("#semt").html('<option value="">Once Ilce Seciniz</option>').prop("disabled", true);
+
+                if (districtId !== "") {
+                    $.ajax({
+                        url: "get_semt.php",
+                        type: "POST",
+                        data: { district_id: districtId },
+                        success: function (data) {
+                            $("#semt").html(data).prop("disabled", false);
+                        }
+                    });
+                }
+            });
+
         });
     </script>
 </body>
