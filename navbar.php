@@ -1,5 +1,6 @@
 <?php
 require_once 'settings.php';
+include 'functions.php';
 
 session_start();
 ob_start();
@@ -75,7 +76,7 @@ if (!isset($_SESSION['seller_id']) && !isset($_SESSION['user_id'])) {
 							<?php
 							if ($loginType != 'seller' && $loginType != 'user') {
 							?>
-															Log in
+							Log in
 							<?php
 							}
 							?>
@@ -92,22 +93,25 @@ if (!isset($_SESSION['seller_id']) && !isset($_SESSION['user_id'])) {
 							if($loginType != ""){
 								if($loginType == 'seller'){
 								?> 
-									<a class="dropdown-item"> <?php $_SESSION['seller_mail'] ?> </a>
+									<a class="dropdown-item"> <?php echo $_SESSION['seller_mail']; ?> </a>
 									<a href="logout.php" class="dropdown-item"> Log out </a>
 									<?php
 								}elseif($loginType == 'user'){
 									?>
-									<a class="dropdown-item"> <?php $_SESSION['username'] ?> </a>
+									<a class="dropdown-item"> <?php echo $_SESSION['username']; ?> </a>
 									<a href="logout.php" class="dropdown-item"> Log out </a>
 									<?php
 								}
+							}else{
+							?>
+								<a href="login.php" class="dropdown-item">Log in</a>
+								<a href="register.php" class="dropdown-item">Register</a>
+							<?php
 							}
 							?>
 								<?php
 								// BURAYI DUZELT #fix
 								?>
-							<a href="login.php" class="dropdown-item">Log in</a>
-							<a href="register.php" class="dropdown-item">Register</a>
 						</div>
 					</div>
 				</div>
