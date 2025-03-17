@@ -3,9 +3,9 @@ require_once 'settings.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-require '../vendor/PHPMailer/PHPMailer/src/Exception.php';
-require '../vendor/PHPMailer/PHPMailer/src/PHPMailer.php';
-require '../vendor/PHPMailer/PHPMailer/src/SMTP.php';
+require 'vendor/PHPMailer/PHPMailer/src/Exception.php';
+require 'vendor/PHPMailer/PHPMailer/src/PHPMailer.php';
+require 'vendor/PHPMailer/PHPMailer/src/SMTP.php';
 
 ob_start();
 session_start();
@@ -21,7 +21,7 @@ if(isset($_POST['register'])){
 	$phone = $_POST['phone_number'];
 
 	//cehcking if email address already exists.
-	$sql = "SELECT customer_id FROM customer where customer_mail = ?";
+	$sql = "SELECT customer_id FROM customers where customer_mail = ?";
 	$stmt = mysqli_prepare($conn, $sql);
 	mysqli_stmt_bind_param($stmt, "s", $mail);
 	mysqli_stmt_execute($stmt);
@@ -35,14 +35,23 @@ if(isset($_POST['register'])){
 	$stmt = mysqli_prepare($conn, $sql);
 	mysqli_stmt_bind_param($stmt, "ssssss", $name, md5($password), $birth, $gender, $mail, $phone);
 	if (mysqli_stmt_execute($stmt)) {
-		$idQuery = $connect -> prepare("SELECT * FROM customers WHERE customer_mail = :cm");
-		$idQuery -> bindParam(":cm", $mail, PDO::PARAM_STR);
-		$idQuery -> fetchAll(PDO::FETCH_ASSOC);
-		$idQuery -> execute();
 
 		$targetid = "";
-		if($idQuery -> rowCount()){
-			foreach($idQuery as $user){
+
+		$query = "SELECT * FROM customers WHERE customer_mail = ?";
+		$stmt = mysqli_prepare($connect, $query);
+
+		// Parametreyi bağla
+		mysqli_stmt_bind_param($stmt, "s", $mail);
+
+		// Sorguyu çalıştır
+		mysqli_stmt_execute($stmt);
+
+		// Sonuçları al
+		$result = mysqli_stmt_get_result($stmt);
+
+		if(mysqli_num_rows($result) > 0){
+			while($user = mysqli_fetch_assoc($result)){
 				$targetid = $user["customer_id"];
 			}
 		}
@@ -167,13 +176,6 @@ if(isset($_POST['register'])){
 	}
 }
 	
-
-
-
-
-
-
-}
 
 ?>
 <!DOCTYPE html>

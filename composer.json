@@ -1,0 +1,17 @@
+{
+    "name": "chtpc/bttavm",
+    "require": {
+        "phpmailer/phpmailer": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Chtpc\\Bttavm\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "xahitdev",
+            "email": "113922120+xahitdev@users.noreply.github.com"
+        }
+    ]
+}

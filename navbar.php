@@ -2,6 +2,8 @@
 require_once 'settings.php';
 include 'functions.php';
 
+error_reporting(E_ALL & ~E_NOTICE);
+
 session_start();
 ob_start();
 

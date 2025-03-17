@@ -3,12 +3,12 @@ require_once 'settings.php';
 
 
 if (isset($_POST['userlogin'])) {
-    $username = trim($_POST['mail']);
+    $user_mail = trim($_POST['mail']);
     $password = trim($_POST['password']);
 
     $sql = "SELECT * FROM customers WHERE customer_mail = ?";
     $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, "s", $username);
+    mysqli_stmt_bind_param($stmt, "s", $user_mail);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
 
@@ -16,7 +16,7 @@ if (isset($_POST['userlogin'])) {
         if (md5($password) == $row['password_hashed']) {
             session_start();
             $_SESSION['user_id'] = $row['customer_id'];
-            $_SESSION['username'] = $row['customer_mail'];
+            $_SESSION['mail'] = $row['customer_mail'];
             header("Location: index.php");
             // exit();
         } else {
