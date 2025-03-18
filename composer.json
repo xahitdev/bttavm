@@ -1,7 +1,7 @@
 {
     "name": "chtpc/bttavm",
     "require": {
-        "phpmailer/phpmailer": "*"
+        "phpmailer/phpmailer": "^6.9"
     },
     "autoload": {
         "psr-4": {
