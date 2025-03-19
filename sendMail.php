@@ -6,13 +6,15 @@ require 'vendor/phpmailer/phpmailer/src/Exception.php';
 require 'vendor/phpmailer/phpmailer/src/PHPMailer.php';
 require 'vendor/phpmailer/phpmailer/src/SMTP.php';
 
-function sendConfirmationEmail($email, $token) {
+$url = 'localhost/bttavm/activate.php?token=$token';
+
+function sendConfirmationEmail($email, $token): bool{
     $mail = new PHPMailer(true);
     
     try {
         // Server settings
         $mail->isSMTP();
-        $mail->Host       = 'smtp.example.com';  // Replace with your SMTP server
+        $mail->Host       = 'smtp.gmail.com';  // Replace with your SMTP server
         $mail->SMTPAuth   = true;
         $mail->Username   = 'aslankoylu1071@gmail.com';  // Your email
         $mail->Password   = 'stkyijzdfjvwtbpd';
@@ -26,9 +28,10 @@ function sendConfirmationEmail($email, $token) {
         // Content
         $mail->isHTML(true);
         $mail->Subject = 'Confirm Your Email';
-        $mail->Body    = "Click <a href='localhost:81/bttavm/activate.php?token=$token'>here</a> to activate your account.";
+        $mail->Body    = "Click <a href= '" . $url . "'>here</a> to activate your account.";
 
         $mail->send();
+
         return true;
     } catch (Exception $e) {
         return false;

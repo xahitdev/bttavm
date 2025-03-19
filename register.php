@@ -1,5 +1,4 @@
 <?php
-
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -13,27 +12,35 @@ if(isset($_POST['register'])){
     $gender = (int) $_POST['gender'];
     $mail = $_POST['mail'];
     $phone = $_POST['phone_number'];
-	$token = bin2hex(random_bytes(50));
+	$token = "" . bin2hex(random_bytes(50));
     
     //cehcking if email address already exists.
-    $sql = "SELECT customer_id FROM customers where customer_mail = ?";
-    $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, "s", $mail);
-    mysqli_stmt_execute($stmt);
-    mysqli_stmt_store_result($stmt);
+    /* $sql = "SELECT customer_id FROM customers where customer_mail = ?"; */
+    /* $stmt = mysqli_prepare($conn, $sql); */
+    /* mysqli_stmt_bind_param($stmt, "s", $mail); */
+    /* mysqli_stmt_execute($stmt); */
+    /* mysqli_stmt_store_result($stmt); */
 
     /* if(mysqli_stmt_num_rows($stmt) > 0){ */
     /*     $_SESSION['error'] = "This mail address is already exists. "; echo '<a href="login.php">Already have an account?</a>'; */
     /* } */
     
-    $sql = "INSERT INTO customers (customer_name, password_hashed, customer_birth, customer_gender, customer_mail, customer_phone, is_active, token) VALUES (?,?,?,?,?,?,0,?)";
+    $sql = "INSERT INTO customers (customer_name, password_hashed, customer_birth, customer_gender, customer_mail, customer_phone, token) VALUES (?,?,?,?,?,?,?)";
 	$stmt = mysqli_prepare($conn, $sql);
 	mysqli_stmt_bind_param($stmt, "sssisss", $name, md5($password), $birth, $gender, $mail, $phone, $token);
 	if (mysqli_stmt_execute($stmt)) {
         /* $_SESSION['success'] = "Registration successful! You can now log in."; */
         /* header("Location: login.php"); // Redirect to login page */
-		sendConfirmationEmail($mail, $token);
-		echo "a ";
+		$status = sendConfirmationEmail($mail, $token);
+		echo $status;
+		/* echo "a "; */
+		if($status){
+			header("Location: login.php");
+		}else{
+			include 'functions.php';
+			function_alert("Failed to register, please try again");
+			header("Location: index.php");
+		}
     } else {
         $_SESSION['error'] = "Something went wrong. Please try again.";
         header("Location: register.php");
