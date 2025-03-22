@@ -1,5 +1,5 @@
 <?php
-function function_alert($message){
+function mAlert($message){
 	echo "<script>alert('$message');</script>";
 }
 ?>

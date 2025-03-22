@@ -2,6 +2,11 @@
 require_once 'settings.php';
 include 'functions.php';
 
+$current_file = $_SERVER['REQUEST_URI'];
+$image_src = (strpos($current_file, 'seller/seller-profile.php') !== false) 
+	? "../img/logo.png" 
+	: "/img/logo.png";
+
 error_reporting(E_ALL & ~E_NOTICE);
 
 session_start();
@@ -16,6 +21,7 @@ if(isset($_SESSION['seller_id'])){
 }
 
 ?>
+
 <!-- Top bar Start -->
 
 <div class="top-bar bg-light py-2">
@@ -75,45 +81,45 @@ if (!isset($_SESSION['seller_id']) && !isset($_SESSION['user_id'])) {
 				<div class="navbar-nav mx-auto">
 					<div class="nav-item dropdown">
 						<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-							<?php
-							if ($loginType != 'seller' && $loginType != 'user') {
-							?>
+<?php
+if ($loginType != 'seller' && $loginType != 'user') {
+?>
 							Log in
-							<?php
-							}
-							?>
-							<?php
-							switch($loginType){
-							case 'seller': 
-								echo "Seller Account ";
-							case 'user': 
-								echo "User Account ";
-							}
-							?> </a>
+<?php
+}
+?>
+<?php
+switch($loginType){
+case 'seller': 
+	echo "Seller Account ";
+case 'user': 
+	echo "User Account ";
+}
+?> </a>
 						<div class="dropdown-menu">
-							<?php
-							if($loginType != ""){
-								if($loginType == 'seller'){
-								?> 
+<?php
+if($loginType != ""){
+	if($loginType == 'seller'){
+?> 
 									<a class="dropdown-item"> <?php echo $_SESSION['seller_mail']; ?> </a>
 									<a href="logout.php" class="dropdown-item"> Log out </a>
-									<?php
-								}elseif($loginType == 'user'){
-									?>
+<?php
+	}elseif($loginType == 'user'){
+?>
 									<a class="dropdown-item"> <?php echo $_SESSION['username']; ?> </a>
 									<a href="logout.php" class="dropdown-item"> Log out </a>
-									<?php
-								}
-							}else{
-							?>
+<?php
+	}
+}else{
+?>
 								<a href="login.php" class="dropdown-item">Log in</a>
 								<a href="register.php" class="dropdown-item">Register</a>
-							<?php
-							}
-							?>
-								<?php
-								// BURAYI DUZELT #fix
-								?>
+<?php
+}
+?>
+<?php
+// BURAYI DUZELT #fix
+?>
 						</div>
 					</div>
 				</div>
@@ -127,7 +133,7 @@ if (!isset($_SESSION['seller_id']) && !isset($_SESSION['user_id'])) {
 			<div class="col-md-3">
 				<div class="logo">
 					<a href="index.php">
-						<img src="img/logo.png" alt="Logo">
+						<img src="<?php echo $image_src; ?>" alt="BTTAVM Logo">
 					</a>
 				</div>
 			</div>
