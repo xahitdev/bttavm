@@ -5,7 +5,7 @@ include 'functions.php';
 $current_file = $_SERVER['REQUEST_URI'];
 $image_src = (strpos($current_file, 'seller/seller-profile.php') !== false) 
 	? "../img/logo.png" 
-	: "/img/logo.png";
+	: "img/logo.png";
 
 error_reporting(E_ALL & ~E_NOTICE);
 
