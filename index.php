@@ -111,43 +111,82 @@ include 'navbar.php';
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-12">
-					<div class="header-slider normal-slider">
-						<div class="header-slider-item">
-							<img src="img/slider-1.jpg" alt="Slider Image" />
-							<div class="header-slider-caption">
-								<p>Some text goes here that describes the image</p>
-								<a class="btn" href=""><i class="fa fa-shopping-cart"></i>Shop Now</a>
-							</div>
+				<div class="header-slider normal-slider" style="height: 500px;"> <!-- Set container height -->
+					  <div class="header-slider-item" style="
+						position: relative;
+						height: 100%;
+						display: flex;
+						justify-content: center;
+						align-items: center;
+					  ">
+						<img src="img/slider-1.jpg" alt="Slider Image" style="
+						  max-width: 100%;
+						  max-height: 100%;
+						  object-fit: contain;
+						">
+						<div class="header-slider-caption" style="
+						  position: absolute;
+						  bottom: 20px;
+						  left: 50%;
+						  transform: translateX(-50%);
+						  text-align: center;
+						">
+						  <p>Find the best prices!</p>
+						  <a class="btn" href=""><i class="fa fa-shopping-cart"></i>Shop Now</a>
 						</div>
-						<div class="header-slider-item">
-							<img src="img/slider-2.jpg" alt="Slider Image" />
-							<div class="header-slider-caption">
-								<p>Some text goes here that describes the image</p>
-								<a class="btn" href=""><i class="fa fa-shopping-cart"></i>Shop Now</a>
-							</div>
-						</div>
-						<div class="header-slider-item">
-							<img src="img/slider-3.jpg" alt="Slider Image" />
-							<div class="header-slider-caption">
-								<p>Some text goes here that describes the image</p>
-								<a class="btn" href=""><i class="fa fa-shopping-cart"></i>Shop Now</a>
+					  </div>
+
+					  <!-- Repeat for other slider items -->
+					  <div class="header-slider-item" style="
+						position: relative;
+						height: 100%;
+						display: flex;
+						justify-content: center;
+						align-items: center;
+					  ">
+						<img src="img/slider-2.jpg" alt="Slider Image" style="
+						  max-width: 100%;
+						  max-height: 100%;
+						  object-fit: contain;
+						">
+						<!-- ... caption ... -->
+					  </div>
+
+					  <div class="header-slider-item" style="
+						position: relative;
+						height: 100%;
+						display: flex;
+						justify-content: center;
+						align-items: center;
+					  ">
+						<img src="img/slider-3.jpg" alt="Slider Image" style="
+						  max-width: 100%;
+						  max-height: 100%;
+						  object-fit: contain;
+						">
+						<!-- ... caption ... -->
+					  </div>
+					</div>
+				</div>
+				<div class="row w-100">
+					<div class="col-md-6">
+						<div class="header-img">
+							<div class="img-item">
+								<img src="img/category-1.jpg">
+								<a class="img-text" href="">
+									<p>Some text goes here that describes the image</p>
+								</a>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="col-md-3">
-					<div class="header-img">
-						<div class="img-item">
-							<img src="img/category-1.jpg" />
-							<a class="img-text" href="">
-								<p>Some text goes here that describes the image</p>
-							</a>
-						</div>
-						<div class="img-item">
-							<img src="img/category-2.jpg" />
-							<a class="img-text" href="">
-								<p>Some text goes here that describes the image</p>
-							</a>
+					<div class="col-md-6">
+						<div class="header-img">
+							<div class="img-item">
+								<img src="img/category-2.jpg">
+								<a class="img-text" href="">
+									<p>Some text goes here that describes the image</p>
+								</a>
+							</div>
 						</div>
 					</div>
 				</div>

@@ -3,8 +3,8 @@ require_once 'settings.php';
 include 'functions.php';
 
 $current_file = $_SERVER['REQUEST_URI'];
-$image_src = (strpos($current_file, 'seller/seller-profile.php') !== false) 
-	? "../img/logo.png" 
+$image_src = (strpos($current_file, 'seller/seller-profile.php') !== false)
+	? "../img/logo.png"
 	: "img/logo.png";
 
 error_reporting(E_ALL & ~E_NOTICE);
@@ -14,9 +14,9 @@ ob_start();
 
 $loginType = "";
 
-if(isset($_SESSION['seller_id'])){
+if (isset($_SESSION['seller_id'])) {
 	$loginType = 'seller';
-} elseif(isset($_SESSION['user_id'])){
+} elseif (isset($_SESSION['user_id'])) {
 	$loginType = 'user';
 }
 
@@ -60,66 +60,67 @@ if(isset($_SESSION['seller_id'])){
 						<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">More Pages</a>
 						<div class="dropdown-menu">
 							<a href="wishlist.html" class="dropdown-item">Wishlist</a>
-<?php
-if(!isset($_SESSION['seller_id']) && !isset($_SESSION['user_id'])){
-?>
+							<?php
+							if (!isset($_SESSION['seller_id']) && !isset($_SESSION['user_id'])) {
+								?>
 								<a href="login.php" class="dropdown-item">Login & Register</a>
-<?php
-}
-?>
+								<?php
+							}
+							?>
 							<a href="contact.html" class="dropdown-item">Contact Us</a>
-<?php
-if (!isset($_SESSION['seller_id']) && !isset($_SESSION['user_id'])) {
-?>
+							<?php
+							if (!isset($_SESSION['seller_id']) && !isset($_SESSION['user_id'])) {
+								?>
 								<a href="sellerlogin.php" class="dropdown-item">Seller Login</a>
-<?php
-}
-?>
+								<?php
+							}
+							?>
 						</div>
 					</div>
 				</div>
 				<div class="navbar-nav mx-auto">
 					<div class="nav-item dropdown">
 						<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-<?php
-if ($loginType != 'seller' && $loginType != 'user') {
-?>
-							Log in
-<?php
-}
-?>
-<?php
-switch($loginType){
-case 'seller': 
-	echo "Seller Account ";
-case 'user': 
-	echo "User Account ";
-}
-?> </a>
+							<?php
+							if ($loginType != 'seller' && $loginType != 'user') {
+								?>
+								Log in
+								<?php
+							}
+							?>
+							<?php
+							switch ($loginType) {
+								case 'seller':
+									echo "Seller Account ";
+								case 'user':
+									echo "User Account ";
+							}
+							?>
+						</a>
 						<div class="dropdown-menu">
-<?php
-if($loginType != ""){
-	if($loginType == 'seller'){
-?> 
+							<?php
+							if ($loginType != "") {
+								if ($loginType == 'seller') {
+									?>
 									<a class="dropdown-item"> <?php echo $_SESSION['seller_mail']; ?> </a>
 									<a href="logout.php" class="dropdown-item"> Log out </a>
-<?php
-	}elseif($loginType == 'user'){
-?>
-									<a class="dropdown-item"> <?php echo $_SESSION['username']; ?> </a>
+									<?php
+								} elseif ($loginType == 'user') {
+									?>
+									<a class="dropdown-item"> <?php echo $_SESSION['mail']; ?> </a>
 									<a href="logout.php" class="dropdown-item"> Log out </a>
-<?php
-	}
-}else{
-?>
+									<?php
+								}
+							} else {
+								?>
 								<a href="login.php" class="dropdown-item">Log in</a>
 								<a href="register.php" class="dropdown-item">Register</a>
-<?php
-}
-?>
-<?php
-// BURAYI DUZELT #fix
-?>
+								<?php
+							}
+							?>
+							<?php
+							// BURAYI DUZELT #fix
+							?>
 						</div>
 					</div>
 				</div>
