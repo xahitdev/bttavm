@@ -7,10 +7,10 @@ ob_start();
 
 /* error_reporting(E_NOTICE); */
 
-/* if (!isset($_SESSION['seller_id'])) { */
-/* 	header("Location: sellerlogin.php"); */
-/* 	exit(); */
-/* } */
+if (!isset($_SESSION['seller_id'])) {
+	header("Location: ../seller-login.php");
+	exit();
+}
 
 ?>
 <!DOCTYPE html>

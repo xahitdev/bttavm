@@ -1,7 +1,6 @@
 <?php
 require_once 'settings.php';
 
-
 if (isset($_POST['userlogin'])) {
     $user_mail = trim($_POST['mail']);
     $password = trim($_POST['password']);
@@ -17,6 +16,8 @@ if (isset($_POST['userlogin'])) {
             session_start();
             $_SESSION['user_id'] = $row['customer_id'];
             $_SESSION['mail'] = $row['customer_mail'];
+            $_SESSION['role'] = $row['role'];
+
             header("Location: index.php");
             // exit();
         } else {

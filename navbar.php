@@ -1,25 +1,22 @@
 <?php
 require_once 'settings.php';
 include 'functions.php';
-
-$current_file = $_SERVER['REQUEST_URI'];
-$image_src = (strpos($current_file, 'seller/seller-profile.php') !== false)
-	? "../img/logo.png"
-	: "img/logo.png";
-
 error_reporting(E_ALL & ~E_NOTICE);
 
 session_start();
 ob_start();
 
-$loginType = "";
+$current_file = $_SERVER['REQUEST_URI'];
 
-if (isset($_SESSION['seller_id'])) {
-	$loginType = 'seller';
-} elseif (isset($_SESSION['user_id'])) {
-	$loginType = 'user';
+function displayEmail(){
+	global $conn;
+	if($_SESSION['role'] == 'user'){
+		echo $_SESSION['user_mail'];
+	}
+	if($_SESSION['role'] == 'seller'){
+		echo $_SESSION['seller_mail'];
+	}
 }
-
 ?>
 
 <!-- Top bar Start -->
@@ -49,82 +46,59 @@ if (isset($_SESSION['seller_id'])) {
 			</button>
 
 			<div class="collapse navbar-collapse" id="navbarCollapse">
-				<div class="navbar-nav">
-					<a href="index.php" class="nav-item nav-link active">Home</a>
-					<a href="product-list.html" class="nav-item nav-link">Products</a>
-					<a href="product-detail.html" class="nav-item nav-link">Product Detail</a>
-					<a href="cart.html" class="nav-item nav-link">Cart</a>
-					<a href="checkout.html" class="nav-item nav-link">Checkout</a>
-					<a href="my-account.php" class="nav-item nav-link">My Account</a>
-					<div class="nav-item dropdown">
-						<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">More Pages</a>
-						<div class="dropdown-menu">
-							<a href="wishlist.html" class="dropdown-item">Wishlist</a>
-							<?php
-							if (!isset($_SESSION['seller_id']) && !isset($_SESSION['user_id'])) {
-								?>
-								<a href="login.php" class="dropdown-item">Login & Register</a>
-								<?php
-							}
-							?>
-							<a href="contact.html" class="dropdown-item">Contact Us</a>
-							<?php
-							if (!isset($_SESSION['seller_id']) && !isset($_SESSION['user_id'])) {
-								?>
-								<a href="sellerlogin.php" class="dropdown-item">Seller Login</a>
-								<?php
-							}
-							?>
-						</div>
-					</div>
-				</div>
-				<div class="navbar-nav mx-auto">
-					<div class="nav-item dropdown">
-						<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-							<?php
-							if ($loginType != 'seller' && $loginType != 'user') {
-								?>
-								Log in
-								<?php
-							}
-							?>
-							<?php
-							switch ($loginType) {
-								case 'seller':
-									echo "Seller Account ";
-								case 'user':
-									echo "User Account ";
-							}
-							?>
-						</a>
-						<div class="dropdown-menu">
-							<?php
-							if ($loginType != "") {
-								if ($loginType == 'seller') {
-									?>
-									<a class="dropdown-item"> <?php echo $_SESSION['seller_mail']; ?> </a>
-									<a href="logout.php" class="dropdown-item"> Log out </a>
-									<?php
-								} elseif ($loginType == 'user') {
-									?>
-									<a class="dropdown-item"> <?php echo $_SESSION['mail']; ?> </a>
-									<a href="logout.php" class="dropdown-item"> Log out </a>
-									<?php
-								}
-							} else {
-								?>
-								<a href="login.php" class="dropdown-item">Log in</a>
-								<a href="register.php" class="dropdown-item">Register</a>
-								<?php
-							}
-							?>
-							<?php
-							// BURAYI DUZELT #fix
-							?>
-						</div>
-					</div>
-				</div>
-			</div>
+    <div class="container-fluid">
+        <div class="row w-100">
+            <!-- Left Nav Items -->
+            <div class="col-md-8 d-flex flex-wrap align-items-center navbar-nav">
+                <a href="categories.php" class="nav-item nav-link active">Categories</a>
+                <a href="cart.html" class="nav-item nav-link">Cart</a>
+                <a href="checkout.html" class="nav-item nav-link">Checkout</a>
+				<?php if(isset($_SESSION['role']) == 'seller'){ ?>
+                <a href="seller-panel.php" class="nav-item nav-link">Seller Panel</a>
+				<?php } ?>
+                <?php if (!isset($_SESSION['role'])): ?>
+                    <a href="my-account.php" class="nav-item nav-link">My Account</a>
+                <?php endif; ?>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">More Pages</a>
+                    <div class="dropdown-menu">
+                        <a href="wishlist.html" class="dropdown-item">Wishlist</a>
+                        <?php if (!isset($_SESSION['seller_id']) && !isset($_SESSION['user_id'])): ?>
+                            <a href="login.php" class="dropdown-item">Login & Register</a>
+                            <a href="seller-login.php" class="dropdown-item">Seller Login</a>
+                        <?php endif; ?>
+                        <a href="contact.html" class="dropdown-item">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Account/Login Section -->
+            <div class="col-md-4 d-flex justify-content-md-end mt-3 mt-md-0 navbar-nav">
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                        <?php
+                            if (!isset($_SESSION['user_id']) && !isset($_SESSION['seller_id'])) {
+                                echo "Log in";
+                            } else {
+                                echo $_SESSION['user_mail'] ?? $_SESSION['seller_mail'];
+                            }
+                        ?>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+						<?php if(isset($_SESSION['user_id']) || isset($_SESSION['seller_id'])){ ?>
+						<a class="dropdown-item"><?php echo displayEmail(); ?></a>
+						<a href="logout.php" class="dropdown-item">Log out</a>
+						<?php }else{?>
+						<a href="login.php" class="dropdown-item">Log in</a>
+						<a href="register.php" class="dropdown-item">Register</a>
+						<?php } ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 		</nav>
 	</div>
 </div>
@@ -134,7 +108,7 @@ if (isset($_SESSION['seller_id'])) {
 			<div class="col-md-3">
 				<div class="logo">
 					<a href="index.php">
-						<img src="<?php echo $image_src; ?>" alt="BTTAVM Logo">
+						<img src="/bttavm/img/logo.png" alt="BTTAVM Logo">
 					</a>
 				</div>
 			</div>
