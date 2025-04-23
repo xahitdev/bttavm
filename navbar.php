@@ -54,7 +54,7 @@ function displayEmail(){
                 <a href="cart.html" class="nav-item nav-link">Cart</a>
                 <a href="checkout.html" class="nav-item nav-link">Checkout</a>
 				<?php if(isset($_SESSION['role']) == 'seller'){ ?>
-                <a href="seller-panel.php" class="nav-item nav-link">Seller Panel</a>
+                <a href="seller/seller-panel.php" class="nav-item nav-link">Seller Panel</a>
 				<?php } ?>
                 <?php if (!isset($_SESSION['role'])): ?>
                     <a href="my-account.php" class="nav-item nav-link">My Account</a>

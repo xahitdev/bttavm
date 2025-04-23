@@ -102,7 +102,7 @@ if (isset($_POST['sellerlogin'])) {
                             <div class="row">
                                 <div class="col-md-6">
                                     <label>E-mail</label>
-                                    <input class="form-control" type="text" placeholder="E-mail" name="mail">
+                                    <input class="form-control" type="email" placeholder="E-mail" name="mail">
                                 </div>
                                 <div class="col-md-6">
                                     <label>Password</label>
