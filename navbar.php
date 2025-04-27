@@ -107,7 +107,12 @@ function displayEmail(){
 		<div class="row align-items-center">
 			<div class="col-md-3">
 				<div class="logo">
-					<a href="index.php">
+					<a href="<?php if(file_exists("index.php")){
+									echo "index.php";
+								}else{
+									echo "../index.php";
+								}
+							 ?>">
 						<img src="/bttavm/img/logo.png" alt="BTTAVM Logo">
 					</a>
 				</div>
