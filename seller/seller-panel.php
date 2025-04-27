@@ -50,6 +50,7 @@ if (isset($_POST['applyEditProductChanges'])) {
 	} else {
 	echo "<p style='color:red;'>Product not found or access denied.</p>";
 	}
+	header("Refresh:0");
 }
 
 //add products
