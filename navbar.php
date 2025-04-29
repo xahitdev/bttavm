@@ -6,6 +6,14 @@ error_reporting(E_ALL & ~E_NOTICE);
 session_start();
 ob_start();
 
+$logoSQL = "SELECT * FROM logos WHERE logo_id = 1";
+$logoResult = $conn->query($logoSQL);
+
+if ($logoResult && $logoResult->num_rows > 0) {
+    $logoRow = $logoResult->fetch_assoc();
+    // now you can use $logoRow['column_name']
+}
+
 $current_file = $_SERVER['REQUEST_URI'];
 
 function displayEmail(){
@@ -113,7 +121,7 @@ function displayEmail(){
 									echo "../index.php";
 								}
 							 ?>">
-						<img src="/bttavm/img/logo.png" alt="BTTAVM Logo">
+						 <img src="<?php echo $logoRow['navbar_logo']; ?>" alt="BTTAVM Logo">
 					</a>
 				</div>
 			</div>

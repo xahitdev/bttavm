@@ -1,8 +1,15 @@
 <?php
 require_once 'settings.php';
+/* include 'functions.php'; */
+error_reporting(E_ALL);
+
 
 $featuredSQL = "SELECT * FROM products ORDER BY RAND() LIMIT 5";
 $featuredResult = $conn->query($featuredSQL);
+
+$sliderImageSQL = "SELECT * FROM index_images";
+$sliderImageResult = $conn->query($sliderImageSQL);
+$sliderImage = $sliderImageResult->fetch_assoc();
 
 ?>
 <!DOCTYPE html>
@@ -74,7 +81,7 @@ include 'navbar.php';
 			transform: scale(1.1); 
 		}
 </style> 
-	<div class="container mt-4">
+	<div class="container mt-4 mb-4">
 	<div class="category-container-ozel d-flex" style="padding-top: 10px !important;">
 		<div class="category-ozel">
 			<div class="category-icon-ozel" style="background-color: rgba(0, 123, 255, 0.6);"><i class="fas fa-shopping-cart"></i></div>
@@ -122,7 +129,7 @@ include 'navbar.php';
 						justify-content: center;
 						align-items: center;
 					  ">
-						<img src="img/slider-1.jpg" alt="Slider Image" style="
+					  <img src="<?php echo $sliderImage['index_slider_image'] ?>" alt="Slider Image" style="
 						  max-width: 100%;
 						  max-height: 100%;
 						  object-fit: contain;
@@ -147,7 +154,7 @@ include 'navbar.php';
 						justify-content: center;
 						align-items: center;
 					  ">
-						<img src="img/slider-2.jpg" alt="Slider Image" style="
+						<img src="<?php echo $sliderImage['index_slider_image_2'] ?>" alt="Slider Image" style="
 						  max-width: 100%;
 						  max-height: 100%;
 						  object-fit: contain;
@@ -162,7 +169,7 @@ include 'navbar.php';
 						justify-content: center;
 						align-items: center;
 					  ">
-						<img src="img/slider-3.jpg" alt="Slider Image" style="
+						<img src="<?php echo $sliderImage['index_slider_image_3'] ?>" alt="Slider Image" style="
 						  max-width: 100%;
 						  max-height: 100%;
 						  object-fit: contain;
@@ -175,7 +182,7 @@ include 'navbar.php';
 					<div class="col-md-6">
 						<div class="header-img">
 							<div class="img-item">
-								<img src="img/category-1.jpg">
+								<img src="<?php echo $sliderImage['card_image']; ?>">
 								<a class="img-text" href="">
 									<p>Some text goes here that describes the image</p>
 								</a>
@@ -185,7 +192,7 @@ include 'navbar.php';
 					<div class="col-md-6">
 						<div class="header-img">
 							<div class="img-item">
-								<img src="img/category-2.jpg">
+								<img src="<?php echo $sliderImage['card_image2']; ?>">
 								<a class="img-text" href="">
 									<p>Some text goes here that describes the image</p>
 								</a>
@@ -259,6 +266,7 @@ include 'navbar.php';
 	<!-- Feature End-->
 
 	<!-- Category Start-->
+	<!--
 	<div class="category">
 		<div class="container-fluid">
 			<div class="row">
@@ -309,6 +317,7 @@ include 'navbar.php';
 			</div>
 		</div>
 	</div>
+	-->
 	<!-- Category End-->
 
 	<!-- Call to Action Start -->
@@ -336,6 +345,13 @@ include 'navbar.php';
 			<?php if($featuredResult->num_rows > 0){
 				while($row = $featuredResult->fetch_assoc()){
 					$productName = strlen($row['product_name']) > 30 ? substr($row['product_name'], 0, 30) . '...' : $row['product_name'];
+
+					$productImagesSQL = "SELECT * FROM product_images WHERE product_id=".$row['product_id']."";
+					$productImagesResult = $conn->query($productImagesSQL);
+					$productImage = $productImagesResult->fetch_assoc();
+					$productImageData = $productImage['product_images_url'];
+					$productImageArray = explode('#', $productImageData);
+					
 					echo '
 					<div class="col-lg-3">
 						<div class="product-item">
@@ -351,7 +367,7 @@ include 'navbar.php';
 							</div>
 							<div class="product-image">
 								<a href="product-detail.html">
-									<img src="img/product-1.jpg" alt="Product Image">
+									<img src="'.$productImageArray[0].'" alt="Product Image" style="width: 100%; height: 250px; object-fit: cover; !important">
 								</a>
 								<div class="product-action">
 									<a href="#"><i class="fa fa-cart-plus"></i></a>
@@ -360,8 +376,8 @@ include 'navbar.php';
 								</div>
 							</div>
 							<div class="product-price">
-								<h3><span>$</span>99</h3>
-								<a class="btn" href=""><i class="fa fa-shopping-cart"></i>Buy Now</a>
+								<h3><span>TL</span>'.$row['price'].'</h3>
+								<a class="btn" href=""><i class="fa fa-shopping-cart"></i>Buy</a>
 							</div>
 						</div>
 					</div>
@@ -372,16 +388,24 @@ include 'navbar.php';
 	<!-- Featured Product End -->
 
 	<!-- Newsletter Start -->
-	<div class="newsletter">
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-md-6">
-					<h1>Subscribe Our Newsletter</h1>
-				</div>
-				<div class="col-md-6">
-					<div class="form">
-						<input type="email" value="Your email here">
-						<button>Submit</button>
+	<div class="newsletter py-4">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h1 class="newsletter-title">Subscribe Our Newsletter</h1>
+            </div>
+            <div class="col-md-6">
+                <div class="form">
+                    <form method="POST" action="assets/php/newsletter.php">
+                        <div class="row">
+                            <div class="col-md-8 mb-2 mb-md-0">
+                                <input type="email" class="form-control" placeholder="Your email here" name="newsletter_email" required>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="submit" class="btn btn-dark w-100" value="Subscribe" name="newsletterSend">
+                            </div>
+							</div>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -389,6 +413,10 @@ include 'navbar.php';
 	</div>
 	<!-- Newsletter End -->
 
+	<?php
+		$featuredSQL = "SELECT * FROM products ORDER BY product_id DESC";
+		$featuredResult = $conn->query($featuredSQL);
+	?>
 	<!-- Recent Product Start -->
 	<div class="recent-product product">
 		<div class="container-fluid">
@@ -396,152 +424,53 @@ include 'navbar.php';
 				<h1>Recent Product</h1>
 			</div>
 			<div class="row align-items-center product-slider product-slider-4">
-				<div class="col-lg-3">
-					<div class="product-item">
-						<div class="product-title">
-							<a href="#">Product Name</a>
-							<div class="ratting">
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
+			<?php if($featuredResult->num_rows > 0){
+				while($row = $featuredResult->fetch_assoc()){
+					$productName = strlen($row['product_name']) > 30 ? substr($row['product_name'], 0, 30) . '...' : $row['product_name'];
+
+					$productImagesSQL = "SELECT * FROM product_images WHERE product_id=".$row['product_id']."";
+					$productImagesResult = $conn->query($productImagesSQL);
+					$productImage = $productImagesResult->fetch_assoc();
+					$productImageData = $productImage['product_images_url'];
+					$productImageArray = explode('#', $productImageData);
+					
+					echo '
+					<div class="col-lg-3">
+						<div class="product-item">
+							<div class="product-title">
+								<a href="product-detail.php?id='.$row['product_id'].'">'.$productName.'</a>
+								<div class="ratting">
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+								</div>
 							</div>
-						</div>
-						<div class="product-image">
-							<a href="product-detail.html">
-								<img src="img/product-6.jpg" alt="Product Image">
-							</a>
-							<div class="product-action">
-								<a href="#"><i class="fa fa-cart-plus"></i></a>
-								<a href="#"><i class="fa fa-heart"></i></a>
-								<a href="#"><i class="fa fa-search"></i></a>
+							<div class="product-image">
+								<a href="product-detail.html">
+									<img src="'.$productImageArray[0].'" alt="Product Image" style="width: 100%; height: 250px; object-fit: cover; !important">
+								</a>
+								<div class="product-action">
+									<a href="#"><i class="fa fa-cart-plus"></i></a>
+									<a href="#"><i class="fa fa-heart"></i></a>
+									<a href="#"><i class="fa fa-search"></i></a>
+								</div>
 							</div>
-						</div>
-						<div class="product-price">
-							<h3><span>$</span>99</h3>
-							<a class="btn" href=""><i class="fa fa-shopping-cart"></i>Buy Now</a>
+							<div class="product-price">
+								<h3><span>TL</span>'.$row['price'].'</h3>
+								<a class="btn" href=""><i class="fa fa-shopping-cart"></i>Buy</a>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="col-lg-3">
-					<div class="product-item">
-						<div class="product-title">
-							<a href="#">Product Name</a>
-							<div class="ratting">
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-							</div>
-						</div>
-						<div class="product-image">
-							<a href="product-detail.html">
-								<img src="img/product-7.jpg" alt="Product Image">
-							</a>
-							<div class="product-action">
-								<a href="#"><i class="fa fa-cart-plus"></i></a>
-								<a href="#"><i class="fa fa-heart"></i></a>
-								<a href="#"><i class="fa fa-search"></i></a>
-							</div>
-						</div>
-						<div class="product-price">
-							<h3><span>$</span>99</h3>
-							<a class="btn" href=""><i class="fa fa-shopping-cart"></i>Buy Now</a>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-3">
-					<div class="product-item">
-						<div class="product-title">
-							<a href="#">Product Name</a>
-							<div class="ratting">
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-							</div>
-						</div>
-						<div class="product-image">
-							<a href="product-detail.html">
-								<img src="img/product-8.jpg" alt="Product Image">
-							</a>
-							<div class="product-action">
-								<a href="#"><i class="fa fa-cart-plus"></i></a>
-								<a href="#"><i class="fa fa-heart"></i></a>
-								<a href="#"><i class="fa fa-search"></i></a>
-							</div>
-						</div>
-						<div class="product-price">
-							<h3><span>$</span>99</h3>
-							<a class="btn" href=""><i class="fa fa-shopping-cart"></i>Buy Now</a>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-3">
-					<div class="product-item">
-						<div class="product-title">
-							<a href="#">Product Name</a>
-							<div class="ratting">
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-							</div>
-						</div>
-						<div class="product-image">
-							<a href="product-detail.html">
-								<img src="img/product-9.jpg" alt="Product Image">
-							</a>
-							<div class="product-action">
-								<a href="#"><i class="fa fa-cart-plus"></i></a>
-								<a href="#"><i class="fa fa-heart"></i></a>
-								<a href="#"><i class="fa fa-search"></i></a>
-							</div>
-						</div>
-						<div class="product-price">
-							<h3><span>$</span>99</h3>
-							<a class="btn" href=""><i class="fa fa-shopping-cart"></i>Buy Now</a>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-3">
-					<div class="product-item">
-						<div class="product-title">
-							<a href="#">Product Name</a>
-							<div class="ratting">
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-							</div>
-						</div>
-						<div class="product-image">
-							<a href="product-detail.html">
-								<img src="img/product-10.jpg" alt="Product Image">
-							</a>
-							<div class="product-action">
-								<a href="#"><i class="fa fa-cart-plus"></i></a>
-								<a href="#"><i class="fa fa-heart"></i></a>
-								<a href="#"><i class="fa fa-search"></i></a>
-							</div>
-						</div>
-						<div class="product-price">
-							<h3><span>$</span>99</h3>
-							<a class="btn" href=""><i class="fa fa-shopping-cart"></i>Buy Now</a>
-						</div>
-					</div>
-				</div>
+				';}} ?>
 			</div>
 		</div>
 	</div>
 	<!-- Recent Product End -->
 
 	<!-- Review Start -->
+	<!--
 	<div class="review">
 		<div class="container-fluid">
 			<div class="row align-items-center review-slider normal-slider">
@@ -614,6 +543,7 @@ include 'navbar.php';
 			</div>
 		</div>
 	</div>
+	-->
 	<!-- Review End -->
 
 	<!-- Footer Start -->
