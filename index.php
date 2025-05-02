@@ -74,6 +74,7 @@ include 'navbar.php';
 			font-size: 14px;
 			font-weight: 500;
 			white-space: normal;
+			color: black !important;
 		}
 
 		.category-icon-ozel:hover {
@@ -81,40 +82,20 @@ include 'navbar.php';
 			transform: scale(1.1); 
 		}
 </style> 
+	<?php
+		$categoriesNavSQL = "SELECT * FROM categories WHERE category_parent_id=0";
+		$categoriesNavResult = $conn->query($categoriesNavSQL);
+	?>
 	<div class="container mt-4 mb-4">
-	<div class="category-container-ozel d-flex" style="padding-top: 10px !important;">
-		<div class="category-ozel">
-			<div class="category-icon-ozel" style="background-color: rgba(0, 123, 255, 0.6);"><i class="fas fa-shopping-cart"></i></div>
-			<div class="category-name-ozel">Alışveriş</div>
-		</div>
-		<div class="category-ozel">
-			<div class="category-icon-ozel" style="background-color: rgba(40, 167, 69, 0.6);"><i class="fas fa-utensils"></i></div>
-			<div class="category-name-ozel">Yemek</div>
-		</div>
-		<div class="category-ozel">
-			<div class="category-icon-ozel" style="background-color: rgba(220, 53, 69, 0.6);"><i class="fas fa-film"></i></div>
-			<div class="category-name-ozel">Eğlence</div>
-		</div>
-		<div class="category-ozel">
-			<div class="category-icon-ozel" style="background-color: rgba(255, 193, 7, 0.6);"><i class="fas fa-dumbbell"></i></div>
-			<div class="category-name-ozel">Spor</div>
-		</div>
-		<div class="category-ozel">
-			<div class="category-icon-ozel" style="background-color: rgba(23, 162, 184, 0.6);"><i class="fas fa-gamepad"></i></div>
-			<div class="category-name-ozel">Oyun</div>
-		</div>
-		<div class="category-ozel">
-			<div class="category-icon-ozel" style="background-color: rgba(111, 66, 193, 0.6);"><i class="fas fa-music"></i></div>
-			<div class="category-name-ozel">Müzik</div>
-		</div>
-		<div class="category-ozel">
-			<div class="category-icon-ozel" style="background-color: rgba(108, 117, 125, 0.6);"><i class="fas fa-book"></i></div>
-			<div class="category-name-ozel">Kitap</div>
-		</div>
-		<div class="category-ozel">
-			<div class="category-icon-ozel" style="background-color: rgba(52, 58, 64, 0.6);"><i class="fas fa-plane"></i></div>
-			<div class="category-name-ozel">Seyahat</div>
-		</div>
+	<div class="category-container-ozel d-flex justify-content-center" style="padding-top: 10px !important;">
+		<?php while($row = $categoriesNavResult->fetch_assoc()){ echo ' 
+		<a href="product-list.php?id='.$row['category_id'].'">
+			<div class="category-ozel">
+				<div class="category-icon-ozel" style="background-color: '.$row['category_icon_color'].';"><i class="fas '.$row['category_icon'].'"></i></div>
+				<div class="category-name-ozel">'.$row['category_name'].'</div>
+			</div>
+		</a>
+		'; } ?>
 	</div>
 </div>
 	<div class="header">
@@ -470,7 +451,6 @@ include 'navbar.php';
 	<!-- Recent Product End -->
 
 	<!-- Review Start -->
-	<!--
 	<div class="review">
 		<div class="container-fluid">
 			<div class="row align-items-center review-slider normal-slider">
@@ -543,13 +523,12 @@ include 'navbar.php';
 			</div>
 		</div>
 	</div>
-	-->
 	<!-- Review End -->
 
 	<!-- Footer Start -->
-<?php
-include 'footer.php';
-?>
+	<?php
+	include 'footer.php';
+	?>
 	<!-- Footer Bottom End -->
 
 	<!-- Back to Top -->
