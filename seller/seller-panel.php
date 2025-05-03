@@ -298,8 +298,18 @@ include '../navbar.php';
 								</div>
 							</div>
 						</div>
+						<?php
+						?>
 						<div class="tab-pane fade" id="edit-product-tab" role="tabpanel" aria-labelledby="edit-product-nav">
-							<h4>Edit Products</h4>
+							<h4>Edit Image of the Product</h4>
+							<form method="POST">
+								<div class="row">
+									<div class="col-md-6">
+									<input class="form-control" id="edit_product_id" type="text" name="prepareChangeImage" placeholder="<?php echo $_POST['editProductID'] ?>">
+									</div>
+								</div>
+							</form>
+							<h4>Edit Selected Product</h4>
 							<form method="POST">
 								<div class="row">
 									<div class="col-md-6">
