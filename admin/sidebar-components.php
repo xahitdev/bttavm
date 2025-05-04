@@ -16,32 +16,8 @@
         </li>
 
         <li class="pc-item pc-caption">
-          <label>Filters</label>
+          <label>Main Page Elements</label>
           <i class="ti ti-dashboard"></i>
-        </li>
-        <li class="pc-item">
-          <a href="size-add.php" class="pc-link">
-            <span class="pc-micon"><i class="ti ti-bookmarks"></i></span>
-            <span class="pc-mtext">Size</span>
-          </a>
-        </li>
-        <li class="pc-item">
-          <a href="color-add.php" class="pc-link">
-            <span class="pc-micon"><i class="ti ti-bookmarks"></i></span>
-            <span class="pc-mtext">Color</span>
-          </a>
-        </li>
-        <li class="pc-item">
-          <a href="fit-add.php" class="pc-link">
-            <span class="pc-micon"><i class="ti ti-bookmarks"></i></span>
-            <span class="pc-mtext">Fit</span>
-          </a>
-        </li>
-        <li class="pc-item">
-          <a href="material-add.php" class="pc-link">
-            <span class="pc-micon"><i class="ti ti-bookmarks"></i></span>
-            <span class="pc-mtext">Material</span>
-          </a>
         </li>
         <li class="pc-item">
           <a href="pattern-add.php" class="pc-link">

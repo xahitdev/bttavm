@@ -1,7 +1,4 @@
-
 <?php
-include "dbcon.php";
-include "safe-protocol.php";
 ?>
 
 <!DOCTYPE html>
@@ -9,7 +6,7 @@ include "safe-protocol.php";
 <!-- [Head] start -->
 
 <head>
-  <title>Esclot Panel</title>
+  <title>BTTAVM Panel</title>
   <!-- [Meta] -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">

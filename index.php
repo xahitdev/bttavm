@@ -325,7 +325,7 @@ include 'navbar.php';
 			<div class="row align-items-center product-slider product-slider-4">
 			<?php if($featuredResult->num_rows > 0){
 				while($row = $featuredResult->fetch_assoc()){
-					$productName = strlen($row['product_name']) > 30 ? substr($row['product_name'], 0, 30) . '...' : $row['product_name'];
+					$productName = strlen($row['product_name']) > 35 ? substr($row['product_name'], 0, 35) . '...' : $row['product_name'];
 
 					$productImagesSQL = "SELECT * FROM product_images WHERE product_id=".$row['product_id']."";
 					$productImagesResult = $conn->query($productImagesSQL);

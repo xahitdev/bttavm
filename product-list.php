@@ -147,9 +147,9 @@ function getAllChildCategories($conn, $categoryId, &$resultArray = [])
 
 							if ($productsResult && $productsResult->num_rows > 0) {
 								while ($row = $productsResult->fetch_assoc()) {
-									$productPicturesSQL = "SELECT * FROM product_images WHERE product_id=". $row['product_id'];
+									$productPicturesSQL = "SELECT * FROM product_images WHERE product_id=" . $row['product_id'];
 									$productPicturesResult = $conn->query($productPicturesSQL);
-									$pictureRow = $productPicturesResult ->fetch_assoc();
+									$pictureRow = $productPicturesResult->fetch_assoc();
 									$productImagePreview = $pictureRow['product_images_url'];
 									$productImagePreviewArray = explode('#', $productImagePreview);
 
@@ -159,8 +159,7 @@ function getAllChildCategories($conn, $categoryId, &$resultArray = [])
 									<div class="col-md-4">
 										<div class="product-item">
 											<div class="product-title">
-												<a
-													href="product-detail.php?id=<?php echo $row['product_id']; ?>"><?php echo $productName; ?></a>
+												<a href="product-detail.php?id=<?php echo $row['product_id']; ?>"><?php echo $productName; ?></a>
 												<div class="ratting">
 													<i class="fa fa-star"></i>
 													<i class="fa fa-star"></i>
@@ -171,16 +170,13 @@ function getAllChildCategories($conn, $categoryId, &$resultArray = [])
 											</div>
 											<div class="product-image">
 												<a href="product-detail.php?id=<?php echo $row['product_id']; ?>">
-													<img src="<?php echo $productImagePreviewArray[0] ?>"
-														alt="<?php echo $row['product_name']; ?>" style="width: 100%; height: 250px; object-fit: cover; !important">
+													<img src="<?php echo $productImagePreviewArray[0] ?>" alt="<?php echo $row['product_name']; ?>"
+														style="width: 100%; height: 250px; object-fit: cover; !important">
 												</a>
 												<div class="product-action">
-													<a href="add-to-cart.php?id=<?php echo $row['product_id']; ?>"><i
-															class="fa fa-cart-plus"></i></a>
-													<a href="add-to-wishlist.php?id=<?php echo $row['product_id']; ?>"><i
-															class="fa fa-heart"></i></a>
-													<a href="product-detail.php?id=<?php echo $row['product_id']; ?>"><i
-															class="fa fa-search"></i></a>
+													<a href="add-to-cart.php?id=<?php echo $row['product_id']; ?>"><i class="fa fa-cart-plus"></i></a>
+													<a href="add-to-wishlist.php?id=<?php echo $row['product_id']; ?>"><i class="fa fa-heart"></i></a>
+													<a href="product-detail.php?id=<?php echo $row['product_id']; ?>"><i class="fa fa-search"></i></a>
 												</div>
 											</div>
 											<div class="product-price">
