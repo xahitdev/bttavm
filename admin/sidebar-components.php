@@ -20,14 +20,14 @@
           <i class="ti ti-dashboard"></i>
         </li>
         <li class="pc-item">
-          <a href="pattern-add.php" class="pc-link">
+          <a href="main-page-edit.php" class="pc-link">
             <span class="pc-micon"><i class="ti ti-bookmarks"></i></span>
-            <span class="pc-mtext">Pattern</span>
+            <span class="pc-mtext">Change Texts</span>
           </a>
         </li>
 
+					<label>Appointments</label>
         <li class="pc-item pc-caption">
-          <label>Appointments</label>
           <i class="ti ti-dashboard"></i>
         </li>
         <li class="pc-item">

@@ -33,10 +33,10 @@ function displayEmail(){
 	<div class="container-fluid">
 		<div class="row justify-content-center text-center">
 			<div class="col-sm-6 d-flex align-items-center justify-content-center">
-				<i class="fa fa-envelope me-2"></i> support@email.com
+				<i class="fa fa-envelope me-2"></i> cahitatillab@gmail.com
 			</div>
 			<div class="col-sm-6 d-flex align-items-center justify-content-center">
-				<i class="fa fa-phone-alt me-2"></i> +012-345-6789
+				<i class="fa fa-phone-alt me-2"></i> +90 543 668 6435
 			</div>
 		</div>
 	</div>
@@ -127,8 +127,10 @@ function displayEmail(){
 			</div>
 			<div class="col-md-6">
 				<div class="search">
-					<input type="text" placeholder="Search">
-					<button><i class="fa fa-search"></i></button>
+					<form action="product-list.php" method="GET">
+						<input type="text" name="search_query" placeholder="Search">
+						<button><i class="fa fa-search"></i></button>
+					</form>
 				</div>
 			</div>
 			<div class="col-md-3">

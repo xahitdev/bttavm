@@ -451,6 +451,7 @@ include 'navbar.php';
 	<!-- Recent Product End -->
 
 	<!-- Review Start -->
+	<!--
 	<div class="review">
 		<div class="container-fluid">
 			<div class="row align-items-center review-slider normal-slider">
@@ -523,6 +524,7 @@ include 'navbar.php';
 			</div>
 		</div>
 	</div>
+	-->
 	<!-- Review End -->
 
 	<!-- Footer Start -->
