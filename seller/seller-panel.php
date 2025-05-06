@@ -14,7 +14,7 @@ if (!isset($_SESSION['seller_id'])) {
 
 $seller_id = $_SESSION['seller_id']; // or set manually: $seller_id = 5;
 
-$productsSQL = "SELECT * FROM products WHERE seller_id = " . $seller_id;
+$productsSQL = "SELECT * FROM products WHERE seller_id = " . $seller_id . " AND is_deleted = 0";
 $productResult = $conn->query($productsSQL);
 
 //categorires SQL 
@@ -52,29 +52,125 @@ if (isset($_POST['applyEditProductChanges'])) {
 	header("Refresh:0");
 }
 
-//add products
-
+// Form gönderildi mi kontrol et
 if (isset($_POST['addProductButton'])) {
+
+	// Form verilerini al
 	$productName = $_POST['addProductName'];
-	$productDesc = $_POST['addProductDescription'];
-	$productPrice = $_POST['addProductPrice'];
-	$productStock = $_POST['addProductStock'];
-	$productCategory = $_POST['addProductCategory'];
-	$isActive = 1;
+	$productDescription = $_POST['addProductDescription'];
+	$productPrice = floatval($_POST['addProductPrice']); // Kuruş olarak saklamak için
+	$productStock = intval($_POST['addProductStock']);
+	$categoryId = $_POST['category'][0]; // İlk kategori ID'sini al
 
-	$stmt = $conn->prepare("INSERT INTO products (product_name, product_description, price, stock, category_id, seller_id, is_active) 
-		VALUES (?, ?, ?, ?, ?, ?, ?)");
+	// Veri doğrulama
+	$errors = [];
 
-	$stmt->bind_param("sssssss", $productName, $productDesc, $productPrice, $productStock, $productCategory, $seller_id, $isActive);
-
-	if ($stmt->execute()) {
-		/* echo "Product added successfully!"; */
-		header("Refresh:0");
-	} else {
-		echo "Error: " . $stmt->error;
+	if (empty($productName)) {
+		$errors[] = "Ürün adı gereklidir.";
 	}
 
-	$stmt->close();
+	if (empty($productDescription)) {
+		$errors[] = "Ürün açıklaması gereklidir.";
+	}
+
+	if ($productPrice <= 0) {
+		$errors[] = "Geçerli bir fiyat giriniz.";
+	}
+
+	if ($productStock < 0) {
+		$errors[] = "Stok miktarı negatif olamaz.";
+	}
+
+	if (empty($categoryId)) {
+		$errors[] = "Kategori seçilmelidir.";
+	}
+
+	// En az bir resim yüklenmiş mi kontrol et
+	if (empty($_FILES['productImage']['name'][0])) {
+		$errors[] = "En az bir ürün resmi yüklemelisiniz.";
+	}
+
+	// Hata yoksa işleme devam et
+	if (empty($errors)) {
+		// Ürünü veritabanına ekle
+		$stmt = $conn->prepare("INSERT INTO products (product_name, product_description, price, stock, category_id, seller_id, is_active) VALUES (?, ?, ?, ?, ?, ?, 1)");
+		$stmt->bind_param("ssdiii", $productName, $productDescription, $productPrice, $productStock, $categoryId, $seller_id);
+
+		if ($stmt->execute()) {
+			$productId = $conn->insert_id; // Yeni eklenen ürünün ID'sini al
+
+			// Yükleme dizini
+			// Yükleme dizini - dosya sistemi için
+			$uploadDir = "../product-images/"; // Dosyaları kaydetmek için fiziksel yol
+			$dbImageDir = "product-images/"; // Veritabanında saklamak için web yolu
+
+			if (!file_exists($uploadDir)) {
+				mkdir($uploadDir, 0777, true);
+			}
+
+			// Resimleri işle
+			$uploadedImages = [];
+			$totalImages = count($_FILES['productImage']['name']);
+
+			for ($i = 0; $i < $totalImages; $i++) {
+				if (!empty($_FILES['productImage']['name'][$i])) {
+					$fileName = $_FILES['productImage']['name'][$i];
+					$tmpName = $_FILES['productImage']['tmp_name'][$i];
+					$fileSize = $_FILES['productImage']['size'][$i];
+					$fileType = $_FILES['productImage']['type'][$i];
+
+					// Dosya uzantısını al
+					$fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+
+					// İzin verilen uzantılar
+					$allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+
+					// Uzantı kontrolü
+					if (in_array($fileExt, $allowedExtensions)) {
+						// Benzersiz dosya adı oluştur
+						$newFileName = uniqid() . '_' . time() . '.' . $fileExt;
+						$targetFilePath = $uploadDir . $newFileName; // Dosyanın fiziksel yolu
+						$dbFilePath = $dbImageDir . $newFileName;    // Veritabanında saklanacak yol
+
+						// Dosyayı yükle
+						if (move_uploaded_file($tmpName, $targetFilePath)) {
+							// Veritabanı için web URL yolunu ekle (../product-images/ değil, product-images/)
+							$uploadedImages[] = $dbFilePath;
+						} else {
+							$errors[] = "Resim yüklenirken bir hata oluştu: " . $fileName;
+						}
+					} else {
+						$errors[] = "Sadece JPG, JPEG, PNG ve GIF dosyaları yükleyebilirsiniz.";
+					}
+				}
+			}
+
+			// Resim yollarını birleştir ve veritabanına kaydet
+			if (!empty($uploadedImages)) {
+				$imagesString = implode('#', $uploadedImages);
+
+				$stmtImages = $conn->prepare("INSERT INTO product_images (product_images_url, product_id) VALUES (?, ?)");
+				$stmtImages->bind_param("si", $imagesString, $productId);
+
+				if ($stmtImages->execute()) {
+					$success = "Ürün ve resimleri başarıyla eklendi.";
+
+					// Sayfayı yeniden yükle veya yönlendir
+					// header("Location: products.php");
+					// exit;
+				} else {
+					$errors[] = "Resim bilgileri kaydedilirken bir hata oluştu: " . $stmtImages->error;
+				}
+
+				$stmtImages->close();
+			}
+
+		} else {
+			$errors[] = "Ürün eklenirken bir hata oluştu: " . $stmt->error;
+		}
+
+		$stmt->close();
+	}
 }
 
 ?>
@@ -90,6 +186,7 @@ if (isset($_POST['addProductButton'])) {
 
 	<!-- Favicon -->
 	<link href="img/favicon.ico" rel="icon">
+	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
 
 	<!-- Google Fonts -->
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400|Source+Code+Pro:700,900&display=swap"
@@ -129,7 +226,7 @@ if (isset($_POST['addProductButton'])) {
 					<div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
 						<a class="nav-link active" id="add-products-nav" data-toggle="pill" href="#add-products-tab" role="tab"><i
 								class="fa fa-tachometer-alt"></i>Add Products</a>
-						<a class="nav-link" id="orders-nav" data-toggle="pill" href="#orders-tab" role="tab"><i
+						<a class="nav-link" id="edit-nav" data-toggle="pill" href="#edit-tab" role="tab"><i
 								class="fa fa-shopping-bag"></i>Product Manager</a>
 						<a class="nav-link" id="payment-nav" data-toggle="pill" href="#payment-tab" role="tab"><i
 								class="fa fa-credit-card"></i>Payment Method</a>
@@ -153,7 +250,7 @@ if (isset($_POST['addProductButton'])) {
 								eget arcu rhoncus scelerisque.
 							</p>
 						</div>
-						<div class="tab-pane fade" id="orders-tab" role="tabpanel" aria-labelledby="orders-nav">
+						<div class="tab-pane fade" id="edit-tab" role="tabpanel" aria-labelledby="edit-nav">
 							<div class="table-responsive">
 								<table class="table table-bordered">
 
@@ -172,11 +269,22 @@ if (isset($_POST['addProductButton'])) {
 									<body>
 										<form method="POST">
 											<?php
+											function limitHtmlText($html, $limit = 35)
+											{
+												// HTML etiketlerini kaldır
+												$text = strip_tags($html);
+
+												// Kısaltılacak metin uzunluğunu kontrol et
+												if (strlen($text) > $limit) {
+													// Metni kısalt ve "..." ekle
+													$text = substr($text, 0, $limit) . "...";
+												}
+
+												return $text;
+											}
 											if ($productResult && $productResult->num_rows > 0) {
 												while ($row = $productResult->fetch_assoc()) {
-													$shortDescription = (strlen($row['product_description']) > 35) ?
-														substr($row['product_description'], 0, 35) . "..." :
-														$row['product_description'];
+													$shortDescription = limitHtmlText($row['product_description'], 35);
 													echo "<tr>";
 													echo "<td> " . $row['product_id'] . " </td>";
 													echo "<td> " . $row['product_name'] . " </td>";
@@ -184,11 +292,18 @@ if (isset($_POST['addProductButton'])) {
 													echo "<td> " . $row['price'] . " </td>";
 													echo "<td> " . $row['stock'] . " </td>";
 													echo "<td style='display: none'> " . $row['is_active'] . " </td>";
-													echo '<td><a data-productid="' . $row['product_id'] . '" class="nav-link edit-product-veri" id="edit-product-nav" data-toggle="pill" href="#edit-product-tab" role="tab"><i></i>Edit</a></td>';
+													echo '<td>
+                <a href="edit-product.php?id=' . $row['product_id'] . '" class="btn btn-primary btn-sm">
+                    <i class="fa fa-edit"></i> Edit
+                </a>
+                <a href="delete-product.php?id=' . $row['product_id'] . '" class="btn btn-danger btn-sm" onclick="return confirm(\'Are you sure you want to delete this product?\');">
+                    <i class="fa fa-trash"></i> Delete
+                </a>
+              </td>';
 													echo "</tr>";
 												}
 											} else {
-												echo "No products found or query error.";
+												echo "<tr><td colspan='6' class='text-center'>No products found or query error.</td></tr>";
 											}
 											?>
 										</form>
@@ -358,28 +473,106 @@ if (isset($_POST['addProductButton'])) {
 						</div>
 						<div class="tab-pane fade" id="add-product-tab" role="tabpanel" aria-labelledby="add-product-nav">
 							<h4 class="mb-4">Add a product...</h4>
+
+							<?php if (!empty($errors)): ?>
+								<div class="alert alert-danger">
+									<ul class="mb-0">
+										<?php foreach ($errors as $error): ?>
+											<li><?php echo $error; ?></li>
+										<?php endforeach; ?>
+									</ul>
+								</div>
+							<?php endif; ?>
+
+							<?php if (isset($success)): ?>
+								<div class="alert alert-success">
+									<?php echo $success; ?>
+								</div>
+							<?php endif; ?>
+
 							<form method="POST" enctype="multipart/form-data">
 								<div class="row">
 									<div class="col-md-6">
 										<input class="form-control" name="addProductName" type="text" placeholder="Product Name" required>
 									</div>
-									<div class="col-md-6">
-										<input class="form-control" name="addProductDescription" type="text" placeholder="Description"
-											required>
+									<div class="col-md-12 mt-3">
+										<label for="addProductDescription">Product Description</label>
+										<textarea id="addProductDescription" name="addProductDescription"
+											class="form-control summernote"></textarea>
 									</div>
-									<div class="col-md-6">
+									<div class="col-md-6 mt-3">
 										<input class="form-control" name="addProductPrice" type="text" placeholder="Price" required>
 									</div>
-									<div class="col-md-6">
+									<div class="col-md-6 mt-3">
 										<input class="form-control" name="addProductStock" type="text" placeholder="Stock" required>
 									</div>
-									<!--
-									<div class="col-md-6">
-										<input class="form-control" name="addProductImages" type="text" placeholder="Stock" required>
+
+									<!-- Compact Image Upload Section -->
+									<div class="col-md-12 mt-3">
+										<label>Product Images</label>
+										<div class="row">
+											<div class="col-md-4 mb-2">
+												<div class="input-group">
+													<div class="input-group-prepend">
+														<span class="input-group-text">Main</span>
+													</div>
+													<div class="custom-file">
+														<input type="file" class="custom-file-input" name="productImage[]" accept="image/*"
+															required>
+														<label class="custom-file-label">Choose file</label>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-4 mb-2">
+												<div class="input-group">
+													<div class="input-group-prepend">
+														<span class="input-group-text">Image 2</span>
+													</div>
+													<div class="custom-file">
+														<input type="file" class="custom-file-input" name="productImage[]" accept="image/*">
+														<label class="custom-file-label">Choose file</label>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-4 mb-2">
+												<div class="input-group">
+													<div class="input-group-prepend">
+														<span class="input-group-text">Image 3</span>
+													</div>
+													<div class="custom-file">
+														<input type="file" class="custom-file-input" name="productImage[]" accept="image/*">
+														<label class="custom-file-label">Choose file</label>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-4 mb-2">
+												<div class="input-group">
+													<div class="input-group-prepend">
+														<span class="input-group-text">Image 4</span>
+													</div>
+													<div class="custom-file">
+														<input type="file" class="custom-file-input" name="productImage[]" accept="image/*">
+														<label class="custom-file-label">Choose file</label>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-4 mb-2">
+												<div class="input-group">
+													<div class="input-group-prepend">
+														<span class="input-group-text">Image 5</span>
+													</div>
+													<div class="custom-file">
+														<input type="file" class="custom-file-input" name="productImage[]" accept="image/*">
+														<label class="custom-file-label">Choose file</label>
+													</div>
+												</div>
+											</div>
+										</div>
+										<small class="text-muted">First image will be the main product image.</small>
 									</div>
-									-->
+
 									<!-- Categories area -->
-									<div class="col-md-6" id="category-selects">
+									<div class="col-md-6 mt-3" id="category-selects">
 										<select class="form-control" id="parent_category" name="category[]" required>
 											<option value="">-- Select Category --</option>
 											<?php if ($categoriesResult->num_rows > 0): ?>
@@ -393,11 +586,8 @@ if (isset($_POST['addProductButton'])) {
 											<?php endif; ?>
 										</select>
 									</div>
-
-									<div class="col-md-12">
-										<br>
+									<div class="col-md-12 mt-3">
 										<button class="btn" type="submit" name="addProductButton">Add Product</button>
-										<br><br>
 									</div>
 								</div>
 							</form>
@@ -420,48 +610,11 @@ if (isset($_POST['addProductButton'])) {
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
 	<script src="lib/easing/easing.min.js"></script>
 	<script src="lib/slick/slick.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 
 	<!-- Template Javascript -->
 	<script src="js/main.js"></script>
-	<script>
-		$(document).ready(function () {
-			$('.edit-product-veri').on("click", function () {
-				var currentTr = $(this).closest('tr'); // Bulunduğu satır
 
-				// td'leri sırayla al
-				var productId = currentTr.find('td:eq(0)').text().trim();
-				var productName = currentTr.find('td:eq(1)').text().trim();
-				var productDescription = currentTr.find('td:eq(2)').text().trim();
-				var price = currentTr.find('td:eq(3)').text().trim();
-				var stock = currentTr.find('td:eq(4)').text().trim();
-				var visible = currentTr.find('td:eq(5)').text().trim();
-
-				// Konsola yazdıralım
-				console.log("ID: " + productId);
-				console.log("Ad: " + productName);
-				console.log("Açıklama: " + productDescription);
-				console.log("Fiyat: " + price);
-				console.log("Stok: " + stock);
-				console.log("Visible: " + visible);
-
-				// Örnek: form alanlarına atama (eğer varsa)
-				$('#edit_product_id').val(productId);
-				$('#edit_product_name').val(productName);
-				$('#edit_product_description').val(productDescription);
-				$('#edit_price').val(price);
-				$('#edit_stock').val(stock);
-				$('#edit_visible').val(visible);
-				$.ajax({
-					url: 'get-image-preview.php',
-					type: 'POST',
-					data: { editProductID: productId },
-					success: function (response) {
-						$('#productImagePreview').html(response)
-					}
-				});
-			});
-		});
-	</script>
 	<script>
 		$(document).ready(function () {
 			$("#city").change(function () {
@@ -494,7 +647,6 @@ if (isset($_POST['addProductButton'])) {
 					});
 				}
 			});
-
 		});
 
 		$(document).on('change', '#category-selects select', function () {
@@ -515,6 +667,28 @@ if (isset($_POST['addProductButton'])) {
 					}
 				});
 			}
+		});
+		$(document).ready(function () {
+			// Initialize Summernote
+			$('.summernote').summernote({
+				placeholder: 'Enter detailed product description here...',
+				height: 200,
+				toolbar: [
+					['style', ['style']],
+					['font', ['bold', 'underline', 'clear']],
+					['color', ['color']],
+					['para', ['ul', 'ol', 'paragraph']],
+					['table', ['table']],
+					['insert', ['link']],
+					['view', ['fullscreen', 'codeview', 'help']]
+				]
+			});
+
+			// Display file name when selected
+			$('.custom-file-input').on('change', function () {
+				var fileName = $(this).val().split('\\').pop();
+				$(this).next('.custom-file-label').html(fileName || 'Choose file');
+			});
 		});
 	</script>
 </body>

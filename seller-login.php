@@ -16,7 +16,7 @@ if (isset($_POST['sellerlogin'])) {
             session_start();
             $_SESSION['seller_id'] = $row['seller_id'];
             $_SESSION['seller_mail'] = $row['seller_mail'];
-			$_SESSION['role'] = $row['role'];
+            $_SESSION['role'] = $row['role'];
             header("Location: index.php");
             // exit();
         } else {
@@ -65,7 +65,7 @@ if (isset($_POST['sellerlogin'])) {
     include 'navbar.php';
     ?>
 
-    
+
     <!-- Breadcrumb Start -->
     <div class="breadcrumb-wrap">
         <div class="container-fluid">

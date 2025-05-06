@@ -141,7 +141,7 @@ function getAllChildCategories($conn, $categoryId, &$resultArray = [])
 							$search_query = $conn->real_escape_string($search_query);
 
 							// Arama sorgusu ile ürünleri getir
-							$productsSQL = "SELECT * FROM products WHERE (product_name LIKE '%$search_query%' OR product_description LIKE '%$search_query%') AND is_active = 1";
+							$productsSQL = "SELECT * FROM products WHERE (product_name LIKE '%$search_query%' OR product_description LIKE '%$search_query%') AND is_active = 1 AND is_deleted=0";
 							$productsResult = $conn->query($productsSQL);
 
 							// Sonuçları göster
@@ -261,7 +261,7 @@ function getAllChildCategories($conn, $categoryId, &$resultArray = [])
 									$categoryIdsList = implode(',', $safeCategories);
 
 									// Ürünleri getirelim
-									$productsSQL = "SELECT * FROM products WHERE category_id IN ($categoryIdsList) AND is_active = 1";
+									$productsSQL = "SELECT * FROM products WHERE category_id IN ($categoryIdsList) AND is_active = 1 AND is_deleted=0";
 									$productsResult = $conn->query($productsSQL);
 
 									if ($productsResult && $productsResult->num_rows > 0) {
@@ -380,157 +380,163 @@ function getAllChildCategories($conn, $categoryId, &$resultArray = [])
 								</ul>
 							</nav>
 						</div>
-						</div>
-						<!-- Pagination Start -->
 					</div>
+					<!-- Pagination Start -->
+				</div>
 
-					<!-- Side Bar Start -->
-					<div class="col-lg-4 sidebar">
-						<div class="sidebar-widget category">
-							<h2 class="title">Category</h2>
-							<nav class="navbar bg-light">
-								<ul class="navbar-nav">
-									<li class="nav-item">
-										<a class="nav-link" href="#"><i class="fa fa-female"></i>Fashion & Beauty</a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link" href="#"><i class="fa fa-child"></i>Kids & Babies Clothes</a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link" href="#"><i class="fa fa-tshirt"></i>Men & Women Clothes</a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link" href="#"><i class="fa fa-mobile-alt"></i>Gadgets &
-											Accessories</a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link" href="#"><i class="fa fa-microchip"></i>Electronics &
-											Accessories</a>
-									</li>
-								</ul>
-							</nav>
-						</div>
-						<div class="sidebar-widget widget-slider">
-								<div class="sidebar-slider normal-slider">
-										<?php
-										// Rastgele 3 ürün çekme sorgusu
-										$randomProductsSQL = "SELECT * FROM products WHERE is_active = 1 ORDER BY RAND() LIMIT 3";
-										$randomProductsResult = $conn->query($randomProductsSQL);
-										
-										if ($randomProductsResult && $randomProductsResult->num_rows > 0) {
-												while ($product = $randomProductsResult->fetch_assoc()) {
-														// Her ürün için ayrı bir sorgu ile resimleri al
-														$productImageSQL = "SELECT product_images_url FROM product_images WHERE product_id = " . $product['product_id'];
-														$productImageResult = $conn->query($productImageSQL);
-														$productImageRow = $productImageResult->fetch_assoc();
-														
-														// Resim URL'lerini al
-														$productImagePreview = isset($productImageRow['product_images_url']) ? $productImageRow['product_images_url'] : '';
-														$productImagePreviewArray = !empty($productImagePreview) ? explode('#', $productImagePreview) : ['placeholder.jpg'];
-														
-														// Ürün adını limitle
-														$productName = limitText($product['product_name'], 25);
-										?>
-										<div class="product-item">
-												<div class="product-title">
-														<a href="product-detail.php?id=<?php echo $product['product_id']; ?>"><?php echo $productName; ?></a>
-														<div class="ratting">
-																<i class="fa fa-star"></i>
-																<i class="fa fa-star"></i>
-																<i class="fa fa-star"></i>
-																<i class="fa fa-star"></i>
-																<i class="fa fa-star"></i>
-														</div>
-												</div>
-												<div class="product-image">
-														<a href="product-detail.php?id=<?php echo $product['product_id']; ?>">
-																<img src="<?php echo isset($productImagePreviewArray[0]) ? $productImagePreviewArray[0] : 'placeholder.jpg'; ?>" alt="<?php echo $product['product_name']; ?>">
-														</a>
-														<div class="product-action">
-																<a href="add-to-cart.php?id=<?php echo $product['product_id']; ?>"><i class="fa fa-cart-plus"></i></a>
-																<a href="add-to-wishlist.php?id=<?php echo $product['product_id']; ?>"><i class="fa fa-heart"></i></a>
-																<a href="product-detail.php?id=<?php echo $product['product_id']; ?>"><i class="fa fa-search"></i></a>
-														</div>
-												</div>
-												<div class="product-price">
-														<h3><span>$</span><?php echo number_format($product['price'] / 100, 2); ?></h3>
-														<a class="btn" href="add-to-cart.php?id=<?php echo $product['product_id']; ?>"><i class="fa fa-shopping-cart"></i>Buy Now</a>
-												</div>
-										</div>
-										<?php
-												}
-										} else {
-												echo '<div class="product-item"><div class="product-title"><p>No products found</p></div></div>';
-										}
-										?>
-								</div>
-						</div>
-						<div class="sidebar-widget brands">
-							<h2 class="title">Our Brands</h2>
-							<ul>
-								<li><a href="#">Nulla </a><span>(45)</span></li>
-								<li><a href="#">Curabitur </a><span>(34)</span></li>
-								<li><a href="#">Nunc </a><span>(67)</span></li>
-								<li><a href="#">Ullamcorper</a><span>(74)</span></li>
-								<li><a href="#">Fusce </a><span>(89)</span></li>
-								<li><a href="#">Sagittis</a><span>(28)</span></li>
+				<!-- Side Bar Start -->
+				<div class="col-lg-4 sidebar">
+					<div class="sidebar-widget category">
+						<h2 class="title">Category</h2>
+						<nav class="navbar bg-light">
+							<ul class="navbar-nav">
+								<li class="nav-item">
+									<a class="nav-link" href="#"><i class="fa fa-female"></i>Fashion & Beauty</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="#"><i class="fa fa-child"></i>Kids & Babies Clothes</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="#"><i class="fa fa-tshirt"></i>Men & Women Clothes</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="#"><i class="fa fa-mobile-alt"></i>Gadgets &
+										Accessories</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="#"><i class="fa fa-microchip"></i>Electronics &
+										Accessories</a>
+								</li>
 							</ul>
-						</div>
+						</nav>
+					</div>
+					<div class="sidebar-widget widget-slider">
+						<div class="sidebar-slider normal-slider">
+							<?php
+							// Rastgele 3 ürün çekme sorgusu
+							$randomProductsSQL = "SELECT * FROM products WHERE is_active = 1 ORDER BY RAND() LIMIT 3";
+							$randomProductsResult = $conn->query($randomProductsSQL);
 
-						<div class="sidebar-widget tag">
-							<h2 class="title">Tags Cloud</h2>
-							<a href="#">Lorem ipsum</a>
-							<a href="#">Vivamus</a>
-							<a href="#">Phasellus</a>
-							<a href="#">pulvinar</a>
-							<a href="#">Curabitur</a>
-							<a href="#">Fusce</a>
-							<a href="#">Sem quis</a>
-							<a href="#">Mollis metus</a>
-							<a href="#">Sit amet</a>
-							<a href="#">Vel posuere</a>
-							<a href="#">orci luctus</a>
-							<a href="#">Nam lorem</a>
+							if ($randomProductsResult && $randomProductsResult->num_rows > 0) {
+								while ($product = $randomProductsResult->fetch_assoc()) {
+									// Her ürün için ayrı bir sorgu ile resimleri al
+									$productImageSQL = "SELECT product_images_url FROM product_images WHERE product_id = " . $product['product_id'];
+									$productImageResult = $conn->query($productImageSQL);
+									$productImageRow = $productImageResult->fetch_assoc();
+
+									// Resim URL'lerini al
+									$productImagePreview = isset($productImageRow['product_images_url']) ? $productImageRow['product_images_url'] : '';
+									$productImagePreviewArray = !empty($productImagePreview) ? explode('#', $productImagePreview) : ['placeholder.jpg'];
+
+									// Ürün adını limitle
+									$productName = limitText($product['product_name'], 25);
+									?>
+									<div class="product-item">
+										<div class="product-title">
+											<a href="product-detail.php?id=<?php echo $product['product_id']; ?>"><?php echo $productName; ?></a>
+											<div class="ratting">
+												<i class="fa fa-star"></i>
+												<i class="fa fa-star"></i>
+												<i class="fa fa-star"></i>
+												<i class="fa fa-star"></i>
+												<i class="fa fa-star"></i>
+											</div>
+										</div>
+										<div class="product-image">
+											<a href="product-detail.php?id=<?php echo $product['product_id']; ?>">
+												<img
+													src="<?php echo isset($productImagePreviewArray[0]) ? $productImagePreviewArray[0] : 'placeholder.jpg'; ?>"
+													alt="<?php echo $product['product_name']; ?>">
+											</a>
+											<div class="product-action">
+												<a href="add-to-cart.php?id=<?php echo $product['product_id']; ?>"><i
+														class="fa fa-cart-plus"></i></a>
+												<a href="add-to-wishlist.php?id=<?php echo $product['product_id']; ?>"><i
+														class="fa fa-heart"></i></a>
+												<a href="product-detail.php?id=<?php echo $product['product_id']; ?>"><i
+														class="fa fa-search"></i></a>
+											</div>
+										</div>
+										<div class="product-price">
+											<h3><span>$</span><?php echo number_format($product['price'] / 100, 2); ?></h3>
+											<a class="btn" href="add-to-cart.php?id=<?php echo $product['product_id']; ?>"><i
+													class="fa fa-shopping-cart"></i>Buy Now</a>
+										</div>
+									</div>
+									<?php
+								}
+							} else {
+								echo '<div class="product-item"><div class="product-title"><p>No products found</p></div></div>';
+							}
+							?>
 						</div>
 					</div>
-					<!-- Side Bar End -->
+					<div class="sidebar-widget brands">
+						<h2 class="title">Our Brands</h2>
+						<ul>
+							<li><a href="#">Nulla </a><span>(45)</span></li>
+							<li><a href="#">Curabitur </a><span>(34)</span></li>
+							<li><a href="#">Nunc </a><span>(67)</span></li>
+							<li><a href="#">Ullamcorper</a><span>(74)</span></li>
+							<li><a href="#">Fusce </a><span>(89)</span></li>
+							<li><a href="#">Sagittis</a><span>(28)</span></li>
+						</ul>
+					</div>
+
+					<div class="sidebar-widget tag">
+						<h2 class="title">Tags Cloud</h2>
+						<a href="#">Lorem ipsum</a>
+						<a href="#">Vivamus</a>
+						<a href="#">Phasellus</a>
+						<a href="#">pulvinar</a>
+						<a href="#">Curabitur</a>
+						<a href="#">Fusce</a>
+						<a href="#">Sem quis</a>
+						<a href="#">Mollis metus</a>
+						<a href="#">Sit amet</a>
+						<a href="#">Vel posuere</a>
+						<a href="#">orci luctus</a>
+						<a href="#">Nam lorem</a>
+					</div>
 				</div>
+				<!-- Side Bar End -->
 			</div>
 		</div>
-		<!-- Product List End -->
+	</div>
+	<!-- Product List End -->
 
-		<!-- Brand Start -->
-		<div class="brand">
-			<div class="container-fluid">
-				<div class="brand-slider">
-					<div class="brand-item"><img src="img/brand-1.png" alt=""></div>
-					<div class="brand-item"><img src="img/brand-2.png" alt=""></div>
-					<div class="brand-item"><img src="img/brand-3.png" alt=""></div>
-					<div class="brand-item"><img src="img/brand-4.png" alt=""></div>
-					<div class="brand-item"><img src="img/brand-5.png" alt=""></div>
-					<div class="brand-item"><img src="img/brand-6.png" alt=""></div>
-				</div>
+	<!-- Brand Start -->
+	<div class="brand">
+		<div class="container-fluid">
+			<div class="brand-slider">
+				<div class="brand-item"><img src="img/brand-1.png" alt=""></div>
+				<div class="brand-item"><img src="img/brand-2.png" alt=""></div>
+				<div class="brand-item"><img src="img/brand-3.png" alt=""></div>
+				<div class="brand-item"><img src="img/brand-4.png" alt=""></div>
+				<div class="brand-item"><img src="img/brand-5.png" alt=""></div>
+				<div class="brand-item"><img src="img/brand-6.png" alt=""></div>
 			</div>
 		</div>
-		<!-- Brand End -->
+	</div>
+	<!-- Brand End -->
 
-		<!-- Footer Start -->
-		<?php
-		include 'footer.php';
-		?>
-		<!-- Footer End -->
+	<!-- Footer Start -->
+	<?php
+	include 'footer.php';
+	?>
+	<!-- Footer End -->
 
-		<!-- Back to Top -->
-		<a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+	<!-- Back to Top -->
+	<a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
 
-		<!-- JavaScript Libraries -->
-		<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-		<script src="lib/easing/easing.min.js"></script>
-		<script src="lib/slick/slick.min.js"></script>
+	<!-- JavaScript Libraries -->
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+	<script src="lib/easing/easing.min.js"></script>
+	<script src="lib/slick/slick.min.js"></script>
 
-		<!-- Template Javascript -->
-		<script src="js/main.js"></script>
+	<!-- Template Javascript -->
+	<script src="js/main.js"></script>
 </body>
 
 </html>

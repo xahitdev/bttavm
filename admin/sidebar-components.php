@@ -46,12 +46,6 @@
             <span class="pc-mtext">Logo Manager</span>
           </a>
         </li>
-        <li class="pc-item">
-          <a href="main-page-edit.php" class="pc-link">
-            <span class="pc-micon"><i class="ti ti-bookmarks"></i></span>
-            <span class="pc-mtext">Main Page Elements</span>
-          </a>
-        </li>
 
 <!--
         <li class="pc-item pc-caption">

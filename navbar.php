@@ -10,18 +10,20 @@ $logoSQL = "SELECT * FROM logos WHERE logo_id = 1";
 $logoResult = $conn->query($logoSQL);
 
 if ($logoResult && $logoResult->num_rows > 0) {
-    $logoRow = $logoResult->fetch_assoc();
-    // now you can use $logoRow['column_name']
+	$logoRow = $logoResult->fetch_assoc();
+	// now you can use $logoRow['column_name']
 }
 
 $current_file = $_SERVER['REQUEST_URI'];
+$current_page = $_SERVER['PHP_SELF'];
 
-function displayEmail(){
+function displayEmail()
+{
 	global $conn;
-	if($_SESSION['role'] == 'user'){
-		echo $_SESSION['user_mail'];
+	if ($_SESSION['role'] == 'user') {
+		echo $_SESSION['mail'];
 	}
-	if($_SESSION['role'] == 'seller'){
+	if ($_SESSION['role'] == 'seller') {
 		echo $_SESSION['seller_mail'];
 	}
 }
@@ -54,58 +56,64 @@ function displayEmail(){
 			</button>
 
 			<div class="collapse navbar-collapse" id="navbarCollapse">
-    <div class="container-fluid">
-        <div class="row w-100">
-            <!-- Left Nav Items -->
-            <div class="col-md-8 d-flex flex-wrap align-items-center navbar-nav">
-                <a href="categories.php" class="nav-item nav-link active">Categories</a>
-                <a href="cart.html" class="nav-item nav-link">Cart</a>
-                <a href="checkout.html" class="nav-item nav-link">Checkout</a>
-				<?php if(isset($_SESSION['role']) == 'seller'){ ?>
-                <a href="seller/seller-panel.php" class="nav-item nav-link">Seller Panel</a>
-				<?php } ?>
-                <?php if (!isset($_SESSION['role'])): ?>
-                    <a href="my-account.php" class="nav-item nav-link">My Account</a>
-                <?php endif; ?>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">More Pages</a>
-                    <div class="dropdown-menu">
-                        <a href="wishlist.html" class="dropdown-item">Wishlist</a>
-                        <?php if (!isset($_SESSION['seller_id']) && !isset($_SESSION['user_id'])): ?>
-                            <a href="login.php" class="dropdown-item">Login & Register</a>
-                            <a href="seller-login.php" class="dropdown-item">Seller Login</a>
-                        <?php endif; ?>
-                        <a href="contact.html" class="dropdown-item">Contact Us</a>
-                    </div>
-                </div>
-            </div>
+				<div class="container-fluid">
+					<div class="row w-100">
+						<!-- 🌐 Left Nav Items -->
+						<div class="col-md-8 d-flex flex-wrap align-items-center navbar-nav">
+							<div class="nav-item dropdown">
+								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" style="padding: 10px 15px;">Satıcı
+									mısın?</a>
+								<div class="dropdown-menu"
+									style="background-color: #fff; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 10px;">
+									<?php if (!isset($_SESSION['seller_id']) && !isset($_SESSION['user_id'])): ?>
+										<a href="seller-login.php" class="dropdown-item" style="padding: 10px 15px; font-weight: 500;">Satıcı
+											Giriş</a>
+									<?php endif; ?>
+								</div>
+							</div>
+						</div>
 
-            <!-- Right Account/Login Section -->
-            <div class="col-md-4 d-flex justify-content-md-end mt-3 mt-md-0 navbar-nav">
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                        <?php
-                            if (!isset($_SESSION['user_id']) && !isset($_SESSION['seller_id'])) {
-                                echo "Log in";
-                            } else {
-                                echo $_SESSION['user_mail'] ?? $_SESSION['seller_mail'];
-                            }
-                        ?>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right">
-						<?php if(isset($_SESSION['user_id']) || isset($_SESSION['seller_id'])){ ?>
-						<a class="dropdown-item"><?php echo displayEmail(); ?></a>
-						<a href="logout.php" class="dropdown-item">Log out</a>
-						<?php }else{?>
-						<a href="login.php" class="dropdown-item">Log in</a>
-						<a href="register.php" class="dropdown-item">Register</a>
-						<?php } ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+						<!-- 👤 Right Account/Login Section -->
+						<div class="col-md-4 d-flex justify-content-md-end mt-3 mt-md-0 navbar-nav">
+							<div class="nav-item dropdown">
+								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"
+									style="padding: 10px 15px; font-weight: 500;">
+									<?php
+									if (!isset($_SESSION['user_id']) && !isset($_SESSION['seller_id'])) {
+										echo "Giriş Yap";
+									} else {
+										displayEmail();
+									}
+									?>
+								</a>
+								<div class="dropdown-menu dropdown-menu-right"
+									style="background-color: #fff; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 10px; min-width: 180px;">
+									<?php if (isset($_SESSION['user_id']) || isset($_SESSION['seller_id'])) { ?>
+										<a href="logout.php" class="dropdown-item"
+											style="padding: 10px 15px; color: #333; font-weight: 500; border-radius: 6px; transition: background 0.3s;"
+											onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='transparent'">
+											Çıkış Yap
+										</a>
+									<?php } else { ?>
+										<a href="login.php" class="dropdown-item"
+											style="padding: 10px 15px; color: #333; font-weight: 500; border-radius: 6px; transition: background 0.3s;"
+											onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='transparent'">
+											Giriş Yap
+										</a>
+										<a href="register.php" class="dropdown-item"
+											style="padding: 10px 15px; color: #333; font-weight: 500; border-radius: 6px; transition: background 0.3s;"
+											onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='transparent'">
+											Kayıt Ol
+										</a>
+									<?php } ?>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
 
 		</nav>
 	</div>
@@ -115,13 +123,13 @@ function displayEmail(){
 		<div class="row align-items-center">
 			<div class="col-md-3">
 				<div class="logo">
-					<a href="<?php if(file_exists("index.php")){
-									echo "index.php";
-								}else{
-									echo "../index.php";
-								}
-							 ?>">
-						 <img src="<?php echo $logoRow['navbar_logo']; ?>" alt="BTTAVM Logo">
+					<a href="<?php if (file_exists("index.php")) {
+						echo "index.php";
+					} else {
+						echo "../index.php";
+					}
+					?>">
+						<img src="<?php echo $logoRow['navbar_logo']; ?>" alt="BTTAVM Logo">
 					</a>
 				</div>
 			</div>
@@ -135,11 +143,17 @@ function displayEmail(){
 			</div>
 			<div class="col-md-3">
 				<div class="user">
-					<a href="wishlist.html" class="btn wishlist">
+					<a href="<?php echo $_SESSION['role'] == 'user'
+						? 'my-account.php'
+						: (strpos($_SERVER['PHP_SELF'], 'seller/seller-panel.php') !== false ? 'seller-panel.php' : 'seller/seller-panel.php');
+					?>" class="btn btn-light wishlist" style="border: 0px;">
+						<i class="fa fa-user"></i>
+					</a>
+					<a href="wishlist.html" class="btn btn-light wishlist" style="border: 0px;">
 						<i class="fa fa-heart"></i>
 						<span>(0)</span>
 					</a>
-					<a href="cart.html" class="btn cart">
+					<a href="cart.php" class="btn btn-light cart" style="border: 0px;">
 						<i class="fa fa-shopping-cart"></i>
 						<span>(0)</span>
 					</a>

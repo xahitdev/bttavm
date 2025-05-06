@@ -4,7 +4,7 @@ include 'settings.php';
 if (isset($_GET['id'])) {
 	$id = intval($_GET['id']);
 
-	$sql = "SELECT * FROM products WHERE product_id=" . $id;
+	$sql = "SELECT * FROM products WHERE product_id=" . $id . " AND is_deleted=0 AND is_active=1";
 	$result = $conn->query($sql);
 
 	$getImagesSQL = "SELECT * FROM product_images WHERE product_id=" . $id;
@@ -379,59 +379,65 @@ $productPrice = number_format(doubleval($product['price']), 2, '.', ',');
 					</div>
 
 					<div class="sidebar-widget widget-slider">
-							<div class="sidebar-slider normal-slider">
-									<?php
-									// Rastgele 3 ürün çekme sorgusu
-									$randomProductsSQL = "SELECT * FROM products WHERE is_active = 1 ORDER BY RAND() LIMIT 3";
-									$randomProductsResult = $conn->query($randomProductsSQL);
-									
-									if ($randomProductsResult && $randomProductsResult->num_rows > 0) {
-											while ($product = $randomProductsResult->fetch_assoc()) {
-													// Her ürün için ayrı bir sorgu ile resimleri al
-													$productImageSQL = "SELECT product_images_url FROM product_images WHERE product_id = " . $product['product_id'];
-													$productImageResult = $conn->query($productImageSQL);
-													$productImageRow = $productImageResult->fetch_assoc();
-													
-													// Resim URL'lerini al
-													$productImagePreview = isset($productImageRow['product_images_url']) ? $productImageRow['product_images_url'] : '';
-													$productImagePreviewArray = !empty($productImagePreview) ? explode('#', $productImagePreview) : ['placeholder.jpg'];
-													
-													// Ürün adını limitle
-													$productName = limitText($product['product_name'], 25);
+						<div class="sidebar-slider normal-slider">
+							<?php
+							// Rastgele 3 ürün çekme sorgusu
+							$randomProductsSQL = "SELECT * FROM products WHERE is_active = 1 AND is_deleted = 0 ORDER BY RAND() LIMIT 3";
+							$randomProductsResult = $conn->query($randomProductsSQL);
+
+							if ($randomProductsResult && $randomProductsResult->num_rows > 0) {
+								while ($product = $randomProductsResult->fetch_assoc()) {
+									// Her ürün için ayrı bir sorgu ile resimleri al
+									$productImageSQL = "SELECT product_images_url FROM product_images WHERE product_id = " . $product['product_id'];
+									$productImageResult = $conn->query($productImageSQL);
+									$productImageRow = $productImageResult->fetch_assoc();
+
+									// Resim URL'lerini al
+									$productImagePreview = isset($productImageRow['product_images_url']) ? $productImageRow['product_images_url'] : '';
+									$productImagePreviewArray = !empty($productImagePreview) ? explode('#', $productImagePreview) : ['placeholder.jpg'];
+
+									// Ürün adını limitle
+									$productName = limitText($product['product_name'], 25);
 									?>
 									<div class="product-item">
-											<div class="product-title">
-													<a href="product-detail.php?id=<?php echo $product['product_id']; ?>"><?php echo $productName; ?></a>
-													<div class="ratting">
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star"></i>
-													</div>
+										<div class="product-title">
+											<a href="product-detail.php?id=<?php echo $product['product_id']; ?>"><?php echo $productName; ?></a>
+											<div class="ratting">
+												<i class="fa fa-star"></i>
+												<i class="fa fa-star"></i>
+												<i class="fa fa-star"></i>
+												<i class="fa fa-star"></i>
+												<i class="fa fa-star"></i>
 											</div>
-											<div class="product-image">
-													<a href="product-detail.php?id=<?php echo $product['product_id']; ?>">
-															<img src="<?php echo isset($productImagePreviewArray[0]) ? $productImagePreviewArray[0] : 'placeholder.jpg'; ?>" alt="<?php echo $product['product_name']; ?>">
-													</a>
-													<div class="product-action">
-															<a href="add-to-cart.php?id=<?php echo $product['product_id']; ?>"><i class="fa fa-cart-plus"></i></a>
-															<a href="add-to-wishlist.php?id=<?php echo $product['product_id']; ?>"><i class="fa fa-heart"></i></a>
-															<a href="product-detail.php?id=<?php echo $product['product_id']; ?>"><i class="fa fa-search"></i></a>
-													</div>
+										</div>
+										<div class="product-image">
+											<a href="product-detail.php?id=<?php echo $product['product_id']; ?>">
+												<img
+													src="<?php echo isset($productImagePreviewArray[0]) ? $productImagePreviewArray[0] : 'placeholder.jpg'; ?>"
+													alt="<?php echo $product['product_name']; ?>">
+											</a>
+											<div class="product-action">
+												<a href="add-to-cart.php?id=<?php echo $product['product_id']; ?>"><i
+														class="fa fa-cart-plus"></i></a>
+												<a href="add-to-wishlist.php?id=<?php echo $product['product_id']; ?>"><i
+														class="fa fa-heart"></i></a>
+												<a href="product-detail.php?id=<?php echo $product['product_id']; ?>"><i
+														class="fa fa-search"></i></a>
 											</div>
-											<div class="product-price">
-													<h3><span>$</span><?php echo number_format($product['price'] / 100, 2); ?></h3>
-													<a class="btn" href="add-to-cart.php?id=<?php echo $product['product_id']; ?>"><i class="fa fa-shopping-cart"></i>Buy Now</a>
-											</div>
+										</div>
+										<div class="product-price">
+											<h3><span>$</span><?php echo number_format($product['price'] / 100, 2); ?></h3>
+											<a class="btn" href="add-to-cart.php?id=<?php echo $product['product_id']; ?>"><i
+													class="fa fa-shopping-cart"></i>Buy Now</a>
+										</div>
 									</div>
 									<?php
-											}
-									} else {
-											echo '<div class="product-item"><div class="product-title"><p>No products found</p></div></div>';
-									}
-									?>
-							</div>
+								}
+							} else {
+								echo '<div class="product-item"><div class="product-title"><p>No products found</p></div></div>';
+							}
+							?>
+						</div>
 					</div>
 
 					<div class="sidebar-widget brands">
