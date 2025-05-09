@@ -1,7 +1,7 @@
 <?php
 require_once 'settings.php';
 include 'functions.php';
-error_reporting(E_ALL & ~E_NOTICE);
+error_reporting(E_ALL);
 
 session_start();
 ob_start();
@@ -27,6 +27,19 @@ function displayEmail()
 		echo $_SESSION['seller_mail'];
 	}
 }
+
+// Kullanıcı giriş yapmışsa favori sayısını al
+$favorites_count = 0;
+if (isset($_SESSION['user_id'])) {
+	$user_id = $_SESSION['user_id'];
+	$countQuery = "SELECT * FROM favorites WHERE customer_id = ?";
+	$countStmt = $conn->prepare($countQuery);
+	$countStmt->bind_param("i", $user_id); 
+	$countStmt->execute();
+	$result = $countStmt->get_result();
+	$favorites_count = $result->num_rows;
+}
+
 ?>
 
 <!-- Top bar Start -->
@@ -78,13 +91,13 @@ function displayEmail()
 							<div class="nav-item dropdown">
 								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"
 									style="padding: 10px 15px; font-weight: 500;">
-									<?php
-									if (!isset($_SESSION['user_id']) && !isset($_SESSION['seller_id'])) {
-										echo "Giriş Yap";
-									} else {
-										displayEmail();
-									}
-									?>
+<?php
+if (!isset($_SESSION['user_id']) && !isset($_SESSION['seller_id'])) {
+	echo "Giriş Yap";
+} else {
+	displayEmail();
+}
+?>
 								</a>
 								<div class="dropdown-menu dropdown-menu-right"
 									style="background-color: #fff; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 10px; min-width: 180px;">
@@ -123,12 +136,12 @@ function displayEmail()
 		<div class="row align-items-center">
 			<div class="col-md-3">
 				<div class="logo">
-					<a href="<?php if (file_exists("index.php")) {
-						echo "index.php";
-					} else {
-						echo "../index.php";
-					}
-					?>">
+				<a href="<?php if (file_exists("index.php")) {
+				echo "index.php";
+} else {
+	echo "../index.php";
+}
+?>">
 						<img src="<?php echo $logoRow['navbar_logo']; ?>" alt="BTTAVM Logo">
 					</a>
 				</div>
@@ -143,15 +156,15 @@ function displayEmail()
 			</div>
 			<div class="col-md-3">
 				<div class="user">
-					<a href="<?php echo $_SESSION['role'] == 'user'
-						? 'my-account.php'
-						: (strpos($_SERVER['PHP_SELF'], 'seller/seller-panel.php') !== false ? 'seller-panel.php' : 'seller/seller-panel.php');
-					?>" class="btn btn-light wishlist" style="border: 0px;">
+				<a href="<?php echo $_SESSION['role'] == 'user'
+				? 'my-account.php'
+				: (strpos($_SERVER['PHP_SELF'], 'seller/seller-panel.php') !== false ? 'seller-panel.php' : 'seller/seller-panel.php');
+?>" class="btn btn-light wishlist" style="border: 0px;">
 						<i class="fa fa-user"></i>
 					</a>
-					<a href="wishlist.html" class="btn btn-light wishlist" style="border: 0px;">
-						<i class="fa fa-heart"></i>
-						<span>(0)</span>
+					<a href="favorites.php" class="btn btn-light favorites" style="border: 0px;">
+							<i class="fa fa-heart"></i>
+							<span>(<?php echo $favorites_count; ?>)</span>
 					</a>
 					<a href="cart.php" class="btn btn-light cart" style="border: 0px;">
 						<i class="fa fa-shopping-cart"></i>

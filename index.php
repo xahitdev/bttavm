@@ -3,7 +3,6 @@ require_once 'settings.php';
 /* include 'functions.php'; */
 error_reporting(E_ALL);
 
-
 $featuredSQL = "SELECT * FROM products WHERE is_active=1 AND is_deleted=0 ORDER BY RAND() LIMIT 5";
 $featuredResult = $conn->query($featuredSQL);
 
@@ -322,11 +321,11 @@ $sliderImage = $sliderImageResult->fetch_assoc();
 								<a href="product-detail.html">
 									<img src="' . $productImageArray[0] . '" alt="Product Image" style="width: 100%; height: 250px; object-fit: cover; !important">
 								</a>
-								<div class="product-action">
+							<div class="product-action">
 									<a href="#"><i class="fa fa-cart-plus"></i></a>
-									<a href="#"><i class="fa fa-heart"></i></a>
+									<a href="#" class="add-to-favorites" data-product-id="' . $row['product_id'] . '"><i class="fa fa-heart"></i></a>
 									<a href="#"><i class="fa fa-search"></i></a>
-								</div>
+							</div>
 							</div>
 							<div class="product-price">
 								<h3><span>TL</span>' . $row['price'] . '</h3>
@@ -408,11 +407,11 @@ $sliderImage = $sliderImageResult->fetch_assoc();
 								<a href="product-detail.html">
 									<img src="' . $productImageArray[0] . '" alt="Product Image" style="width: 100%; height: 250px; object-fit: cover; !important">
 								</a>
-								<div class="product-action">
+							<div class="product-action">
 									<a href="#"><i class="fa fa-cart-plus"></i></a>
-									<a href="#"><i class="fa fa-heart"></i></a>
+									<a href="#" class="add-to-favorites" data-product-id=' . $row['product_id'] . '><i class="fa fa-heart"></i></a>
 									<a href="#"><i class="fa fa-search"></i></a>
-								</div>
+							</div>
 							</div>
 							<div class="product-price">
 								<h3><span>TL</span>' . $row['price'] . '</h3>
@@ -522,6 +521,46 @@ $sliderImage = $sliderImageResult->fetch_assoc();
 
 	<!-- Template Javascript -->
 	<script src="js/main.js"></script>
+	<script>
+	$(document).ready(function() {
+    // Favori ekle butonuna tıklandığında
+    $(document).on('click', '.add-to-favorites', function(e) {
+        e.preventDefault();
+        
+        var productId = $(this).data('product-id');
+        console.log("Ürün ID:", productId); // Ürün ID'sini kontrol edelim
+        
+        // AJAX isteği gönderme
+        $.ajax({
+            url: 'add-to-favorites.php',
+            type: 'POST',
+            data: {
+                product_id: productId,
+                action: 'add'
+            },
+            dataType: 'json',
+            success: function(response) {
+                console.log("Başarılı yanıt:", response); // Başarılı yanıtı görelim
+                if(response.status === 'success') {
+                    // Navbar'daki favori sayısını güncelleme
+                    $('.favorites span').text('(' + response.favorites_count + ')');
+                    
+                    // Kullanıcıya bildirim gösterme
+                    alert('Ürün favorilere eklendi!');
+                } else {
+                    // Başarısız yanıt
+                    alert(response.message || 'İşlem başarısız oldu.');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("AJAX hatası:", status, error);
+                console.log("Yanıt:", xhr.responseText); // Hata yanıtını görelim
+                alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+            }
+        });
+    });
+});
+	</script>
 </body>
 
 </html>
