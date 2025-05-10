@@ -504,6 +504,39 @@ $productPrice = number_format(doubleval($product['price']), 2, '.', ',');
 
 	<!-- Template Javascript -->
 	<script src="js/main.js"></script>
+	<script>
+	// Sepete ekleme butonuna tıklandığında
+		$(document).on('click', '.add-to-cart', function(e) {
+				e.preventDefault();
+				
+				var productId = $(this).data('product-id');
+				var quantity = 1; // veya formdan alınan miktar
+				
+				$.ajax({
+						url: 'add-to-cart.php',
+						type: 'POST',
+						data: {
+								product_id: productId,
+								quantity: quantity
+						},
+						dataType: 'json',
+						success: function(response) {
+								if(response.status === 'success') {
+										// Navbar'daki sepet sayısını güncelle
+										$('.cart span').text('(' + response.cart_count + ')');
+										
+										// Başarılı mesajı göster
+										alert(response.message);
+								} else {
+										alert(response.message || 'Bir hata oluştu.');
+								}
+						},
+						error: function() {
+								alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+						}
+				});
+		});
+	</script>
 </body>
 
 </html>

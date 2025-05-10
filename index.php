@@ -322,9 +322,9 @@ $sliderImage = $sliderImageResult->fetch_assoc();
 									<img src="' . $productImageArray[0] . '" alt="Product Image" style="width: 100%; height: 250px; object-fit: cover; !important">
 								</a>
 							<div class="product-action">
-									<a href="#"><i class="fa fa-cart-plus"></i></a>
+									<a href="#" class="add-to-cart" data-product-id="' . $row['product_id'] . '"><i class="fa fa-cart-plus"></i></a>
 									<a href="#" class="add-to-favorites" data-product-id="' . $row['product_id'] . '"><i class="fa fa-heart"></i></a>
-									<a href="#"><i class="fa fa-search"></i></a>
+									<a href="product-detail.php?id=' . $row['product_id'] . '"><i class="fa fa-search"></i></a>
 							</div>
 							</div>
 							<div class="product-price">
@@ -408,9 +408,9 @@ $sliderImage = $sliderImageResult->fetch_assoc();
 									<img src="' . $productImageArray[0] . '" alt="Product Image" style="width: 100%; height: 250px; object-fit: cover; !important">
 								</a>
 							<div class="product-action">
-									<a href="#"><i class="fa fa-cart-plus"></i></a>
-									<a href="#" class="add-to-favorites" data-product-id=' . $row['product_id'] . '><i class="fa fa-heart"></i></a>
-									<a href="#"><i class="fa fa-search"></i></a>
+									<a href="#" class="add-to-cart" data-product-id="' . $row['product_id'] . '"><i class="fa fa-cart-plus"></i></a>
+									<a href="#" class="add-to-favorites" data-product-id="' . $row['product_id'] . '"><i class="fa fa-heart"></i></a>
+									<a href="product-detail.php?id=' . $row['product_id'] . '"><i class="fa fa-search"></i></a>
 							</div>
 							</div>
 							<div class="product-price">
@@ -555,6 +555,106 @@ $sliderImage = $sliderImageResult->fetch_assoc();
             error: function(xhr, status, error) {
                 console.error("AJAX hatası:", status, error);
                 console.log("Yanıt:", xhr.responseText); // Hata yanıtını görelim
+                alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+            }
+        });
+    });
+});
+	</script>
+	<script>
+// Sepete ekleme butonuna tıklandığında
+	$(document).on('click', '.add-to-cart', function(e) {
+			e.preventDefault();
+			
+			var productId = $(this).data('product-id');
+			var quantity = 1; // veya formdan alınan miktar
+			
+			$.ajax({
+					url: 'add-to-cart.php',
+					type: 'POST',
+					data: {
+							product_id: productId,
+							quantity: quantity
+					},
+					dataType: 'json',
+					success: function(response) {
+							if(response.status === 'success') {
+									// Navbar'daki sepet sayısını güncelle
+									$('.cart span').text('(' + response.cart_count + ')');
+									
+									// Başarılı mesajı göster
+									alert(response.message);
+							} else {
+									alert(response.message || 'Bir hata oluştu.');
+							}
+					},
+					error: function() {
+							alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+					}
+			});
+	});
+	</script>
+	<script>
+	$(document).ready(function() {
+    // Sepete ekleme butonu
+    $(document).on('click', '.add-to-cart', function(e) {
+        e.preventDefault();
+        
+        var productId = $(this).data('product-id');
+        var quantity = 1; // Varsayılan miktar
+        
+        $.ajax({
+            url: 'add-to-cart.php',
+            type: 'POST',
+            data: {
+                product_id: productId,
+                quantity: quantity
+            },
+            dataType: 'json',
+            success: function(response) {
+                if(response.status === 'success') {
+                    // Navbar'daki sepet sayısını güncelle
+                    $('.cart span').text('(' + response.cart_count + ')');
+                    
+                    // Başarılı mesajı göster
+                    alert('Ürün sepete eklendi.');
+                    
+                    // İsterseniz daha güzel bir bildirim için:
+                    // showNotification('success', 'Ürün sepete eklendi');
+                } else {
+                    alert(response.message || 'Bir hata oluştu.');
+                }
+            },
+            error: function() {
+                alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+            }
+        });
+    });
+    
+    // Favorilere ekleme (mevcut kod)
+    $(document).on('click', '.add-to-favorites', function(e) {
+        e.preventDefault();
+        
+        var productId = $(this).data('product-id');
+        
+        $.ajax({
+            url: 'add-to-favorites.php',
+            type: 'POST',
+            data: {
+                product_id: productId,
+                action: 'add'
+            },
+            dataType: 'json',
+            success: function(response) {
+                if(response.status === 'success') {
+                    // Navbar'daki favori sayısını güncelleme
+                    $('.favorites span').text('(' + response.favorites_count + ')');
+                    
+                    // Kullanıcıya bildirim gösterme
+                    alert('Ürün favorilere eklendi!');
+                }
+            },
+            error: function() {
                 alert('Bir hata oluştu. Lütfen tekrar deneyin.');
             }
         });

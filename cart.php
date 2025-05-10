@@ -1,3 +1,40 @@
+<?php
+session_start();
+require_once 'settings.php';
+
+// Kullanıcı giriş yapmış mı kontrol et
+if (!isset($_SESSION['user_id'])) {
+    // Giriş yapmamışsa giriş sayfasına yönlendir
+    header("Location: login.php");
+    exit;
+}
+
+$user_id = $_SESSION['user_id'];
+
+// Sepetteki ürünleri getir
+$query = "SELECT c.cart_id, c.product_id, p.product_name, p.price, c.quantity, p.stock
+          FROM cart c
+          JOIN products p ON c.product_id = p.product_id
+          WHERE c.customer_id = $user_id
+          ORDER BY c.created_at DESC";
+
+$result = $conn->query($query);
+
+// Sepet toplamını hesapla
+$totalQuery = "SELECT SUM(c.quantity * p.price) AS subtotal 
+              FROM cart c 
+              JOIN products p ON c.product_id = p.product_id 
+              WHERE c.customer_id = $user_id";
+$totalResult = $conn->query($totalQuery);
+$totalRow = $totalResult->fetch_assoc();
+$subtotal = $totalRow['subtotal'] ?? 0;
+
+// Kargo ücreti (örnek bir değer)
+$shippingCost = $subtotal > 0 ? 10 : 0; // 10 TL kargo ücreti, sepet boşsa 0
+
+// Toplam tutar
+$grandTotal = $subtotal + $shippingCost;
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -24,105 +61,17 @@
     </head>
 
     <body>
-        <!-- Top bar Start -->
-        <div class="top-bar">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <i class="fa fa-envelope"></i>
-                        support@email.com
-                    </div>
-                    <div class="col-sm-6">
-                        <i class="fa fa-phone-alt"></i>
-                        +012-345-6789
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Top bar End -->
-        
-        <!-- Nav Bar Start -->
-        <div class="nav">
-            <div class="container-fluid">
-                <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-                    <a href="#" class="navbar-brand">MENU</a>
-                    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-
-                    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-                        <div class="navbar-nav mr-auto">
-                            <a href="index.html" class="nav-item nav-link">Home</a>
-                            <a href="product-list.html" class="nav-item nav-link">Products</a>
-                            <a href="product-detail.html" class="nav-item nav-link">Product Detail</a>
-                            <a href="cart.html" class="nav-item nav-link active">Cart</a>
-                            <a href="checkout.html" class="nav-item nav-link">Checkout</a>
-                            <a href="my-account.html" class="nav-item nav-link">My Account</a>
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">More Pages</a>
-                                <div class="dropdown-menu">
-                                    <a href="wishlist.html" class="dropdown-item">Wishlist</a>
-                                    <a href="login.html" class="dropdown-item">Login & Register</a>
-                                    <a href="contact.html" class="dropdown-item">Contact Us</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="navbar-nav ml-auto">
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">User Account</a>
-                                <div class="dropdown-menu">
-                                    <a href="#" class="dropdown-item">Login</a>
-                                    <a href="#" class="dropdown-item">Register</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-        </div>
-        <!-- Nav Bar End -->      
-        
-        <!-- Bottom Bar Start -->
-        <div class="bottom-bar">
-            <div class="container-fluid">
-                <div class="row align-items-center">
-                    <div class="col-md-3">
-                        <div class="logo">
-                            <a href="index.html">
-                                <img src="img/logo.png" alt="Logo">
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="search">
-                            <input type="text" placeholder="Search">
-                            <button><i class="fa fa-search"></i></button>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="user">
-                            <a href="wishlist.html" class="btn wishlist">
-                                <i class="fa fa-heart"></i>
-                                <span>(0)</span>
-                            </a>
-                            <a href="cart.html" class="btn cart">
-                                <i class="fa fa-shopping-cart"></i>
-                                <span>(0)</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Bottom Bar End -->
+        <?php
+        include 'navbar.php';
+        ?>
         
         <!-- Breadcrumb Start -->
         <div class="breadcrumb-wrap">
             <div class="container-fluid">
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item"><a href="#">Products</a></li>
-                    <li class="breadcrumb-item active">Cart</li>
+                    <li class="breadcrumb-item"><a href="index.php">Anasayfa</a></li>
+                    <li class="breadcrumb-item"><a href="products.php">Ürünler</a></li>
+                    <li class="breadcrumb-item active">Sepetim</li>
                 </ul>
             </div>
         </div>
@@ -138,104 +87,61 @@
                                 <table class="table table-bordered">
                                     <thead class="thead-dark">
                                         <tr>
-                                            <th>Product</th>
-                                            <th>Price</th>
-                                            <th>Quantity</th>
-                                            <th>Total</th>
-                                            <th>Remove</th>
+                                            <th>Ürün</th>
+                                            <th>Fiyat</th>
+                                            <th>Adet</th>
+                                            <th>Toplam</th>
+                                            <th>Kaldır</th>
                                         </tr>
                                     </thead>
                                     <tbody class="align-middle">
-                                        <tr>
-                                            <td>
-                                                <div class="img">
-                                                    <a href="#"><img src="img/product-1.jpg" alt="Image"></a>
-                                                    <p>Product Name</p>
-                                                </div>
-                                            </td>
-                                            <td>$99</td>
-                                            <td>
-                                                <div class="qty">
-                                                    <button class="btn-minus"><i class="fa fa-minus"></i></button>
-                                                    <input type="text" value="1">
-                                                    <button class="btn-plus"><i class="fa fa-plus"></i></button>
-                                                </div>
-                                            </td>
-                                            <td>$99</td>
-                                            <td><button><i class="fa fa-trash"></i></button></td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="img">
-                                                    <a href="#"><img src="img/product-2.jpg" alt="Image"></a>
-                                                    <p>Product Name</p>
-                                                </div>
-                                            </td>
-                                            <td>$99</td>
-                                            <td>
-                                                <div class="qty">
-                                                    <button class="btn-minus"><i class="fa fa-minus"></i></button>
-                                                    <input type="text" value="1">
-                                                    <button class="btn-plus"><i class="fa fa-plus"></i></button>
-                                                </div>
-                                            </td>
-                                            <td>$99</td>
-                                            <td><button><i class="fa fa-trash"></i></button></td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="img">
-                                                    <a href="#"><img src="img/product-3.jpg" alt="Image"></a>
-                                                    <p>Product Name</p>
-                                                </div>
-                                            </td>
-                                            <td>$99</td>
-                                            <td>
-                                                <div class="qty">
-                                                    <button class="btn-minus"><i class="fa fa-minus"></i></button>
-                                                    <input type="text" value="1">
-                                                    <button class="btn-plus"><i class="fa fa-plus"></i></button>
-                                                </div>
-                                            </td>
-                                            <td>$99</td>
-                                            <td><button><i class="fa fa-trash"></i></button></td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="img">
-                                                    <a href="#"><img src="img/product-4.jpg" alt="Image"></a>
-                                                    <p>Product Name</p>
-                                                </div>
-                                            </td>
-                                            <td>$99</td>
-                                            <td>
-                                                <div class="qty">
-                                                    <button class="btn-minus"><i class="fa fa-minus"></i></button>
-                                                    <input type="text" value="1">
-                                                    <button class="btn-plus"><i class="fa fa-plus"></i></button>
-                                                </div>
-                                            </td>
-                                            <td>$99</td>
-                                            <td><button><i class="fa fa-trash"></i></button></td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="img">
-                                                    <a href="#"><img src="img/product-5.jpg" alt="Image"></a>
-                                                    <p>Product Name</p>
-                                                </div>
-                                            </td>
-                                            <td>$99</td>
-                                            <td>
-                                                <div class="qty">
-                                                    <button class="btn-minus"><i class="fa fa-minus"></i></button>
-                                                    <input type="text" value="1">
-                                                    <button class="btn-plus"><i class="fa fa-plus"></i></button>
-                                                </div>
-                                            </td>
-                                            <td>$99</td>
-                                            <td><button><i class="fa fa-trash"></i></button></td>
-                                        </tr>
+                                        <?php
+                                        if ($result && $result->num_rows > 0) {
+                                            while ($row = $result->fetch_assoc()) {
+                                                // Her ürün için product_images tablosundan resim al
+                                                $productId = $row['product_id'];
+                                                $imageQuery = "SELECT product_images_url FROM product_images WHERE product_id = $productId LIMIT 1";
+                                                $imageResult = $conn->query($imageQuery);
+                                                
+                                                $productImage = "img/no-image.jpg"; // Varsayılan resim
+                                                
+                                                if ($imageResult && $imageResult->num_rows > 0) {
+                                                    $imageRow = $imageResult->fetch_assoc();
+                                                    if (!empty($imageRow['product_images_url'])) {
+                                                        // # karakterinden bölerek ilk resmi al
+                                                        $imageArray = explode('#', $imageRow['product_images_url']);
+                                                        if (!empty($imageArray[0])) {
+                                                            $productImage = $imageArray[0]; // İlk resmi kullan
+                                                        }
+                                                    }
+                                                }
+                                                
+                                                // Ürün ara toplamı hesapla
+                                                $itemTotal = $row['price'] * $row['quantity'];
+                                                
+                                                echo '<tr>
+                                                    <td>
+                                                        <div class="img">
+                                                            <a href="product-detail.php?id=' . $row['product_id'] . '"><img src="' . $productImage . '" alt="' . $row['product_name'] . '"></a>
+                                                            <p>' . $row['product_name'] . '</p>
+                                                        </div>
+                                                    </td>
+                                                    <td>' . $row['price'] . ' TL</td>
+                                                    <td>
+                                                        <div class="qty">
+                                                            <button class="btn-minus" data-product-id="' . $row['product_id'] . '"><i class="fa fa-minus"></i></button>
+                                                            <input type="text" class="quantity-input" value="' . $row['quantity'] . '" data-product-id="' . $row['product_id'] . '" data-price="' . $row['price'] . '">
+                                                            <button class="btn-plus" data-product-id="' . $row['product_id'] . '"><i class="fa fa-plus"></i></button>
+                                                        </div>
+                                                    </td>
+                                                    <td class="item-total" data-product-id="' . $row['product_id'] . '">' . $itemTotal . ' TL</td>
+                                                    <td><button class="remove-from-cart" data-product-id="' . $row['product_id'] . '"><i class="fa fa-trash"></i></button></td>
+                                                </tr>';
+                                            }
+                                        } else {
+                                            echo '<tr><td colspan="5" class="text-center">Sepetinizde henüz ürün bulunmuyor.</td></tr>';
+                                        }
+                                        ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -246,21 +152,21 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="coupon">
-                                        <input type="text" placeholder="Coupon Code">
-                                        <button>Apply Code</button>
+                                        <input type="text" placeholder="Kupon Kodu">
+                                        <button>Kuponu Uygula</button>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="cart-summary">
                                         <div class="cart-content">
-                                            <h1>Cart Summary</h1>
-                                            <p>Sub Total<span>$99</span></p>
-                                            <p>Shipping Cost<span>$1</span></p>
-                                            <h2>Grand Total<span>$100</span></h2>
+                                            <h1>Sepet Özeti</h1>
+                                            <p>Ara Toplam<span id="cart-subtotal"><?php echo $subtotal; ?> TL</span></p>
+                                            <p>Kargo Ücreti<span id="shipping-cost"><?php echo $shippingCost; ?> TL</span></p>
+                                            <h2>Genel Toplam<span id="cart-total"><?php echo $grandTotal; ?> TL</span></h2>
                                         </div>
                                         <div class="cart-btn">
-                                            <button>Update Cart</button>
-                                            <button>Checkout</button>
+                                            <button id="update-cart">Sepeti Güncelle</button>
+                                            <button id="checkout" onclick="window.location.href='cart.php'">Ödeme Yap</button>
                                         </div>
                                     </div>
                                 </div>
@@ -273,93 +179,10 @@
         <!-- Cart End -->
         
         <!-- Footer Start -->
-        <div class="footer">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-3 col-md-6">
-                        <div class="footer-widget">
-                            <h2>Get in Touch</h2>
-                            <div class="contact-info">
-                                <p><i class="fa fa-map-marker"></i>123 E Store, Los Angeles, USA</p>
-                                <p><i class="fa fa-envelope"></i>email@example.com</p>
-                                <p><i class="fa fa-phone"></i>+123-456-7890</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-lg-3 col-md-6">
-                        <div class="footer-widget">
-                            <h2>Follow Us</h2>
-                            <div class="contact-info">
-                                <div class="social">
-                                    <a href=""><i class="fab fa-twitter"></i></a>
-                                    <a href=""><i class="fab fa-facebook-f"></i></a>
-                                    <a href=""><i class="fab fa-linkedin-in"></i></a>
-                                    <a href=""><i class="fab fa-instagram"></i></a>
-                                    <a href=""><i class="fab fa-youtube"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-md-6">
-                        <div class="footer-widget">
-                            <h2>Company Info</h2>
-                            <ul>
-                                <li><a href="#">About Us</a></li>
-                                <li><a href="#">Privacy Policy</a></li>
-                                <li><a href="#">Terms & Condition</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-md-6">
-                        <div class="footer-widget">
-                            <h2>Purchase Info</h2>
-                            <ul>
-                                <li><a href="#">Pyament Policy</a></li>
-                                <li><a href="#">Shipping Policy</a></li>
-                                <li><a href="#">Return Policy</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="row payment align-items-center">
-                    <div class="col-md-6">
-                        <div class="payment-method">
-                            <h2>We Accept:</h2>
-                            <img src="img/payment-method.png" alt="Payment Method" />
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="payment-security">
-                            <h2>Secured By:</h2>
-                            <img src="img/godaddy.svg" alt="Payment Security" />
-                            <img src="img/norton.svg" alt="Payment Security" />
-                            <img src="img/ssl.svg" alt="Payment Security" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <?php
+        include 'footer.php';
+        ?>
         <!-- Footer End -->
-        
-        <!-- Footer Bottom Start -->
-        <div class="footer-bottom">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6 copyright">
-                        <p>Copyright &copy; <a href="https://htmlcodex.com">HTML Codex</a>. All Rights Reserved</p>
-                    </div>
-
-                    <div class="col-md-6 template-by">
-                        <p>Template By <a href="https://htmlcodex.com">HTML Codex</a></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Footer Bottom End -->       
         
         <!-- Back to Top -->
         <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
@@ -369,6 +192,209 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
         <script src="lib/easing/easing.min.js"></script>
         <script src="lib/slick/slick.min.js"></script>
+        
+        <!-- Sepet İşlemleri JavaScript -->
+				<script>
+				// Cart.php içindeki JavaScript'e eklenecek
+				$('#checkout').on('click', function(e) {
+						e.preventDefault();
+						
+						if (confirm('Siparişinizi onaylıyor musunuz?')) {
+								$.ajax({
+										url: 'create-order.php',
+										type: 'POST',
+										dataType: 'json',
+										success: function(response) {
+												if (response.status === 'success') {
+														alert('Siparişiniz başarıyla oluşturuldu! Sipariş numaranız: ' + response.order_number);
+														window.location.href = 'my-account.php?tab=orders';
+												} else {
+														alert(response.message || 'Sipariş oluşturulurken bir hata oluştu.');
+												}
+										},
+										error: function() {
+												alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+										}
+								});
+						}
+				});
+				</script>
+				<script>
+				$(document).ready(function() {
+						// Miktar arttırma butonu
+						$('.btn-plus').off('click').on('click', function(e) {
+								e.preventDefault();
+								e.stopPropagation();
+								
+								var productId = $(this).data('product-id');
+								var input = $(this).siblings('.quantity-input');
+								var currentValue = parseInt(input.val());
+								input.val(currentValue + 1);
+								updateItemTotal(input);
+						});
+						
+						// Miktar azaltma butonu
+						$('.btn-minus').off('click').on('click', function(e) {
+								e.preventDefault();
+								e.stopPropagation();
+								
+								var productId = $(this).data('product-id');
+								var input = $(this).siblings('.quantity-input');
+								var currentValue = parseInt(input.val());
+								if (currentValue > 1) {
+										input.val(currentValue - 1);
+										updateItemTotal(input);
+								}
+						});
+						
+						// Miktar input değiştiğinde
+						$('.quantity-input').off('change').on('change', function() {
+								var newValue = parseInt($(this).val());
+								
+								// Negatif veya NaN değerleri düzelt
+								if (isNaN(newValue) || newValue < 1) {
+										newValue = 1;
+										$(this).val(1);
+								}
+								
+								updateItemTotal($(this));
+						});
+						
+						// Ürün ara toplamını güncelle
+						function updateItemTotal(input) {
+								var quantity = parseInt(input.val());
+								var price = parseFloat(input.data('price'));
+								var total = quantity * price;
+								var productId = input.data('product-id');
+								
+								// Ürün ara toplamını göster
+								$('.item-total[data-product-id="' + productId + '"]').text(total.toFixed(2) + ' TL');
+								
+								// Sepet toplamını güncelle
+								updateCartTotal();
+						}
+						
+						// Sepet toplamını güncelle
+						function updateCartTotal() {
+								var subtotal = 0;
+								
+								// Tüm ürünlerin ara toplamlarını topla
+								$('.item-total').each(function() {
+										var itemTotal = parseFloat($(this).text().replace(' TL', ''));
+										subtotal += itemTotal;
+								});
+								
+								// Kargo ücreti
+								var shippingCost = subtotal > 0 ? 10 : 0;
+								
+								// Genel toplam
+								var grandTotal = subtotal + shippingCost;
+								
+								// Değerleri güncelle
+								$('#cart-subtotal').text(subtotal.toFixed(2) + ' TL');
+								$('#shipping-cost').text(shippingCost.toFixed(2) + ' TL');
+								$('#cart-total').text(grandTotal.toFixed(2) + ' TL');
+						}
+						
+						// Sepetten kaldır butonu
+						$('.remove-from-cart').off('click').on('click', function(e) {
+								e.preventDefault();
+								
+								var productId = $(this).data('product-id');
+								var tableRow = $(this).closest('tr');
+								
+								if (confirm('Bu ürünü sepetten kaldırmak istediğinize emin misiniz?')) {
+										$.ajax({
+												url: 'remove-from-cart.php',
+												type: 'POST',
+												data: {
+														product_id: productId
+												},
+												dataType: 'json',
+												success: function(response) {
+														if(response.status === 'success') {
+																// Navbar'daki sepet sayısını güncelle
+																$('.cart span').text('(' + response.cart_count + ')');
+																
+																// Tablodan satırı kaldır
+																tableRow.fadeOut(300, function() {
+																		$(this).remove();
+																		
+																		// Eğer tablo boşsa mesaj göster
+																		if ($('tbody tr').length === 0) {
+																				$('tbody').html('<tr><td colspan="5" class="text-center">Sepetinizde henüz ürün bulunmuyor.</td></tr>');
+																				
+																				// Sepet özetini sıfırla
+																				$('#cart-subtotal').text('0.00 TL');
+																				$('#shipping-cost').text('0.00 TL');
+																				$('#cart-total').text('0.00 TL');
+																		} else {
+																				// Sepet toplamını güncelle
+																				updateCartTotal();
+																		}
+																});
+																
+																// Başarılı mesajı
+																alert('Ürün sepetten kaldırıldı.');
+														} else {
+																alert(response.message || 'Bir hata oluştu.');
+														}
+												},
+												error: function() {
+														alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+												}
+										});
+								}
+						});
+						
+						// Sepeti güncelle butonu
+						$('#update-cart').off('click').on('click', function(e) {
+								e.preventDefault();
+								
+								var updates = [];
+								
+								// Tüm ürünlerin güncel miktarlarını al
+								$('.quantity-input').each(function() {
+										var productId = $(this).data('product-id');
+										var quantity = parseInt($(this).val());
+										
+										updates.push({
+												product_id: productId,
+												quantity: quantity
+										});
+								});
+								
+								// Tüm güncellemeleri tek bir istekte gönder
+								$.ajax({
+										url: 'update-cart.php',
+										type: 'POST',
+										data: {
+												updates: JSON.stringify(updates)
+										},
+										dataType: 'json',
+										success: function(response) {
+												if(response.status === 'success') {
+														// Navbar'daki sepet sayısını güncelle
+														if (response.cart_count !== undefined) {
+																$('.cart span').text('(' + response.cart_count + ')');
+														}
+														
+														// Başarılı mesajı
+														alert('Sepet güncellendi.');
+														
+														// Sayfayı yenilemek yerine dinamik güncelleme yapabiliriz
+														// location.reload(); // Bu satırı kaldırdık
+												} else {
+														alert(response.message || 'Bir hata oluştu.');
+												}
+										},
+										error: function() {
+												alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+										}
+								});
+						});
+				});
+				</script>
         
         <!-- Template Javascript -->
         <script src="js/main.js"></script>
