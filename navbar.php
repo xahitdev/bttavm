@@ -238,14 +238,28 @@ if (!isset($_SESSION['user_id']) && !isset($_SESSION['seller_id'])) {
 	echo "../index.php";
 }
 ?>">
-						<img src="<?php echo $logoRow['navbar_logo']; ?>" alt="BTTAVM Logo">
+<?php
+// Şu anki PHP dosyasının çalıştığı dizini kontrol et
+$isInSellerDir = (strpos($_SERVER['PHP_SELF'], '/seller/') !== false);
+
+// Logo yolunu belirle
+if ($isInSellerDir) {
+    // Eğer seller dizinindeyse (bir alt seviyede)
+    $logoPath = '../' . $logoRow['navbar_logo'];
+} else {
+    // Ana dizinde veya diğer yerlerde
+    $logoPath = $logoRow['navbar_logo'];
+}
+?>
+
+<img src="<?php echo $logoPath; ?>" alt="BTTAVM Logo">
 					</a>
 				</div>
 			</div>
 			<div class="col-md-6">
 				<div class="search">
 					<form action="product-list.php" method="GET">
-						<input type="text" name="search_query" placeholder="Search">
+						<input type="text" name="search_query" placeholder="Ara...">
 						<button><i class="fa fa-search"></i></button>
 					</form>
 				</div>

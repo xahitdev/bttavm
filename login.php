@@ -64,14 +64,12 @@ if (isset($_POST['userlogin'])) {
     include 'navbar.php';
     ?>
 
-
     <!-- Breadcrumb Start -->
     <div class="breadcrumb-wrap">
         <div class="container">
             <ul class="breadcrumb justify-content-center">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item"><a href="#">Products</a></li>
-                <li class="breadcrumb-item active">Login & Register</li>
+                <li class="breadcrumb-item"><a href="#">Ana Sayfa</a></li>
+                <li class="breadcrumb-item active">Giriş yap</li>
             </ul>
         </div>
     </div>
@@ -87,21 +85,21 @@ if (isset($_POST['userlogin'])) {
                             <div class="row">
                                 <div class="col-md-6">
                                     <label>E-mail</label>
-                                    <input class="form-control" type="text" placeholder="E-mail" name="mail">
+                                    <input class="form-control" type="text" placeholder="E-Mail" name="mail">
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Password</label>
-                                    <input class="form-control" type="password" placeholder="Password" name="password">
+                                    <label>Şifre</label>
+                                    <input class="form-control" type="password" placeholder="Şifre" name="password">
                                 </div>
                                 <div class="col-md-12">
                                     <div class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input" id="newaccount">
-                                        <label class="custom-control-label" for="newaccount">Keep me signed in</label>
+                                        <label class="custom-control-label" for="newaccount">Oturumu açık kalmasın.</label>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <!-- <button class="btn">Submit</button> -->
-                                    <input class="btn" type="submit" name="userlogin" value="Submit">
+                                    <input class="btn" type="submit" name="userlogin" value="Giriş">
                                 </div>
                             </div>
                         </form>

@@ -183,66 +183,23 @@ $productPrice = number_format(doubleval($product['price']), 2, '.', ',');
 						<div class="col-lg-12">
 							<ul class="nav nav-pills nav-justified">
 								<li class="nav-item">
-									<a class="nav-link active" data-toggle="pill" href="#description">Description</a>
-								</li>
-								<li class="nav-item">
-									<a class="nav-link" data-toggle="pill" href="#reviews">Reviews (1)</a>
+									<a class="nav-link active" data-toggle="pill" href="#description">Açıklama</a>
 								</li>
 							</ul>
 
 							<div class="tab-content">
 								<div id="description" class="container tab-pane active">
-									<h4>Product description</h4>
+									<h4>Ürün Açıklaması</h4>
 									<p>
 										<?php echo $product['product_description']; ?>
 									</p>
-								</div>
-								<div id="reviews" class="container tab-pane fade">
-									<div class="reviews-submitted">
-										<div class="reviewer">Phasellus Gravida - <span>01 Jan 2020</span></div>
-										<div class="ratting">
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-										</div>
-										<p>
-											Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
-											totam rem aperiam.
-										</p>
-									</div>
-									<div class="reviews-submit">
-										<h4>Give your Review:</h4>
-										<div class="ratting">
-											<i class="far fa-star"></i>
-											<i class="far fa-star"></i>
-											<i class="far fa-star"></i>
-											<i class="far fa-star"></i>
-											<i class="far fa-star"></i>
-										</div>
-										<div class="row form">
-											<div class="col-sm-6">
-												<input type="text" placeholder="Name">
-											</div>
-											<div class="col-sm-6">
-												<input type="email" placeholder="Email">
-											</div>
-											<div class="col-sm-12">
-												<textarea placeholder="Review"></textarea>
-											</div>
-											<div class="col-sm-12">
-												<button>Submit</button>
-											</div>
-										</div>
-									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="product">
 						<div class="section-header">
-							<h1>Related Products</h1>
+							<h1>Öne Çıkan Ürünler</h1>
 						</div>
 
 						<div class="row align-items-stretch product-slider product-slider-3">
@@ -316,7 +273,7 @@ $productPrice = number_format(doubleval($product['price']), 2, '.', ',');
 				<!-- Side Bar Start -->
 <div class="col-lg-4 sidebar">
 					<div class="sidebar-widget category">
-						<h2 class="title">Category</h2>
+						<h2 class="title">Kategori</h2>
 						<nav class="navbar bg-light">
 							<ul class="navbar-nav">
 								<?php
@@ -340,63 +297,65 @@ $productPrice = number_format(doubleval($product['price']), 2, '.', ',');
 							</ul>
 						</nav>
 					</div>
-					<div class="sidebar-widget widget-slider">
-						<div class="sidebar-slider normal-slider">
-							<?php
-							// Rastgele 3 ürün çekme sorgusu
-							$randomProductsSQL = "SELECT * FROM products WHERE is_active = 1 AND is_deleted = 0 ORDER BY RAND() LIMIT 3";
-							$randomProductsResult = $conn->query($randomProductsSQL);
-							
-							if ($randomProductsResult && $randomProductsResult->num_rows > 0) {
-								while ($product = $randomProductsResult->fetch_assoc()) {
-									// Her ürün için ayrı bir sorgu ile resimleri al
-									$productImageSQL = "SELECT product_images_url FROM product_images WHERE product_id = " . $product['product_id'];
-									$productImageResult = $conn->query($productImageSQL);
-									$productImageRow = $productImageResult->fetch_assoc();
-									
-									// Resim URL'lerini al
-									$productImagePreview = isset($productImageRow['product_images_url']) ? $productImageRow['product_images_url'] : '';
-									$productImagePreviewArray = !empty($productImagePreview) ? explode('#', $productImagePreview) : ['placeholder.jpg'];
-									
-									// Ürün adını limitle
-									$productName = strlen($product['product_name']) > 25 ? substr($product['product_name'], 0, 25) . '...' : $product['product_name'];
-									?>
-									<div class="product-item">
-										<div class="product-title">
-											<a href="product-detail.php?id=<?php echo $product['product_id']; ?>"><?php echo $productName; ?></a>
-											<div class="ratting">
-												<i class="fa fa-star"></i>
-												<i class="fa fa-star"></i>
-												<i class="fa fa-star"></i>
-												<i class="fa fa-star"></i>
-												<i class="fa fa-star"></i>
-											</div>
+								<div class="sidebar-widget widget-slider">
+										<div class="sidebar-slider normal-slider">
+												<?php
+												// Rastgele 3 ürün çekme sorgusu
+												$randomProductsSQL = "SELECT * FROM products WHERE is_active = 1 AND is_deleted = 0 ORDER BY RAND() LIMIT 3";
+												$randomProductsResult = $conn->query($randomProductsSQL);
+
+												if ($randomProductsResult && $randomProductsResult->num_rows > 0) {
+														while ($product = $randomProductsResult->fetch_assoc()) {
+																// Her ürün için ayrı bir sorgu ile resimleri al
+																$productImageSQL = "SELECT product_images_url FROM product_images WHERE product_id = " . $product['product_id'];
+																$productImageResult = $conn->query($productImageSQL);
+																$productImageRow = $productImageResult->fetch_assoc();
+
+																// Resim URL'lerini al
+																$productImagePreview = isset($productImageRow['product_images_url']) ? $productImageRow['product_images_url'] : '';
+																$productImagePreviewArray = !empty($productImagePreview) ? explode('#', $productImagePreview) : ['placeholder.jpg'];
+
+																// Ürün adını limitle
+																$productName = limitText($product['product_name'], 25);
+																?>
+																<div class="product-item" style="height: 400px; width: 100%; display: flex; flex-direction: column;">
+																		<div class="product-title" style="height: 80px; overflow: hidden;">
+																				<a href="product-detail.php?id=<?php echo $product['product_id']; ?>" style="color: black;"><?php echo $productName; ?></a>
+																				<div class="ratting">
+																						<i class="fa fa-star"></i>
+																						<i class="fa fa-star"></i>
+																						<i class="fa fa-star"></i>
+																						<i class="fa fa-star"></i>
+																						<i class="fa fa-star"></i>
+																				</div>
+																		</div>
+																		<div class="product-image" style="height: 220px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+																				<a href="product-detail.php?id=<?php echo $product['product_id']; ?>">
+																						<img
+																								src="<?php echo isset($productImagePreviewArray[0]) ? $productImagePreviewArray[0] : 'placeholder.jpg'; ?>"
+																								alt="<?php echo $product['product_name']; ?>"
+																								style="width: 100%; height: 100%; object-fit: contain;">
+																				</a>
+																				<div class="product-action">
+																						<a href="#" class="add-to-cart" data-product-id="<?php echo $product['product_id']; ?>" style="background-color: #ffffff; transition: background-color 0.3s ease;" onmouseover="this.style.backgroundColor='#ffbe33'" onmouseout="this.style.backgroundColor='#ffffff'"><i class="fa fa-cart-plus"></i></a>
+																						<a href="#" class="add-to-favorites" data-product-id="<?php echo $product['product_id']; ?>" style="background-color: #ffffff; transition: background-color 0.3s ease;" onmouseover="this.style.backgroundColor='#ffbe33'" onmouseout="this.style.backgroundColor='#ffffff'"><i class="fa fa-heart"></i></a>
+																						<a href="product-detail.php?id=<?php echo $product['product_id']; ?>" style="background-color: #ffffff; transition: background-color 0.3s ease;" onmouseover="this.style.backgroundColor='#ffbe33'" onmouseout="this.style.backgroundColor='#ffffff'"><i class="fa fa-search"></i></a>
+																				</div>
+																		</div>
+																		<div class="product-price" style="height: 100px; display: flex; flex-direction: column; justify-content: center;">
+																				<h3 style="color: black;"><span>TL</span><?php echo number_format($product['price'], 2); ?></h3>
+																				<a class="btn add-to-cart" href="#" data-product-id="<?php echo $product['product_id']; ?>" style="color: black; background-color: #ffffff; transition: background-color 0.3s ease;" onmouseover="this.style.backgroundColor='#ffbe33'" onmouseout="this.style.backgroundColor='#ffffff'"><i class="fa fa-shopping-cart"></i>Satın Al</a>
+																		</div>
+																</div>
+																<?php
+														}
+												} else {
+														echo '<div class="product-item"><div class="product-title"><p>Ürün bulunamadı</p></div></div>';
+												}
+												?>
 										</div>
-										<div class="product-image">
-											<a href="product-detail.php?id=<?php echo $product['product_id']; ?>">
-												<img
-													src="<?php echo isset($productImagePreviewArray[0]) ? $productImagePreviewArray[0] : 'placeholder.jpg'; ?>"
-													alt="<?php echo $product['product_name']; ?>">
-											</a>
-											<div class="product-action">
-												<a href="#" class="add-to-cart" data-product-id="<?php echo $product['product_id']; ?>"><i class="fa fa-cart-plus"></i></a>
-												<a href="#" class="add-to-favorites" data-product-id="<?php echo $product['product_id']; ?>"><i class="fa fa-heart"></i></a>
-												<a href="product-detail.php?id=<?php echo $product['product_id']; ?>"><i class="fa fa-search"></i></a>
-											</div>
-										</div>
-										<div class="product-price">
-											<h3><span>TL</span><?php echo number_format($product['price'], 2); ?></h3>
-											<a class="btn add-to-cart-button" href="#" data-product-id="<?php echo $product['product_id']; ?>"><i class="fa fa-shopping-cart"></i>Sepete Ekle</a>
-										</div>
-									</div>
-									<?php
-								}
-							} else {
-								echo '<div class="product-item"><div class="product-title"><p>No products found</p></div></div>';
-							}
-							?>
-						</div>
-					</div>
+								</div>
+
 				</div>
 				<!-- Side Bar End -->
 			</div>

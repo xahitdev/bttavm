@@ -117,6 +117,12 @@
 										Ana Sayfa Resimleri
                 </a>
             </li>
+            <li class="sidebar-item">
+                <a href="add-seller-profile.php" class="sidebar-link">
+                    <i class="fas fa-user sidebar-icon"></i>
+										Kullanıcı Profili Ekle
+                </a>
+            </li>
             <!-- Settings Section -->
             <li class="sidebar-caption">Ayarlar</li>
             

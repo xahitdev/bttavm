@@ -70,9 +70,8 @@ if (isset($_POST['sellerlogin'])) {
     <div class="breadcrumb-wrap">
         <div class="container-fluid">
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item"><a href="#">Products</a></li>
-                <li class="breadcrumb-item active">Login & Register</li>
+                <li class="breadcrumb-item"><a href="#">Ana Sayfa</a></li>
+                <li class="breadcrumb-item active">Giriş yap.</li>
             </ul>
         </div>
     </div>
@@ -91,18 +90,18 @@ if (isset($_POST['sellerlogin'])) {
                                     <input class="form-control" type="email" placeholder="E-mail" name="mail">
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Password</label>
-                                    <input class="form-control" type="password" placeholder="Password" name="password">
+                                    <label>Şifre</label>
+                                    <input class="form-control" type="password" placeholder="Şifre" name="password">
                                 </div>
                                 <div class="col-md-12">
                                     <div class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input" id="newaccount">
-                                        <label class="custom-control-label" for="newaccount">Keep me signed in</label>
+                                        <label class="custom-control-label" for="newaccount">Oturumu kapatma.</label>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <!-- <button class="btn">Submit</button> -->
-                                    <input class="btn" type="submit" name="sellerlogin" value="Submit">
+                                    <input class="btn" type="submit" name="sellerlogin" value="Giriş">
                                 </div>
                             </div>
                         </form>

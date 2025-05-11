@@ -47,9 +47,8 @@ if (!isset($_SESSION['user_id'])) {
     <div class="breadcrumb-wrap">
         <div class="container-fluid">
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item"><a href="#">Products</a></li>
-                <li class="breadcrumb-item active">My Account</li>
+                <li class="breadcrumb-item"><a href="#">Ana sayfa</a></li>
+                <li class="breadcrumb-item"><a href="#">Hesabım</a></li>
             </ul>
         </div>
     </div>
@@ -62,29 +61,23 @@ if (!isset($_SESSION['user_id'])) {
                 <div class="col-md-3">
                     <div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
                         <a class="nav-link active" id="dashboard-nav" data-toggle="pill" href="#dashboard-tab"
-                            role="tab"><i class="fa fa-tachometer-alt"></i>Dashboard</a>
+                            role="tab"><i class="fa fa-tachometer-alt"></i>Kullanıcı Profili</a>
                         <a class="nav-link" id="orders-nav" data-toggle="pill" href="#orders-tab" role="tab"><i
-                                class="fa fa-shopping-bag"></i>Orders</a>
-                        <a class="nav-link" id="payment-nav" data-toggle="pill" href="#payment-tab" role="tab"><i
-                                class="fa fa-credit-card"></i>Payment Method</a>
+                                class="fa fa-shopping-bag"></i>Siparişlerim</a>
                         <a class="nav-link" id="address-nav" data-toggle="pill" href="#address-tab" role="tab"><i
-                                class="fa fa-map-marker-alt"></i>Address</a>
+                                class="fa fa-map-marker-alt"></i>Adres</a>
                         <a class="nav-link" id="account-nav" data-toggle="pill" href="#account-tab" role="tab"><i
-                                class="fa fa-user"></i>Account Details</a>
-                        <a class="nav-link" href="index.php"><i class="fa fa-sign-out-alt"></i>Logout</a>
+                                class="fa fa-user"></i>Hesap Detayları</a>
+                        <a class="nav-link" href="index.php"><i class="fa fa-sign-out-alt"></i>Çıkış yap.</a>
                     </div>
                 </div>
                 <div class="col-md-9">
                     <div class="tab-content">
                         <div class="tab-pane fade show active" id="dashboard-tab" role="tabpanel"
                             aria-labelledby="dashboard-nav">
-                            <h4>Dashboard</h4>
+                            <h4>Kullanıcı Profili</h4>
                             <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In condimentum quam ac mi
-                                viverra dictum. In efficitur ipsum diam, at dignissim lorem tempor in. Vivamus tempor
-                                hendrerit finibus. Nulla tristique viverra nisl, sit amet bibendum ante suscipit non.
-                                Praesent in faucibus tellus, sed gravida lacus. Vivamus eu diam eros. Aliquam et sapien
-                                eget arcu rhoncus scelerisque.
+														Kullanıcı paneline hoş geldiniz. Bu kısımda profilinizi düzenleyebilirsiniz.
                             </p>
                         </div>
 												<div class="tab-pane fade" id="orders-tab" role="tabpanel" aria-labelledby="orders-nav">
@@ -344,94 +337,9 @@ if (!isset($_SESSION['user_id'])) {
     </div>
     <!-- My Account End -->
 
-    <!-- Footer Start -->
-    <div class="footer">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-3 col-md-6">
-                    <div class="footer-widget">
-                        <h2>Get in Touch</h2>
-                        <div class="contact-info">
-                            <p><i class="fa fa-map-marker"></i>123 E Store, Los Angeles, USA</p>
-                            <p><i class="fa fa-envelope"></i>email@example.com</p>
-                            <p><i class="fa fa-phone"></i>+123-456-7890</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 col-md-6">
-                    <div class="footer-widget">
-                        <h2>Follow Us</h2>
-                        <div class="contact-info">
-                            <div class="social">
-                                <a href=""><i class="fab fa-twitter"></i></a>
-                                <a href=""><i class="fab fa-facebook-f"></i></a>
-                                <a href=""><i class="fab fa-linkedin-in"></i></a>
-                                <a href=""><i class="fab fa-instagram"></i></a>
-                                <a href=""><i class="fab fa-youtube"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 col-md-6">
-                    <div class="footer-widget">
-                        <h2>Company Info</h2>
-                        <ul>
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Terms & Condition</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 col-md-6">
-                    <div class="footer-widget">
-                        <h2>Purchase Info</h2>
-                        <ul>
-                            <li><a href="#">Pyament Policy</a></li>
-                            <li><a href="#">Shipping Policy</a></li>
-                            <li><a href="#">Return Policy</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row payment align-items-center">
-                <div class="col-md-6">
-                    <div class="payment-method">
-                        <h2>We Accept:</h2>
-                        <img src="img/payment-method.png" alt="Payment Method" />
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="payment-security">
-                        <h2>Secured By:</h2>
-                        <img src="img/godaddy.svg" alt="Payment Security" />
-                        <img src="img/norton.svg" alt="Payment Security" />
-                        <img src="img/ssl.svg" alt="Payment Security" />
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Footer End -->
-
-    <!-- Footer Bottom Start -->
-    <div class="footer-bottom">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 copyright">
-                    <p>Copyright &copy; <a href="https://htmlcodex.com">HTML Codex</a>. All Rights Reserved</p>
-                </div>
-
-                <div class="col-md-6 template-by">
-                    <p>Template By <a href="https://htmlcodex.com">HTML Codex</a></p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Footer Bottom End -->
+		<?php
+		include 'footer.php';
+		?>
 
     <!-- Back to Top -->
     <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>

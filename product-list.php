@@ -448,89 +448,64 @@ function getAllChildCategories($conn, $categoryId, &$resultArray = [])
                             </ul>
                         </nav>
                     </div>
-                    <div class="sidebar-widget widget-slider">
-                        <div class="sidebar-slider normal-slider">
-                            <?php
-                            // Rastgele 3 ürün çekme sorgusu
-                            $randomProductsSQL = "SELECT * FROM products WHERE is_active = 1 AND is_deleted = 0 ORDER BY RAND() LIMIT 3";
-                            $randomProductsResult = $conn->query($randomProductsSQL);
+								<div class="sidebar-widget widget-slider">
+										<div class="sidebar-slider normal-slider">
+												<?php
+												// Rastgele 3 ürün çekme sorgusu
+												$randomProductsSQL = "SELECT * FROM products WHERE is_active = 1 AND is_deleted = 0 ORDER BY RAND() LIMIT 3";
+												$randomProductsResult = $conn->query($randomProductsSQL);
 
-                            if ($randomProductsResult && $randomProductsResult->num_rows > 0) {
-                                while ($product = $randomProductsResult->fetch_assoc()) {
-                                    // Her ürün için ayrı bir sorgu ile resimleri al
-                                    $productImageSQL = "SELECT product_images_url FROM product_images WHERE product_id = " . $product['product_id'];
-                                    $productImageResult = $conn->query($productImageSQL);
-                                    $productImageRow = $productImageResult->fetch_assoc();
+												if ($randomProductsResult && $randomProductsResult->num_rows > 0) {
+														while ($product = $randomProductsResult->fetch_assoc()) {
+																// Her ürün için ayrı bir sorgu ile resimleri al
+																$productImageSQL = "SELECT product_images_url FROM product_images WHERE product_id = " . $product['product_id'];
+																$productImageResult = $conn->query($productImageSQL);
+																$productImageRow = $productImageResult->fetch_assoc();
 
-                                    // Resim URL'lerini al
-                                    $productImagePreview = isset($productImageRow['product_images_url']) ? $productImageRow['product_images_url'] : '';
-                                    $productImagePreviewArray = !empty($productImagePreview) ? explode('#', $productImagePreview) : ['placeholder.jpg'];
+																// Resim URL'lerini al
+																$productImagePreview = isset($productImageRow['product_images_url']) ? $productImageRow['product_images_url'] : '';
+																$productImagePreviewArray = !empty($productImagePreview) ? explode('#', $productImagePreview) : ['placeholder.jpg'];
 
-                                    // Ürün adını limitle
-                                    $productName = limitText($product['product_name'], 25);
-                                    ?>
-                                    <div class="product-item">
-                                        <div class="product-title">
-                                            <a href="product-detail.php?id=<?php echo $product['product_id']; ?>"><?php echo $productName; ?></a>
-                                            <div class="ratting">
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                            </div>
-                                        </div>
-                                        <div class="product-image">
-                                            <a href="product-detail.php?id=<?php echo $product['product_id']; ?>">
-                                                <img
-                                                    src="<?php echo isset($productImagePreviewArray[0]) ? $productImagePreviewArray[0] : 'placeholder.jpg'; ?>"
-                                                    alt="<?php echo $product['product_name']; ?>">
-                                            </a>
-                                            <div class="product-action">
-                                                <a href="#" class="add-to-cart" data-product-id="<?php echo $product['product_id']; ?>"><i class="fa fa-cart-plus"></i></a>
-                                                <a href="#" class="add-to-favorites" data-product-id="<?php echo $product['product_id']; ?>"><i class="fa fa-heart"></i></a>
-                                                <a href="product-detail.php?id=<?php echo $product['product_id']; ?>"><i class="fa fa-search"></i></a>
-                                            </div>
-                                        </div>
-                                        <div class="product-price">
-                                            <h3><span>TL</span><?php echo number_format($product['price'], 2); ?></h3>
-                                            <a class="btn add-to-cart" href="#" data-product-id="<?php echo $product['product_id']; ?>"><i class="fa fa-shopping-cart"></i>Satın Al</a>
-                                        </div>
-                                    </div>
-                                    <?php
-                                }
-                            } else {
-                                echo '<div class="product-item"><div class="product-title"><p>Ürün bulunamadı</p></div></div>';
-                            }
-                            ?>
-                        </div>
-                    </div>
-                    <div class="sidebar-widget brands">
-                        <h2 class="title">Markalarımız</h2>
-                        <ul>
-                            <li><a href="#">Nulla </a><span>(45)</span></li>
-<li><a href="#">Curabitur </a><span>(34)</span></li>
-<li><a href="#">Nunc </a><span>(67)</span></li>
-<li><a href="#">Ullamcorper</a><span>(74)</span></li>
-<li><a href="#">Fusce </a><span>(89)</span></li>
-<li><a href="#">Sagittis</a><span>(28)</span></li>
-</ul>
-</div>
-<div class="sidebar-widget tag">
-                    <h2 class="title">Etiket Bulutu</h2>
-                    <a href="#">Lorem ipsum</a>
-                    <a href="#">Vivamus</a>
-                    <a href="#">Phasellus</a>
-                    <a href="#">pulvinar</a>
-                    <a href="#">Curabitur</a>
-                    <a href="#">Fusce</a>
-                    <a href="#">Sem quis</a>
-                    <a href="#">Mollis metus</a>
-                    <a href="#">Sit amet</a>
-                    <a href="#">Vel posuere</a>
-                    <a href="#">orci luctus</a>
-                    <a href="#">Nam lorem</a>
-                </div>
+																// Ürün adını limitle
+																$productName = limitText($product['product_name'], 25);
+																?>
+																<div class="product-item" style="height: 400px; width: 100%; display: flex; flex-direction: column;">
+																		<div class="product-title" style="height: 80px; overflow: hidden;">
+																				<a href="product-detail.php?id=<?php echo $product['product_id']; ?>" style="color: black;"><?php echo $productName; ?></a>
+																				<div class="ratting">
+																						<i class="fa fa-star"></i>
+																						<i class="fa fa-star"></i>
+																						<i class="fa fa-star"></i>
+																						<i class="fa fa-star"></i>
+																						<i class="fa fa-star"></i>
+																				</div>
+																		</div>
+																		<div class="product-image" style="height: 220px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+																				<a href="product-detail.php?id=<?php echo $product['product_id']; ?>">
+																						<img
+																								src="<?php echo isset($productImagePreviewArray[0]) ? $productImagePreviewArray[0] : 'placeholder.jpg'; ?>"
+																								alt="<?php echo $product['product_name']; ?>"
+																								style="width: 100%; height: 100%; object-fit: contain;">
+																				</a>
+																				<div class="product-action">
+																						<a href="#" class="add-to-cart" data-product-id="<?php echo $product['product_id']; ?>" style="background-color: #ffffff; transition: background-color 0.3s ease;" onmouseover="this.style.backgroundColor='#ffbe33'" onmouseout="this.style.backgroundColor='#ffffff'"><i class="fa fa-cart-plus"></i></a>
+																						<a href="#" class="add-to-favorites" data-product-id="<?php echo $product['product_id']; ?>" style="background-color: #ffffff; transition: background-color 0.3s ease;" onmouseover="this.style.backgroundColor='#ffbe33'" onmouseout="this.style.backgroundColor='#ffffff'"><i class="fa fa-heart"></i></a>
+																						<a href="product-detail.php?id=<?php echo $product['product_id']; ?>" style="background-color: #ffffff; transition: background-color 0.3s ease;" onmouseover="this.style.backgroundColor='#ffbe33'" onmouseout="this.style.backgroundColor='#ffffff'"><i class="fa fa-search"></i></a>
+																				</div>
+																		</div>
+																		<div class="product-price" style="height: 100px; display: flex; flex-direction: column; justify-content: center;">
+																				<h3 style="color: black;"><span>TL</span><?php echo number_format($product['price'], 2); ?></h3>
+																				<a class="btn add-to-cart" href="#" data-product-id="<?php echo $product['product_id']; ?>" style="color: black; background-color: #ffffff; transition: background-color 0.3s ease;" onmouseover="this.style.backgroundColor='#ffbe33'" onmouseout="this.style.backgroundColor='#ffffff'"><i class="fa fa-shopping-cart"></i>Satın Al</a>
+																		</div>
+																</div>
+																<?php
+														}
+												} else {
+														echo '<div class="product-item"><div class="product-title"><p>Ürün bulunamadı</p></div></div>';
+												}
+												?>
+										</div>
+								</div>
             </div>
             <!-- Side Bar End -->
         </div>

@@ -210,9 +210,8 @@ if (isset($_POST['addProductButton'])) {
 	<div class="breadcrumb-wrap">
 		<div class="container-fluid">
 			<ul class="breadcrumb">
-				<li class="breadcrumb-item"><a href="#">Home</a></li>
-				<li class="breadcrumb-item"><a href="#">Seller</a></li>
-				<li class="breadcrumb-item active">Seller Panel</li>
+				<li class="breadcrumb-item"><a href="#">Ana Sayfa</a></li>
+				<li class="breadcrumb-item"><a href="#">Satıcı Paneli</a></li>
 			</ul>
 		</div>
 	</div>
@@ -224,22 +223,18 @@ if (isset($_POST['addProductButton'])) {
 			<div class="row">
 				<div class="col-md-3">
 					<div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
-						<a class="nav-link" id="orders-nav" data-toggle="pill" href="#orders-tab" role="tab"><i class="fa fa-shopping-cart"></i>My Orders</a>
+						<a class="nav-link" id="orders-nav" data-toggle="pill" href="#orders-tab" role="tab"><i class="fa fa-shopping-cart"></i>Satışlarım</a>
 						<a class="nav-link" id="edit-nav" data-toggle="pill" href="#edit-tab" role="tab"><i
-								class="fa fa-shopping-bag"></i>Product Manager</a>
-						<a class="nav-link" id="payment-nav" data-toggle="pill" href="#payment-tab" role="tab"><i
-								class="fa fa-credit-card"></i>Payment Method</a>
-						<a class="nav-link" id="address-nav" data-toggle="pill" href="#address-tab" role="tab"><i
-								class="fa fa-map-marker-alt"></i>Address</a>
+								class="fa fa-shopping-bag"></i>Ürün Paneli</a>
 						<a class="nav-link" id="account-nav" data-toggle="pill" href="#account-tab" role="tab"><i
-								class="fa fa-user"></i>Account Details</a>
-						<a class="nav-link" href="bttavm/index.php"><i class="fa fa-sign-out-alt"></i>Logout</a>
+								class="fa fa-user"></i>Hesap Detayları</a>
+						<a class="nav-link" href="../logout.php"><i class="fa fa-sign-out-alt"></i>Çıkış Yap</a>
 					</div>
 				</div>
 				<div class="col-md-9">
 					<div class="tab-content">
 					<div class="tab-pane fade" id="orders-tab" role="tabpanel" aria-labelledby="orders-nav">
-							<h4>My Orders</h4>
+							<h4>Satışlarım</h4>
 							<?php
 							// Satıcıya ait ürünlerin siparişlerini getir
 							$ordersQuery = "SELECT DISTINCT o.*, c.customer_name, c.customer_mail
@@ -257,12 +252,12 @@ if (isset($_POST['addProductButton'])) {
 									<table class="table table-bordered">
 											<thead class="thead-dark">
 													<tr>
-															<th>Order No</th>
-															<th>Customer</th>
-															<th>Order Date</th>
-															<th>Total Amount</th>
-															<th>Status</th>
-															<th>Action</th>
+															<th>Sipariş No</th>
+															<th>Müşteri</th>
+															<th>Tarih</th>
+															<th>Miktar</th>
+															<th>Durum</th>
+															<th>İşlem</th>
 													</tr>
 											</thead>
 											<tbody>
@@ -299,7 +294,7 @@ if (isset($_POST['addProductButton'])) {
 																					<td>$status</td>
 																					<td>
 																							<button class='btn btn-sm btn-primary view-order-details' data-order-id='{$order['order_id']}'>
-																									<i class='fa fa-eye'></i> View Details
+																									<i class='fa fa-eye'></i> Detayları Gör 
 																							</button>
 																					</td>
 																				</tr>";
@@ -338,13 +333,13 @@ if (isset($_POST['addProductButton'])) {
 
 									<head class="thead-dark">
 										<tr>
-											<th>Product ID</th>
-											<th>Product Name</th>
-											<th>Description</th>
-											<th>Price</th>
-											<th>Stock</th>
+											<th>Ürün ID</th>
+											<th>Ürün İsim</th>
+											<th>Açıklama</th>
+											<th>Fiyat</th>
+											<th>Stok</th>
 											<th><a class="nav-link" id="add-product-nav" data-toggle="pill" href="#add-product-tab"
-													role="tab"><i class="fa fa-plus"></i>Add</a></th>
+													role="tab"><i class="fa fa-plus"></i>Ekle</a></th>
 										</tr>
 									</head>
 
@@ -376,10 +371,10 @@ if (isset($_POST['addProductButton'])) {
 													echo "<td style='display: none'> " . $row['is_active'] . " </td>";
 													echo '<td>
                 <a href="edit-product.php?id=' . $row['product_id'] . '" class="btn btn-primary btn-sm">
-                    <i class="fa fa-edit"></i> Edit
+                    <i class="fa fa-edit"></i> Düzenle
                 </a>
                 <a href="delete-product.php?id=' . $row['product_id'] . '" class="btn btn-danger btn-sm" onclick="return confirm(\'Are you sure you want to delete this product?\');">
-                    <i class="fa fa-trash"></i> Delete
+                    <i class="fa fa-trash"></i> Sil
                 </a>
               </td>';
 													echo "</tr>";
@@ -469,7 +464,7 @@ if (isset($_POST['addProductButton'])) {
 								$seller = $sellerResult->fetch_assoc();
 								?>
 								
-								<h4>Account Details</h4>
+								<h4>Hesap Detayları</h4>
 								
 								<?php if (isset($_SESSION['update_success'])): ?>
 										<div class="alert alert-success">
@@ -492,45 +487,37 @@ if (isset($_POST['addProductButton'])) {
 								<form id="update-seller-form">
 										<div class="row">
 												<div class="col-md-6">
-														<label>Seller Name</label>
+														<label>Satıcı isim</label>
 														<input class="form-control" type="text" id="seller_name" value="<?php echo htmlspecialchars($seller['seller_name']); ?>" required>
 												</div>
 												<div class="col-md-6">
 														<label>Email</label>
 														<input class="form-control" type="email" id="seller_mail" value="<?php echo htmlspecialchars($seller['seller_mail']); ?>" required>
 												</div>
-												<div class="col-md-6">
-														<label>Logo URL (opsiyonel)</label>
-														<input class="form-control" type="text" id="seller_logo" value="<?php echo htmlspecialchars($seller['seller_logo'] ?? ''); ?>" placeholder="Logo URL">
-												</div>
-												<div class="col-md-6">
-														<label>Address ID</label>
-														<input class="form-control" type="number" id="address_id" value="<?php echo htmlspecialchars($seller['address_id'] ?? ''); ?>" placeholder="Address ID">
-												</div>
 												<div class="col-md-12 mt-3">
-														<button type="submit" class="btn">Update Account</button>
+														<button type="submit" class="btn">Güncelle</button>
 														<br><br>
 												</div>
 										</div>
 								</form>
 								
-								<h4>Password Change</h4>
+								<h4>Şifre Değiştir</h4>
 								<form id="change-password-form">
 										<div class="row">
 												<div class="col-md-12">
-														<label>Current Password</label>
-														<input class="form-control" type="password" id="current_password" placeholder="Current Password" required>
+														<label>Mevcut Şifre</label>
+														<input class="form-control" type="password" id="current_password" placeholder="Mevcut şifre" required>
 												</div>
 												<div class="col-md-6">
-														<label>New Password</label>
-														<input class="form-control" type="password" id="new_password" placeholder="New Password" required>
+														<label>Yeni Şifre</label>
+														<input class="form-control" type="password" id="new_password" placeholder="Yeni şifre" required>
 												</div>
 												<div class="col-md-6">
-														<label>Confirm Password</label>
-														<input class="form-control" type="password" id="confirm_password" placeholder="Confirm Password" required>
+														<label>Şifreyi Onayla</label>
+														<input class="form-control" type="password" id="confirm_password" placeholder="Yeni şifre onayla" required>
 												</div>
 												<div class="col-md-12 mt-3">
-														<button type="submit" class="btn">Save Changes</button>
+														<button type="submit" class="btn">Kaydet</button>
 												</div>
 										</div>
 								</form>

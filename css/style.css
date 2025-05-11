@@ -802,12 +802,12 @@ h2 {
 
 .product-item .product-price {
     padding: 20px;
-    background: #000000;
+    background: #ffffff;
     transition: all .3s;
 }
 
 .product-item:hover .product-price {
-    background: #393E46;
+    background: #7f8287;
 }
 
 .product-item .product-price h3 {
@@ -829,7 +829,7 @@ h2 {
 
 .product-item:hover .product-price .btn,
 .product-item .product-price .btn:hover {
-    color: #393E46;
+    color: #ffffff;
     background: #ffffff;
 }
 
