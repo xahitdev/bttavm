@@ -102,20 +102,20 @@ $sliderImage = $sliderImageResult->fetch_assoc();
 			} ?>
 		</div>
 	</div>
-	<div class="header">
-		<div class="container-fluid">
-			<div class="row">
+	<div class="header" style="width: 100%; display: flex; justify-content: center;">
+		<div class="container-fluid" style="max-width: 1200px; width: 100%; margin: 0 auto; padding: 0 15px;">
+			<div class="row" style="margin: 0;">
 				<div class="col-md-12 mt-4">
-					<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+					<div id="carouselExampleControls" class="carousel slide" data-ride="carousel" style="width: 100%;">
 						<div class="carousel-inner">
 							<div class="carousel-item active">
-								<img class="d-block w-100" src="<?php echo $sliderImage['index_slider_image'] ?>" alt="First slide">
+								<img class="d-block w-100" src="<?php echo $sliderImage['index_slider_image'] ?>" alt="First slide" style="max-height: 500px; object-fit: cover;">
 							</div>
 							<div class="carousel-item">
-								<img class="d-block w-100" src="<?php echo $sliderImage['index_slider_image_2'] ?>" alt="Second slide">
+								<img class="d-block w-100" src="<?php echo $sliderImage['index_slider_image_2'] ?>" alt="Second slide" style="max-height: 500px; object-fit: cover;">
 							</div>
 							<div class="carousel-item">
-								<img class="d-block w-100" src="<?php echo $sliderImage['index_slider_image_3'] ?>" alt="Third slide">
+								<img class="d-block w-100" src="<?php echo $sliderImage['index_slider_image_3'] ?>" alt="Third slide" style="max-height: 500px; object-fit: cover;">
 							</div>
 						</div>
 						<a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
@@ -128,25 +128,25 @@ $sliderImage = $sliderImageResult->fetch_assoc();
 						</a>
 					</div>
 				</div>
-				<div class="row w-100">
-					<div class="col-md-6">
-						<div class="header-img">
-							<div class="img-item">
-								<img src="<?php echo $sliderImage['card_image']; ?>">
-								<a class="img-text" href="">
-									<p>Some text goes here that describes the image</p>
-								</a>
-							</div>
+			</div>
+			<div class="row" style="margin: 0; display: flex; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
+				<div class="col-md-6">
+					<div class="header-img" style="width: 100%; margin-bottom: 20px;">
+						<div class="img-item" style="position: relative; overflow: hidden;">
+							<img src="<?php echo $sliderImage['card_image']; ?>" style="width: 100%; height: auto; display: block;">
+							<a class="img-text" href="">
+								<p>Some text goes here that describes the image</p>
+							</a>
 						</div>
 					</div>
-					<div class="col-md-6">
-						<div class="header-img">
-							<div class="img-item">
-								<img src="<?php echo $sliderImage['card_image2']; ?>">
-								<a class="img-text" href="">
-									<p>Some text goes here that describes the image</p>
-								</a>
-							</div>
+				</div>
+				<div class="col-md-6">
+					<div class="header-img" style="width: 100%; margin-bottom: 20px;">
+						<div class="img-item" style="position: relative; overflow: hidden;">
+							<img src="<?php echo $sliderImage['card_image2']; ?>" style="width: 100%; height: auto; display: block;">
+							<a class="img-text" href="">
+								<p>Some text goes here that describes the image</p>
+							</a>
 						</div>
 					</div>
 				</div>
@@ -156,352 +156,203 @@ $sliderImage = $sliderImageResult->fetch_assoc();
 	<!-- Main Slider End -->
 
 	<!-- Brand Start -->
-	<div class="brand">
-		<div class="container-fluid">
-			<div class="brand-slider">
-				<div class="brand-item"><img src="img/brand-1.png" alt=""></div>
-				<div class="brand-item"><img src="img/brand-2.png" alt=""></div>
-				<div class="brand-item"><img src="img/brand-3.png" alt=""></div>
-				<div class="brand-item"><img src="img/brand-4.png" alt=""></div>
-				<div class="brand-item"><img src="img/brand-5.png" alt=""></div>
-				<div class="brand-item"><img src="img/brand-6.png" alt=""></div>
-			</div>
+<!-- Brand Start -->
+<div class="brand" style="width: 100%; display: flex; justify-content: center;">
+	<div class="container-fluid" style="max-width: 1200px; width: 100%; margin: 0 auto; padding: 0 15px;">
+		<div class="brand-slider">
+			<div class="brand-item"><img src="img/brand-1.png" alt=""></div>
+			<div class="brand-item"><img src="img/brand-2.png" alt=""></div>
+			<div class="brand-item"><img src="img/brand-3.png" alt=""></div>
+			<div class="brand-item"><img src="img/brand-4.png" alt=""></div>
+			<div class="brand-item"><img src="img/brand-5.png" alt=""></div>
+			<div class="brand-item"><img src="img/brand-6.png" alt=""></div>
 		</div>
 	</div>
-	<!-- Brand End -->
+</div>
+<!-- Brand End -->
 
-	<!-- Feature Start-->
-	<div class="feature">
-		<div class="container-fluid">
-			<div class="row align-items-center">
-				<div class="col-lg-3 col-md-6 feature-col">
-					<div class="feature-content">
-						<i class="fab fa-cc-mastercard"></i>
-						<h2>Güvensiz Ödeme</h2>
-						<p>
-							Lorem ipsum dolor sit amet consectetur elit
-						</p>
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-6 feature-col">
-					<div class="feature-content">
-						<i class="fa fa-truck"></i>
-						<h2>Ülke içi teslim</h2>
-						<p>
-							Lorem ipsum dolor sit amet consectetur elit
-						</p>
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-6 feature-col">
-					<div class="feature-content">
-						<i class="fa fa-sync-alt"></i>
-						<h2>İade Yok</h2>
-						<p>
-							Lorem ipsum dolor sit amet consectetur elit
-						</p>
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-6 feature-col">
-					<div class="feature-content">
-						<i class="fa fa-comments"></i>
-						<h2>24/7 Destek</h2>
-						<p>
-							Bize mail atın.
-						</p>
-					</div>
+<!-- Feature Start-->
+<div class="feature" style="width: 100%; display: flex; justify-content: center;">
+	<div class="container-fluid" style="max-width: 1200px; width: 100%; margin: 0 auto; padding: 0 15px;">
+		<div class="row align-items-center" style="margin: 0;">
+			<div class="col-lg-3 col-md-6 feature-col">
+				<div class="feature-content">
+					<i class="fab fa-cc-mastercard"></i>
+					<h2>Güvensiz Ödeme</h2>
+					<p>
+						Lorem ipsum dolor sit amet consectetur elit
+					</p>
 				</div>
 			</div>
-		</div>
-	</div>
-	<!-- Feature End-->
-
-	<!-- Category Start-->
-	<!--
-	<div class="category">
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-md-3">
-					<div class="category-item ch-400">
-						<img src="img/category-3.jpg" />
-						<a class="category-name" href="">
-							<p>Some text goes here that describes the image</p>
-						</a>
-					</div>
+			<div class="col-lg-3 col-md-6 feature-col">
+				<div class="feature-content">
+					<i class="fa fa-truck"></i>
+					<h2>Ülke içi teslim</h2>
+					<p>
+						Lorem ipsum dolor sit amet consectetur elit
+					</p>
 				</div>
-				<div class="col-md-3">
-					<div class="category-item ch-250">
-						<img src="img/category-4.jpg" />
-						<a class="category-name" href="">
-							<p>Some text goes here that describes the image</p>
-						</a>
-					</div>
-					<div class="category-item ch-150">
-						<img src="img/category-5.jpg" />
-						<a class="category-name" href="">
-							<p>Some text goes here that describes the image</p>
-						</a>
-					</div>
+			</div>
+			<div class="col-lg-3 col-md-6 feature-col">
+				<div class="feature-content">
+					<i class="fa fa-sync-alt"></i>
+					<h2>İade Yok</h2>
+					<p>
+						Lorem ipsum dolor sit amet consectetur elit
+					</p>
 				</div>
-				<div class="col-md-3">
-					<div class="category-item ch-150">
-						<img src="img/category-6.jpg" />
-						<a class="category-name" href="">
-							<p>Some text goes here that describes the image</p>
-						</a>
-					</div>
-					<div class="category-item ch-250">
-						<img src="img/category-7.jpg" />
-						<a class="category-name" href="">
-							<p>Some text goes here that describes the image</p>
-						</a>
-					</div>
-				</div>
-				<div class="col-md-3">
-					<div class="category-item ch-400">
-						<img src="img/category-8.jpg" />
-						<a class="category-name" href="">
-							<p>Some text goes here that describes the image</p>
-						</a>
-					</div>
+			</div>
+			<div class="col-lg-3 col-md-6 feature-col">
+				<div class="feature-content">
+					<i class="fa fa-comments"></i>
+					<h2>24/7 Destek</h2>
+					<p>
+						Bize mail atın.
+					</p>
 				</div>
 			</div>
 		</div>
 	</div>
-	-->
-	<!-- Category End-->
+</div>
+<!-- Feature End-->
 
-	<!-- Call to Action Start -->
-	<!-- 
-	<div class="call-to-action">
-		<div class="container-fluid">
-			<div class="row align-items-center">
-				<div class="col-md-6">
-					<h1>call us for any queries</h1>
-				</div>
-				<div class="col-md-6">
-					<a href="tel:0123456789">+012-345-6789</a>
-				</div>
-			</div>
+<!-- Featured Product Start -->
+<div class="featured-product product" style="width: 100%; display: flex; justify-content: center;">
+	<div class="container-fluid" style="max-width: 1200px; width: 100%; margin: 0 auto; padding: 0 15px;">
+		<div class="section-header">
+			<h1>Öne Çıkan Ürünler</h1>
 		</div>
-	</div>
-	-->
-	<!-- Call to Action End -->
-
-	<!-- Featured Product Start -->
-	<div class="featured-product product">
-		<div class="container-fluid">
-			<div class="section-header">
-				<h1>Öne Çıkan Ürünler</h1>
-			</div>
-			<div class="row align-items-center product-slider product-slider-4">
-				<?php if ($featuredResult->num_rows > 0) {
-					while ($row = $featuredResult->fetch_assoc()) {
-						$productName = strlen($row['product_name']) > 35 ? substr($row['product_name'], 0, 35) . '...' : $row['product_name'];
-
-						$productImagesSQL = "SELECT * FROM product_images WHERE product_id=" . $row['product_id'] . "";
-						$productImagesResult = $conn->query($productImagesSQL);
-						$productImage = $productImagesResult->fetch_assoc();
-						$productImageData = $productImage['product_images_url'];
-						$productImageArray = explode('#', $productImageData);
-
-						echo '
-					<div class="col-lg-3">
-						<div class="product-item">
-							<div class="product-title">
-								<a href="product-detail.php?id=' . $row['product_id'] . '" style="color: black;">' . $productName . '</a>
-								<div class="ratting">
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-								</div>
-							</div>
-							<div class="product-image">
-								<a href="product-detail.html">
-									<img src="' . $productImageArray[0] . '" alt="Product Image" style="width: 100%; height: 250px; object-fit: cover; !important">
-								</a>
-							<div class="product-action">
-									<a href="#" class="add-to-cart" data-product-id="' . $row['product_id'] . '"><i class="fa fa-cart-plus"></i></a>
-									<a href="#" class="add-to-favorites" data-product-id="' . $row['product_id'] . '"><i class="fa fa-heart"></i></a>
-									<a href="product-detail.php?id=' . $row['product_id'] . '"><i class="fa fa-search"></i></a>
-							</div>
-							</div>
-							<div class="product-price">
-								<h3><span>TL</span>' . $row['price'] . '</h3>
-								<a class="btn" href=""><i class="fa fa-shopping-cart"></i>Satın Al</a>
+		<div class="row align-items-stretch product-slider product-slider-4" style="margin: 0; display: flex; flex-wrap: wrap;">
+			<?php if ($featuredResult->num_rows > 0) {
+				while ($row = $featuredResult->fetch_assoc()) {
+					$productName = strlen($row['product_name']) > 35 ? substr($row['product_name'], 0, 35) . '...' : $row['product_name'];
+					$productImagesSQL = "SELECT * FROM product_images WHERE product_id=" . $row['product_id'] . "";
+					$productImagesResult = $conn->query($productImagesSQL);
+					$productImage = $productImagesResult->fetch_assoc();
+					$productImageData = $productImage['product_images_url'];
+					$productImageArray = explode('#', $productImageData);
+					echo '
+				<div class="col-lg-3" style="display: flex; padding: 10px; margin-bottom: 20px;">
+					<div class="product-item" style="display: flex; flex-direction: column; width: 100%; min-height: 450px; border: 1px solid #eee; border-radius: 8px; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); background: white;">
+						<div class="product-title" style="height: 80px; overflow: hidden; margin-bottom: 10px;">
+							<a href="product-detail.php?id=' . $row['product_id'] . '" style="color: black; text-decoration: none; font-weight: 500; display: block; line-height: 1.3; margin-bottom: 8px;">' . $productName . '</a>
+							<div class="ratting">
+								<i class="fa fa-star" style="color: #ffc107; font-size: 12px;"></i>
+								<i class="fa fa-star" style="color: #ffc107; font-size: 12px;"></i>
+								<i class="fa fa-star" style="color: #ffc107; font-size: 12px;"></i>
+								<i class="fa fa-star" style="color: #ffc107; font-size: 12px;"></i>
+								<i class="fa fa-star" style="color: #ffc107; font-size: 12px;"></i>
 							</div>
 						</div>
-					</div>
-				';
-					}
-				} ?>
-			</div>
-		</div>
-	</div>
-	<!-- Featured Product End -->
-
-	<!-- Newsletter Start -->
-
-	<div class="newsletter py-4">
-		<div class="container-fluid">
-			<div class="row align-items-center">
-				<div class="col-md-6">
-					<h1 class="newsletter-title">Bültenimize abone olun</h1>
-				</div>
-				<div class="col-md-6">
-					<div class="form">
-						<form method="POST" action="assets/php/newsletter.php">
-							<div class="row">
-								<div class="col-md-8 mb-2 mb-md-0">
-									<input type="email" class="form-control" placeholder="E-postanızı girin..." name="newsletter_email"
-										required>
-								</div>
-								<div class="col-md-4">
-									<input type="submit" class="btn btn-dark w-100" value="Abone ol" name="newsletterSend">
-								</div>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- Newsletter End -->
-
-	<?php
-	$featuredSQL = "SELECT * FROM products WHERE is_active=1 AND is_deleted=0 ORDER BY product_id DESC";
-	$featuredResult = $conn->query($featuredSQL);
-	?>
-	<!-- Recent Product Start -->
-	<div class="recent-product product">
-		<div class="container-fluid">
-			<div class="section-header">
-				<h1>Son Ürünler</h1>
-			</div>
-			<div class="row align-items-center product-slider product-slider-4">
-				<?php if ($featuredResult->num_rows > 0) {
-					while ($row = $featuredResult->fetch_assoc()) {
-						$productName = strlen($row['product_name']) > 30 ? substr($row['product_name'], 0, 30) . '...' : $row['product_name'];
-
-						$productImagesSQL = "SELECT * FROM product_images WHERE product_id=" . $row['product_id'] . "";
-						$productImagesResult = $conn->query($productImagesSQL);
-						$productImage = $productImagesResult->fetch_assoc();
-						$productImageData = $productImage['product_images_url'];
-						$productImageArray = explode('#', $productImageData);
-
-						echo '
-					<div class="col-lg-3">
-						<div class="product-item">
-							<div class="product-title">
-								<a href="product-detail.php?id=' . $row['product_id'] . '" style="color: black;">' . $productName . '</a>
-								<div class="ratting">
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-								</div>
-							</div>
-							<div class="product-image">
-								<a href="product-detail.html">
-									<img src="' . $productImageArray[0] . '" alt="Product Image" style="width: 100%; height: 250px; object-fit: cover; !important">
-								</a>
-							<div class="product-action">
-									<a href="#" class="add-to-cart" data-product-id="' . $row['product_id'] . '"><i class="fa fa-cart-plus"></i></a>
-									<a href="#" class="add-to-favorites" data-product-id="' . $row['product_id'] . '"><i class="fa fa-heart"></i></a>
-									<a href="product-detail.php?id=' . $row['product_id'] . '"><i class="fa fa-search"></i></a>
-							</div>
-							</div>
-							<div class="product-price">
-								<h3><span>TL</span>' . $row['price'] . '</h3>
-								<a class="btn" href=""><i class="fa fa-shopping-cart"></i>Satın Al</a>
+						<div class="product-image" style="position: relative; height: 250px; margin-bottom: 15px; overflow: hidden; border-radius: 5px;">
+							<a href="product-detail.html" style="display: block; height: 100%;">
+								<img src="' . $productImageArray[0] . '" alt="Product Image" style="width: 100%; height: 100%; object-fit: cover;">
+							</a>
+							<div class="product-action" style="position: absolute; bottom: 10px; right: 10px; display: flex; gap: 5px;">
+								<a href="#" class="add-to-cart" data-product-id="' . $row['product_id'] . '" style="background: rgba(255,255,255,0.9); width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border-radius: 50%; color: #333; text-decoration: none; transition: all 0.3s;"><i class="fa fa-cart-plus"></i></a>
+								<a href="#" class="add-to-favorites" data-product-id="' . $row['product_id'] . '" style="background: rgba(255,255,255,0.9); width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border-radius: 50%; color: #333; text-decoration: none; transition: all 0.3s;"><i class="fa fa-heart"></i></a>
+								<a href="product-detail.php?id=' . $row['product_id'] . '" style="background: rgba(255,255,255,0.9); width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border-radius: 50%; color: #333; text-decoration: none; transition: all 0.3s;"><i class="fa fa-search"></i></a>
 							</div>
 						</div>
+						<div class="product-price" style="margin-top: auto; padding-top: 15px; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; height: 60px;">
+							<h3 style="margin: 0; font-size: 20px; color: #333; font-weight: 600;"><span style="font-size: 14px;">TL</span>' . $row['price'] . '</h3>
+							<a class="btn add-to-cart-button" href="#" data-product-id="' . $row['product_id'] . '" style="background: #007bff; color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none; font-size: 14px; display: inline-flex; align-items: center; gap: 5px; white-space: nowrap;"><i class="fa fa-shopping-cart"></i>Ekle</a>
+
+						</div>
 					</div>
-				';
-					}
-				} ?>
+				</div>
+			';
+				}
+			} ?>
+		</div>
+	</div>
+</div>
+<!-- Featured Product End -->
+
+<!-- Newsletter Start -->
+<div class="newsletter py-4" style="width: 100%; display: flex; justify-content: center;">
+	<div class="container-fluid" style="max-width: 1200px; width: 100%; margin: 0 auto; padding: 0 15px;">
+		<div class="row align-items-center" style="margin: 0;">
+			<div class="col-md-6">
+				<h1 class="newsletter-title">Bültenimize abone olun</h1>
+			</div>
+			<div class="col-md-6">
+				<div class="form">
+					<form method="POST" action="assets/php/newsletter.php">
+						<div class="row" style="margin: 0;">
+							<div class="col-md-8 mb-2 mb-md-0">
+								<input type="email" class="form-control" placeholder="E-postanızı girin..." name="newsletter_email"
+									required>
+							</div>
+							<div class="col-md-4">
+								<input type="submit" class="btn btn-dark w-100" value="Abone ol" name="newsletterSend">
+							</div>
+						</div>
+					</form>
+				</div>
 			</div>
 		</div>
 	</div>
+</div>
+<!-- Newsletter End -->
+
+<?php
+$featuredSQL = "SELECT * FROM products WHERE is_active=1 AND is_deleted=0 ORDER BY product_id DESC";
+$featuredResult = $conn->query($featuredSQL);
+?>
+<!-- Recent Product Start -->
+<div class="recent-product product" style="width: 100%; display: flex; justify-content: center;">
+	<div class="container-fluid" style="max-width: 1200px; width: 100%; margin: 0 auto; padding: 0 15px;">
+		<div class="section-header">
+			<h1>Son Ürünler</h1>
+		</div>
+		<div class="row align-items-stretch product-slider product-slider-4" style="margin: 0; display: flex; flex-wrap: wrap;">
+			<?php if ($featuredResult->num_rows > 0) {
+				while ($row = $featuredResult->fetch_assoc()) {
+					$productName = strlen($row['product_name']) > 30 ? substr($row['product_name'], 0, 30) . '...' : $row['product_name'];
+					$productImagesSQL = "SELECT * FROM product_images WHERE product_id=" . $row['product_id'] . "";
+					$productImagesResult = $conn->query($productImagesSQL);
+					$productImage = $productImagesResult->fetch_assoc();
+					$productImageData = $productImage['product_images_url'];
+					$productImageArray = explode('#', $productImageData);
+					echo '
+				<div class="col-lg-3" style="display: flex; padding: 10px; margin-bottom: 20px;">
+					<div class="product-item" style="display: flex; flex-direction: column; width: 100%; min-height: 450px; border: 1px solid #eee; border-radius: 8px; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); background: white;">
+						<div class="product-title" style="height: 80px; overflow: hidden; margin-bottom: 10px;">
+							<a href="product-detail.php?id=' . $row['product_id'] . '" style="color: black; text-decoration: none; font-weight: 500; display: block; line-height: 1.3; margin-bottom: 8px;">' . $productName . '</a>
+							<div class="ratting">
+								<i class="fa fa-star" style="color: #ffc107; font-size: 12px;"></i>
+								<i class="fa fa-star" style="color: #ffc107; font-size: 12px;"></i>
+								<i class="fa fa-star" style="color: #ffc107; font-size: 12px;"></i>
+								<i class="fa fa-star" style="color: #ffc107; font-size: 12px;"></i>
+								<i class="fa fa-star" style="color: #ffc107; font-size: 12px;"></i>
+							</div>
+						</div>
+						<div class="product-image" style="position: relative; height: 250px; margin-bottom: 15px; overflow: hidden; border-radius: 5px;">
+							<a href="product-detail.php?id=' . $row['product_id'] . '" style="display: block; height: 100%;">
+								<img src="' . $productImageArray[0] . '" alt="Product Image" style="width: 100%; height: 100%; object-fit: cover;">
+							</a>
+							<div class="product-action" style="position: absolute; bottom: 10px; right: 10px; display: flex; gap: 5px;">
+								<a href="#" class="add-to-cart" data-product-id="' . $row['product_id'] . '" style="background: rgba(255,255,255,0.9); width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border-radius: 50%; color: #333; text-decoration: none; transition: all 0.3s;"><i class="fa fa-cart-plus"></i></a>
+								<a href="#" class="add-to-favorites" data-product-id="' . $row['product_id'] . '" style="background: rgba(255,255,255,0.9); width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border-radius: 50%; color: #333; text-decoration: none; transition: all 0.3s;"><i class="fa fa-heart"></i></a>
+								<a href="product-detail.php?id=' . $row['product_id'] . '" style="background: rgba(255,255,255,0.9); width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border-radius: 50%; color: #333; text-decoration: none; transition: all 0.3s;"><i class="fa fa-search"></i></a>
+							</div>
+						</div>
+						<div class="product-price" style="margin-top: auto; padding-top: 15px; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; height: 60px;">
+							<h3 style="margin: 0; font-size: 20px; color: #333; font-weight: 600;"><span style="font-size: 14px;">TL</span>' . $row['price'] . '</h3>
+							<a class="btn add-to-cart-button" href="#" data-product-id="' . $row['product_id'] . '" style="background: #007bff; color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none; font-size: 14px; display: inline-flex; align-items: center; gap: 5px; white-space: nowrap;"><i class="fa fa-shopping-cart"></i>Ekle</a>
+						</div>
+					</div>
+				</div>
+			';
+				}
+			} ?>
+		</div>
+	</div>
+</div>
 	<!-- Recent Product End -->
 
 	<!-- Review Start -->
-	<!--
-	<div class="review">
-		<div class="container-fluid">
-			<div class="row align-items-center review-slider normal-slider">
-				<div class="col-md-6">
-					<div class="review-slider-item">
-						<div class="review-img">
-							<img src="img/review-1.jpg" alt="Image">
-						</div>
-						<div class="review-text">
-							<h2>Customer Name</h2>
-							<h3>Profession</h3>
-							<div class="ratting">
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-							</div>
-							<p>
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vitae nunc eget leo
-								finibus luctus et vitae lorem
-							</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6">
-					<div class="review-slider-item">
-						<div class="review-img">
-							<img src="img/review-2.jpg" alt="Image">
-						</div>
-						<div class="review-text">
-							<h2>Customer Name</h2>
-							<h3>Profession</h3>
-							<div class="ratting">
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-							</div>
-							<p>
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vitae nunc eget leo
-								finibus luctus et vitae lorem
-							</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6">
-					<div class="review-slider-item">
-						<div class="review-img">
-							<img src="img/review-3.jpg" alt="Image">
-						</div>
-						<div class="review-text">
-							<h2>Customer Name</h2>
-							<h3>Profession</h3>
-							<div class="ratting">
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-							</div>
-							<p>
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vitae nunc eget leo
-								finibus luctus et vitae lorem
-							</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	-->
 	<!-- Review End -->
 
 	<!-- Footer Start -->
@@ -523,143 +374,109 @@ $sliderImage = $sliderImageResult->fetch_assoc();
 	<script src="js/main.js"></script>
 	<script>
 	$(document).ready(function() {
-    // Favori ekle butonuna tıklandığında
-    $(document).on('click', '.add-to-favorites', function(e) {
-        e.preventDefault();
-        
-        var productId = $(this).data('product-id');
-        console.log("Ürün ID:", productId); // Ürün ID'sini kontrol edelim
-        
-        // AJAX isteği gönderme
-        $.ajax({
-            url: 'add-to-favorites.php',
-            type: 'POST',
-            data: {
-                product_id: productId,
-                action: 'add'
-            },
-            dataType: 'json',
-            success: function(response) {
-                console.log("Başarılı yanıt:", response); // Başarılı yanıtı görelim
-                if(response.status === 'success') {
-                    // Navbar'daki favori sayısını güncelleme
-                    $('.favorites span').text('(' + response.favorites_count + ')');
-                    
-                    // Kullanıcıya bildirim gösterme
-                    alert('Ürün favorilere eklendi!');
-                } else {
-                    // Başarısız yanıt
-                    alert(response.message || 'İşlem başarısız oldu.');
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error("AJAX hatası:", status, error);
-                console.log("Yanıt:", xhr.responseText); // Hata yanıtını görelim
-                alert('Bir hata oluştu. Lütfen tekrar deneyin.');
-            }
-        });
-    });
-});
-	</script>
-	<script>
-// Sepete ekleme butonuna tıklandığında
-	$(document).on('click', '.add-to-cart', function(e) {
-			e.preventDefault();
+			// Önce mevcut event listener'ları temizleyelim
+			$('.add-to-cart').off('click');
+			$('.add-to-favorites').off('click');
+			$('.add-to-cart-button').off('click');
 			
-			var productId = $(this).data('product-id');
-			var quantity = 1; // veya formdan alınan miktar
-			
-			$.ajax({
-					url: 'add-to-cart.php',
-					type: 'POST',
-					data: {
-							product_id: productId,
-							quantity: quantity
-					},
-					dataType: 'json',
-					success: function(response) {
-							if(response.status === 'success') {
-									// Navbar'daki sepet sayısını güncelle
-									$('.cart span').text('(' + response.cart_count + ')');
-									
-									// Başarılı mesajı göster
-									alert(response.message);
-							} else {
-									alert(response.message || 'Bir hata oluştu.');
+			// Sepete ekleme butonu (küçük yuvarlak buton)
+			$(document).on('click', '.add-to-cart', function(e) {
+					e.preventDefault();
+					e.stopImmediatePropagation();
+					
+					var productId = $(this).data('product-id');
+					var quantity = 1;
+					
+					$.ajax({
+							url: 'add-to-cart.php',
+							type: 'POST',
+							data: {
+									product_id: productId,
+									quantity: quantity
+							},
+							dataType: 'json',
+							success: function(response) {
+									if(response.status === 'success') {
+											// Navbar'daki sepet sayısını güncelle
+											$('.cart span').text('(' + response.cart_count + ')');
+											
+											// Başarılı mesajı göster
+											alert('Ürün sepete eklendi.');
+									} else {
+											alert(response.message || 'Bir hata oluştu.');
+									}
+							},
+							error: function() {
+									alert('Bir hata oluştu. Lütfen tekrar deneyin.');
 							}
-					},
-					error: function() {
-							alert('Bir hata oluştu. Lütfen tekrar deneyin.');
-					}
+					});
+			});
+			
+			// Favorilere ekleme butonu
+			$(document).on('click', '.add-to-favorites', function(e) {
+					e.preventDefault();
+					e.stopImmediatePropagation();
+					
+					var productId = $(this).data('product-id');
+					
+					$.ajax({
+							url: 'add-to-favorites.php',
+							type: 'POST',
+							data: {
+									product_id: productId,
+									action: 'add'
+							},
+							dataType: 'json',
+							success: function(response) {
+									if(response.status === 'success') {
+											// Navbar'daki favori sayısını güncelleme
+											$('.favorites span').text('(' + response.favorites_count + ')');
+											
+											// Kullanıcıya bildirim gösterme
+											alert('Ürün favorilere eklendi!');
+									} else {
+											alert(response.message || 'İşlem başarısız oldu.');
+									}
+							},
+							error: function() {
+									alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+							}
+					});
+			});
+			
+			// Sepete Ekle butonu (alt kısımdaki mavi buton)
+			$(document).on('click', '.add-to-cart-button', function(e) {
+					e.preventDefault();
+					e.stopImmediatePropagation();
+					
+					var productId = $(this).data('product-id');
+					var quantity = 1;
+					
+					$.ajax({
+							url: 'add-to-cart.php',
+							type: 'POST',
+							data: {
+									product_id: productId,
+									quantity: quantity
+							},
+							dataType: 'json',
+							success: function(response) {
+									if(response.status === 'success') {
+											// Navbar'daki sepet sayısını güncelle
+											$('.cart span').text('(' + response.cart_count + ')');
+											
+											// Başarılı mesajı göster
+											alert('Ürün sepete eklendi.');
+									} else {
+											alert(response.message || 'Bir hata oluştu.');
+									}
+							},
+							error: function() {
+									alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+							}
+					});
 			});
 	});
-	</script>
-	<script>
-	$(document).ready(function() {
-    // Sepete ekleme butonu
-    $(document).on('click', '.add-to-cart', function(e) {
-        e.preventDefault();
-        
-        var productId = $(this).data('product-id');
-        var quantity = 1; // Varsayılan miktar
-        
-        $.ajax({
-            url: 'add-to-cart.php',
-            type: 'POST',
-            data: {
-                product_id: productId,
-                quantity: quantity
-            },
-            dataType: 'json',
-            success: function(response) {
-                if(response.status === 'success') {
-                    // Navbar'daki sepet sayısını güncelle
-                    $('.cart span').text('(' + response.cart_count + ')');
-                    
-                    // Başarılı mesajı göster
-                    alert('Ürün sepete eklendi.');
-                    
-                    // İsterseniz daha güzel bir bildirim için:
-                    // showNotification('success', 'Ürün sepete eklendi');
-                } else {
-                    alert(response.message || 'Bir hata oluştu.');
-                }
-            },
-            error: function() {
-                alert('Bir hata oluştu. Lütfen tekrar deneyin.');
-            }
-        });
-    });
-    
-    // Favorilere ekleme (mevcut kod)
-    $(document).on('click', '.add-to-favorites', function(e) {
-        e.preventDefault();
-        
-        var productId = $(this).data('product-id');
-        
-        $.ajax({
-            url: 'add-to-favorites.php',
-            type: 'POST',
-            data: {
-                product_id: productId,
-                action: 'add'
-            },
-            dataType: 'json',
-            success: function(response) {
-                if(response.status === 'success') {
-                    // Navbar'daki favori sayısını güncelleme
-                    $('.favorites span').text('(' + response.favorites_count + ')');
-                    
-                    // Kullanıcıya bildirim gösterme
-                    alert('Ürün favorilere eklendi!');
-                }
-            },
-            error: function() {
-                alert('Bir hata oluştu. Lütfen tekrar deneyin.');
-            }
-        });
-    });
-});
 	</script>
 </body>
 

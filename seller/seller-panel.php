@@ -224,8 +224,7 @@ if (isset($_POST['addProductButton'])) {
 			<div class="row">
 				<div class="col-md-3">
 					<div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
-						<a class="nav-link active" id="add-products-nav" data-toggle="pill" href="#add-products-tab" role="tab"><i
-								class="fa fa-tachometer-alt"></i>Add Products</a>
+						<a class="nav-link" id="orders-nav" data-toggle="pill" href="#orders-tab" role="tab"><i class="fa fa-shopping-cart"></i>My Orders</a>
 						<a class="nav-link" id="edit-nav" data-toggle="pill" href="#edit-tab" role="tab"><i
 								class="fa fa-shopping-bag"></i>Product Manager</a>
 						<a class="nav-link" id="payment-nav" data-toggle="pill" href="#payment-tab" role="tab"><i
@@ -239,16 +238,99 @@ if (isset($_POST['addProductButton'])) {
 				</div>
 				<div class="col-md-9">
 					<div class="tab-content">
-						<div class="tab-pane fade show active" id="add-products-tab" role="tabpanel"
-							aria-labelledby="add-products-nav">
-							<h4>Add Products</h4>
-							<p>
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit. In condimentum quam ac mi
-								viverra dictum. In efficitur ipsum diam, at dignissim lorem tempor in. Vivamus tempor
-								hendrerit finibus. Nulla tristique viverra nisl, sit amet bibendum ante suscipit non.
-								Praesent in faucibus tellus, sed gravida lacus. Vivamus eu diam eros. Aliquam et sapien
-								eget arcu rhoncus scelerisque.
-							</p>
+					<div class="tab-pane fade" id="orders-tab" role="tabpanel" aria-labelledby="orders-nav">
+							<h4>My Orders</h4>
+							<?php
+							// Satıcıya ait ürünlerin siparişlerini getir
+							$ordersQuery = "SELECT DISTINCT o.*, c.customer_name, c.customer_mail
+															FROM orders o
+															JOIN order_details od ON o.order_id = od.order_id
+															JOIN products p ON od.product_id = p.product_id
+															JOIN customers c ON o.customer_id = c.customer_id
+															WHERE p.seller_id = $seller_id
+															ORDER BY o.created_at DESC";
+							
+							$ordersResult = $conn->query($ordersQuery);
+							?>
+							
+							<div class="table-responsive">
+									<table class="table table-bordered">
+											<thead class="thead-dark">
+													<tr>
+															<th>Order No</th>
+															<th>Customer</th>
+															<th>Order Date</th>
+															<th>Total Amount</th>
+															<th>Status</th>
+															<th>Action</th>
+													</tr>
+											</thead>
+											<tbody>
+													<?php
+													if ($ordersResult && $ordersResult->num_rows > 0) {
+															while ($order = $ordersResult->fetch_assoc()) {
+																	// Durum çevirileri
+																	$status_labels = [
+																			'pending' => '<span class="badge badge-warning">Beklemede</span>',
+																			'processing' => '<span class="badge badge-info">İşleniyor</span>',
+																			'shipped' => '<span class="badge badge-primary">Kargoda</span>',
+																			'delivered' => '<span class="badge badge-success">Teslim Edildi</span>',
+																			'cancelled' => '<span class="badge badge-danger">İptal Edildi</span>'
+																	];
+																	
+																	$status = $status_labels[$order['order_status']] ?? $order['order_status'];
+																	$date = date('d.m.Y H:i', strtotime($order['created_at']));
+																	
+																	// Sadece bu satıcıya ait ürünlerin toplam tutarını hesapla
+																	$sellerTotalQuery = "SELECT SUM(od.total_price) as seller_total
+																										 FROM order_details od
+																										 JOIN products p ON od.product_id = p.product_id
+																										 WHERE od.order_id = {$order['order_id']} 
+																										 AND p.seller_id = $seller_id";
+																	
+																	$sellerTotalResult = $conn->query($sellerTotalQuery);
+																	$sellerTotal = $sellerTotalResult->fetch_assoc()['seller_total'];
+																	
+																	echo "<tr>
+																					<td>{$order['order_number']}</td>
+																					<td>{$order['customer_name']}<br><small>{$order['customer_mail']}</small></td>
+																					<td>$date</td>
+																					<td>" . number_format($sellerTotal, 2) . " TL</td>
+																					<td>$status</td>
+																					<td>
+																							<button class='btn btn-sm btn-primary view-order-details' data-order-id='{$order['order_id']}'>
+																									<i class='fa fa-eye'></i> View Details
+																							</button>
+																					</td>
+																				</tr>";
+															}
+													} else {
+															echo "<tr><td colspan='6' class='text-center'>No orders found for your products.</td></tr>";
+													}
+													?>
+											</tbody>
+									</table>
+							</div>
+							
+							<!-- Order Details Modal -->
+							<div class="modal fade" id="orderDetailsModal" tabindex="-1" role="dialog" aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
+									<div class="modal-dialog modal-lg" role="document">
+											<div class="modal-content">
+													<div class="modal-header">
+															<h5 class="modal-title" id="orderDetailsModalLabel">Order Details</h5>
+															<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																	<span aria-hidden="true">&times;</span>
+															</button>
+													</div>
+													<div class="modal-body" id="orderDetailsContent">
+															<!-- Order details will be loaded here -->
+													</div>
+													<div class="modal-footer">
+															<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+													</div>
+											</div>
+									</div>
+							</div>
 						</div>
 						<div class="tab-pane fade" id="edit-tab" role="tabpanel" aria-labelledby="edit-nav">
 							<div class="table-responsive">
@@ -380,43 +462,78 @@ if (isset($_POST['addProductButton'])) {
 							</div>
 						</div>
 						<div class="tab-pane fade" id="account-tab" role="tabpanel" aria-labelledby="account-nav">
-							<h4>Account Details</h4>
-							<div class="row">
-								<div class="col-md-6">
-									<input class="form-control" type="text" placeholder="First Name">
-								</div>
-								<div class="col-md-6">
-									<input class="form-control" type="text" placeholder="Last Name">
-								</div>
-								<div class="col-md-6">
-									<input class="form-control" type="text" placeholder="Mobile">
-								</div>
-								<div class="col-md-6">
-									<input class="form-control" type="text" placeholder="Email">
-								</div>
-								<div class="col-md-12">
-									<input class="form-control" type="text" placeholder="Address">
-								</div>
-								<div class="col-md-12">
-									<button class="btn">Update Account</button>
-									<br><br>
-								</div>
-							</div>
-							<h4>Password change</h4>
-							<div class="row">
-								<div class="col-md-12">
-									<input class="form-control" type="password" placeholder="Current Password">
-								</div>
-								<div class="col-md-6">
-									<input class="form-control" type="text" placeholder="New Password">
-								</div>
-								<div class="col-md-6">
-									<input class="form-control" type="text" placeholder="Confirm Password">
-								</div>
-								<div class="col-md-12">
-									<button class="btn">Save Changes</button>
-								</div>
-							</div>
+								<?php
+								// Mevcut satıcı bilgilerini getir
+								$sellerQuery = "SELECT * FROM sellers WHERE seller_id = $seller_id";
+								$sellerResult = $conn->query($sellerQuery);
+								$seller = $sellerResult->fetch_assoc();
+								?>
+								
+								<h4>Account Details</h4>
+								
+								<?php if (isset($_SESSION['update_success'])): ?>
+										<div class="alert alert-success">
+												<?php 
+												echo $_SESSION['update_success'];
+												unset($_SESSION['update_success']);
+												?>
+										</div>
+								<?php endif; ?>
+								
+								<?php if (isset($_SESSION['update_error'])): ?>
+										<div class="alert alert-danger">
+												<?php 
+												echo $_SESSION['update_error'];
+												unset($_SESSION['update_error']);
+												?>
+										</div>
+								<?php endif; ?>
+								
+								<form id="update-seller-form">
+										<div class="row">
+												<div class="col-md-6">
+														<label>Seller Name</label>
+														<input class="form-control" type="text" id="seller_name" value="<?php echo htmlspecialchars($seller['seller_name']); ?>" required>
+												</div>
+												<div class="col-md-6">
+														<label>Email</label>
+														<input class="form-control" type="email" id="seller_mail" value="<?php echo htmlspecialchars($seller['seller_mail']); ?>" required>
+												</div>
+												<div class="col-md-6">
+														<label>Logo URL (opsiyonel)</label>
+														<input class="form-control" type="text" id="seller_logo" value="<?php echo htmlspecialchars($seller['seller_logo'] ?? ''); ?>" placeholder="Logo URL">
+												</div>
+												<div class="col-md-6">
+														<label>Address ID</label>
+														<input class="form-control" type="number" id="address_id" value="<?php echo htmlspecialchars($seller['address_id'] ?? ''); ?>" placeholder="Address ID">
+												</div>
+												<div class="col-md-12 mt-3">
+														<button type="submit" class="btn">Update Account</button>
+														<br><br>
+												</div>
+										</div>
+								</form>
+								
+								<h4>Password Change</h4>
+								<form id="change-password-form">
+										<div class="row">
+												<div class="col-md-12">
+														<label>Current Password</label>
+														<input class="form-control" type="password" id="current_password" placeholder="Current Password" required>
+												</div>
+												<div class="col-md-6">
+														<label>New Password</label>
+														<input class="form-control" type="password" id="new_password" placeholder="New Password" required>
+												</div>
+												<div class="col-md-6">
+														<label>Confirm Password</label>
+														<input class="form-control" type="password" id="confirm_password" placeholder="Confirm Password" required>
+												</div>
+												<div class="col-md-12 mt-3">
+														<button type="submit" class="btn">Save Changes</button>
+												</div>
+										</div>
+								</form>
 						</div>
 						<div class="tab-pane fade" id="edit-product-tab" role="tabpanel" aria-labelledby="edit-product-nav">
 							<h4>Edit Image of the Product</h4>
@@ -691,6 +808,104 @@ if (isset($_POST['addProductButton'])) {
 			});
 		});
 	</script>
+	<script>
+	// View order details
+	$(document).on('click', '.view-order-details', function() {
+			var orderId = $(this).data('order-id');
+			
+			// Show loading
+			$('#orderDetailsContent').html('<div class="text-center"><i class="fa fa-spinner fa-spin fa-3x"></i><p>Loading...</p></div>');
+			
+			// Show modal
+			$('#orderDetailsModal').modal('show');
+			
+			// Load order details
+			$.ajax({
+					url: 'get-seller-order-details.php',
+					type: 'POST',
+					data: { order_id: orderId },
+					success: function(response) {
+							$('#orderDetailsContent').html(response);
+					},
+					error: function() {
+							$('#orderDetailsContent').html('<div class="alert alert-danger">Error loading order details.</div>');
+					}
+			});
+	});
+	</script>
+	<script>
+		// Satıcı bilgilerini güncelleme
+		$('#update-seller-form').on('submit', function(e) {
+				e.preventDefault();
+				
+				var formData = {
+						seller_name: $('#seller_name').val(),
+						seller_mail: $('#seller_mail').val(),
+						seller_logo: $('#seller_logo').val(),
+						address_id: $('#address_id').val()
+				};
+				
+				$.ajax({
+						url: 'update-seller.php',
+						type: 'POST',
+						data: formData,
+						dataType: 'json',
+						success: function(response) {
+								if (response.status === 'success') {
+										alert(response.message);
+										// İsterseniz sayfayı yenileyebilirsiniz
+										// location.reload();
+								} else {
+										alert(response.message);
+								}
+						},
+						error: function() {
+								alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+						}
+				});
+		});
+
+		// Şifre değiştirme
+		$('#change-password-form').on('submit', function(e) {
+				e.preventDefault();
+				
+				var currentPassword = $('#current_password').val();
+				var newPassword = $('#new_password').val();
+				var confirmPassword = $('#confirm_password').val();
+				
+				// Validasyon
+				if (newPassword !== confirmPassword) {
+						alert('Yeni şifreler eşleşmiyor.');
+						return;
+				}
+				
+				if (newPassword.length < 6) {
+						alert('Yeni şifre en az 6 karakter olmalıdır.');
+						return;
+				}
+				
+				$.ajax({
+						url: 'change-seller-password.php',
+						type: 'POST',
+						data: {
+								current_password: currentPassword,
+								new_password: newPassword
+						},
+						dataType: 'json',
+						success: function(response) {
+								if (response.status === 'success') {
+										alert(response.message);
+										$('#change-password-form')[0].reset();
+								} else {
+										alert(response.message);
+								}
+						},
+						error: function() {
+								alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+						}
+				});
+		});
+		</script>
 </body>
 
 </html>

@@ -1,157 +1,180 @@
-<nav class="pc-sidebar">
-  <div class="navbar-wrapper">
-    <div class="m-header">
-      <a href="dashboard.php" class="b-brand text-primary">
-        <!-- ========   Change your logo from here   ============ -->
-        <img  style="padding: 65px;" src="../assets/images/logo-dark.png" class="img-fluid logo-lg" alt="logo">
-      </a>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .sidebar {
+            min-height: 100vh;
+            background-color: #f8f9fa;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+        .sidebar-logo {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .sidebar-logo img {
+            max-width: 150px;
+            height: auto;
+        }
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+        .sidebar-item {
+            margin-bottom: 5px;
+        }
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            color: #495057;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .sidebar-link:hover {
+            background-color: #e9ecef;
+            color: #0d6efd;
+            text-decoration: none;
+        }
+        .sidebar-link.active {
+            background-color: #0d6efd;
+            color: white;
+        }
+        .sidebar-icon {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        .sidebar-caption {
+            padding: 10px 20px;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #6c757d;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+        .sidebar-dropdown {
+            margin-left: 20px;
+            display: none;
+        }
+        .sidebar-dropdown.show {
+            display: block;
+        }
+        .sidebar-dropdown .sidebar-link {
+            padding-left: 50px;
+            font-size: 14px;
+        }
+        .dropdown-toggle::after {
+            margin-left: auto;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="sidebar">
+    <!-- Logo Section -->
+    <div class="sidebar-logo">
+        <a href="dashboard.php">
+            <img src="../img/logo-dark.png" alt="Logo" class="img-fluid">
+        </a>
     </div>
-    <div class="navbar-content">
-      <ul class="pc-navbar">
-        <li class="pc-item">
-          <a href="dashboard.php" class="pc-link">
-            <span class="pc-micon"><i class="ti ti-dashboard"></i></span>
-            <span class="pc-mtext">Dashboard</span>
-          </a>
-        </li>
-
-        <li class="pc-item pc-caption">
-          <label>Main Page Elements</label>
-          <i class="ti ti-dashboard"></i>
-        </li>
-        <li class="pc-item">
-          <a href="main-page-edit.php" class="pc-link">
-            <span class="pc-micon"><i class="ti ti-bookmarks"></i></span>
-            <span class="pc-mtext">Change Texts</span>
-          </a>
-        </li>
-
-					<label>Appointments</label>
-        <li class="pc-item pc-caption">
-          <i class="ti ti-dashboard"></i>
-        </li>
-        <li class="pc-item">
-          <a href="#" class="pc-link">
-            <span class="pc-micon"><i class="ti ti-bookmarks"></i></span>
-            <span class="pc-mtext">APO</span>
-          </a>
-        </li>
-        <li class="pc-item pc-caption">
-          <label>Change Attributes</label>
-          <i class="ti ti-dashboard"></i>
-        </li>
-        <li class="pc-item">
-          <a href="change-logos.php" class="pc-link">
-            <span class="pc-micon"><i class="ti ti-bookmarks"></i></span>
-            <span class="pc-mtext">Logo Manager</span>
-          </a>
-        </li>
-
-<!--
-        <li class="pc-item pc-caption">
-          <label>UI Components</label>
-          <i class="ti ti-dashboard"></i>
-        </li>
-        <li class="pc-item">
-          <a href="../elements/bc_typography.html" class="pc-link">
-            <span class="pc-micon"><i class="ti ti-typography"></i></span>
-            <span class="pc-mtext">Typography</span>
-          </a>
-        </li>
-        <li class="pc-item">
-          <a href="../elements/bc_color.html" class="pc-link">
-            <span class="pc-micon"><i class="ti ti-color-swatch"></i></span>
-            <span class="pc-mtext">Color</span>
-          </a>
-        </li>
-        <li class="pc-item">
-          <a href="../elements/icon-tabler.html" class="pc-link">
-            <span class="pc-micon"><i class="ti ti-plant-2"></i></span>
-            <span class="pc-mtext">Icons</span>
-          </a>
-        </li>
--->
-
-<!--
-        <li class="pc-item pc-caption">
-          <label>Pages</label>
-          <i class="ti ti-news"></i>
-        </li>
-        <li class="pc-item">
-          <a href="../pages/login.html" class="pc-link">
-            <span class="pc-micon"><i class="ti ti-lock"></i></span>
-            <span class="pc-mtext">Login</span>
-          </a>
-        </li>
-        <li class="pc-item">
-          <a href="../pages/register.html" class="pc-link">
-            <span class="pc-micon"><i class="ti ti-user-plus"></i></span>
-            <span class="pc-mtext">Register</span>
-          </a>
-        </li>
-
--->
-
-<!--
-        <li class="pc-item pc-caption">
-          <label>Other</label>
-          <i class="ti ti-brand-chrome"></i>
-        </li>
-        <li class="pc-item pc-hasmenu">
-          <a href="#!" class="pc-link"><span class="pc-micon"><i class="ti ti-menu"></i></span><span class="pc-mtext">Menu
-              levels</span><span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
-          <ul class="pc-submenu">
-            <li class="pc-item"><a class="pc-link" href="#!">Level 2.1</a></li>
-            <li class="pc-item pc-hasmenu">
-              <a href="#!" class="pc-link">Level 2.2<span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
-              <ul class="pc-submenu">
-                <li class="pc-item"><a class="pc-link" href="#!">Level 3.1</a></li>
-                <li class="pc-item"><a class="pc-link" href="#!">Level 3.2</a></li>
-                <li class="pc-item pc-hasmenu">
-                  <a href="#!" class="pc-link">Level 3.3<span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
-                  <ul class="pc-submenu">
-                    <li class="pc-item"><a class="pc-link" href="#!">Level 4.1</a></li>
-                    <li class="pc-item"><a class="pc-link" href="#!">Level 4.2</a></li>
-                  </ul>
-                </li>
-              </ul>
+    
+    <!-- Menu Section -->
+    <div class="sidebar-menu">
+        <ul class="nav flex-column">
+            <!-- Dashboard -->
+            <li class="sidebar-item">
+                <a href="dashboard.php" class="sidebar-link <?php echo basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active' : ''; ?>">
+                    <i class="fas fa-tachometer-alt sidebar-icon"></i>
+                    Dashboard
+                </a>
             </li>
-            <li class="pc-item pc-hasmenu">
-              <a href="#!" class="pc-link">Level 2.3<span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
-              <ul class="pc-submenu">
-                <li class="pc-item"><a class="pc-link" href="#!">Level 3.1</a></li>
-                <li class="pc-item"><a class="pc-link" href="#!">Level 3.2</a></li>
-                <li class="pc-item pc-hasmenu">
-                  <a href="#!" class="pc-link">Level 3.3<span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
-                  <ul class="pc-submenu">
-                    <li class="pc-item"><a class="pc-link" href="#!">Level 4.1</a></li>
-                    <li class="pc-item"><a class="pc-link" href="#!">Level 4.2</a></li>
-                  </ul>
-                </li>
-              </ul>
+            
+            <!-- Main Page Elements Section -->
+            <li class="sidebar-caption">Main Page Elements</li>
+            
+            <!-- Kategori Düzenle -->
+            <li class="sidebar-item">
+                <a href="category-edit.php" class="sidebar-link <?php echo basename($_SERVER['PHP_SELF']) == 'category-edit.php' ? 'active' : ''; ?>">
+                    <i class="fas fa-bookmark sidebar-icon"></i>
+                    Kategori Düzenle
+                </a>
             </li>
-          </ul>
-        </li>
-        <li class="pc-item">
-          <a href="../other/sample-page.html" class="pc-link">
-            <span class="pc-micon"><i class="ti ti-brand-chrome"></i></span>
-            <span class="pc-mtext">Sample page</span>
-          </a>
-        </li>
-      </ul>
--->
-      <!--
-      <div class="card text-center">
-        <div class="card-body">
-          <img src="../assets/images/img-navbar-card.png" alt="images" class="img-fluid mb-2">
-          <h5>Upgrade To Pro</h5>
-          <p>To get more features and components</p>
-          <a href="https://codedthemes.com/item/berry-bootstrap-5-admin-template/" target="_blank"
-          class="btn btn-success">Buy Now</a>
-        </div>
-      </div>
-      -->
-
+            
+            <!-- Logo Düzenleme -->
+            <li class="sidebar-item">
+                <a href="edit-logos.php" class="sidebar-link <?php echo basename($_SERVER['PHP_SELF']) == 'edit-logos.php' ? 'active' : ''; ?>">
+                    <i class="fas fa-image sidebar-icon"></i>
+                    Logo Düzenleme
+                </a>
+            </li>
+            
+            <!-- Dropdown Menu Örneği -->
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#productMenu">
+                    <i class="fas fa-box sidebar-icon"></i>
+                    Ürün Yönetimi
+                </a>
+                <div class="collapse sidebar-dropdown" id="productMenu">
+                    <ul class="nav flex-column">
+                        <li class="sidebar-item">
+                            <a href="product-list.php" class="sidebar-link">
+                                <i class="fas fa-list sidebar-icon"></i>
+                                Ürün Listesi
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="add-product.php" class="sidebar-link">
+                                <i class="fas fa-plus sidebar-icon"></i>
+                                Ürün Ekle
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            
+            <!-- User Management Section -->
+            <li class="sidebar-caption">Kullanıcı Yönetimi</li>
+            
+            <li class="sidebar-item">
+                <a href="users.php" class="sidebar-link">
+                    <i class="fas fa-users sidebar-icon"></i>
+                    Kullanıcılar
+                </a>
+            </li>
+            
+            <li class="sidebar-item">
+                <a href="sellers.php" class="sidebar-link">
+                    <i class="fas fa-store sidebar-icon"></i>
+                    Satıcılar
+                </a>
+            </li>
+            
+            <!-- Settings Section -->
+            <li class="sidebar-caption">Ayarlar</li>
+            
+            <li class="sidebar-item">
+                <a href="settings.php" class="sidebar-link">
+                    <i class="fas fa-cog sidebar-icon"></i>
+                    Genel Ayarlar
+                </a>
+            </li>
+            
+            <li class="sidebar-item">
+                <a href="logout.php" class="sidebar-link">
+                    <i class="fas fa-sign-out-alt sidebar-icon"></i>
+                    Çıkış Yap
+                </a>
+            </li>
+        </ul>
     </div>
-  </div>
 </nav>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

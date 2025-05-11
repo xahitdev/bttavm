@@ -1,33 +1,33 @@
 <?php
 session_start();
-require_once 'settings.php';
+require_once '../settings.php';
 
 $response = [
     'status' => 'error',
     'message' => 'İşlem başarısız oldu.'
 ];
 
-// Kullanıcı giriş yapmış mı kontrol et
-if (!isset($_SESSION['user_id'])) {
+// Satıcı giriş yapmış mı kontrol et
+if (!isset($_SESSION['seller_id'])) {
     $response['message'] = 'Lütfen önce giriş yapınız.';
     echo json_encode($response);
     exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $customer_id = $_SESSION['user_id'];
+    $seller_id = $_SESSION['seller_id'];
     $current_password = $_POST['current_password'];
     $new_password = $_POST['new_password'];
     
     // Mevcut şifreyi kontrol et
-    $query = "SELECT password_hashed FROM customers WHERE customer_id = $customer_id";
+    $query = "SELECT password_hashed FROM sellers WHERE seller_id = $seller_id";
     $result = mysqli_query($conn, $query);
-    $user = mysqli_fetch_assoc($result);
+    $seller = mysqli_fetch_assoc($result);
     
-    // MD5 ile şifre doğrulama
+    // Mevcut şifreyi MD5 ile hashle ve kontrol et
     $current_password_hashed = md5($current_password);
     
-    if ($current_password_hashed !== $user['password_hashed']) {
+    if ($current_password_hashed !== $seller['password_hashed']) {
         $response['message'] = 'Mevcut şifreniz yanlış.';
         echo json_encode($response);
         exit;
@@ -36,10 +36,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Yeni şifreyi MD5 ile hashle
     $new_password_hashed = md5($new_password);
     
-    // Şifreyi güncelle
-    $update_query = "UPDATE customers 
+    // Güncelleme sorgusu
+    $update_query = "UPDATE sellers 
                      SET password_hashed = '$new_password_hashed' 
-                     WHERE customer_id = $customer_id";
+                     WHERE seller_id = $seller_id";
     
     if (mysqli_query($conn, $update_query)) {
         $response = [
@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'message' => 'Şifreniz başarıyla güncellendi.'
         ];
     } else {
-        $response['message'] = 'Şifre güncellenirken bir hata oluştu.';
+        $response['message'] = 'Şifre güncellenirken bir hata oluştu: ' . mysqli_error($conn);
     }
 }
 
