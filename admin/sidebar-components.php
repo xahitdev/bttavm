@@ -111,60 +111,17 @@
                     Logo Düzenleme
                 </a>
             </li>
-            
-            <!-- Dropdown Menu Örneği -->
             <li class="sidebar-item">
-                <a href="#" class="sidebar-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#productMenu">
-                    <i class="fas fa-box sidebar-icon"></i>
-                    Ürün Yönetimi
-                </a>
-                <div class="collapse sidebar-dropdown" id="productMenu">
-                    <ul class="nav flex-column">
-                        <li class="sidebar-item">
-                            <a href="product-list.php" class="sidebar-link">
-                                <i class="fas fa-list sidebar-icon"></i>
-                                Ürün Listesi
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="add-product.php" class="sidebar-link">
-                                <i class="fas fa-plus sidebar-icon"></i>
-                                Ürün Ekle
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-            
-            <!-- User Management Section -->
-            <li class="sidebar-caption">Kullanıcı Yönetimi</li>
-            
-            <li class="sidebar-item">
-                <a href="users.php" class="sidebar-link">
-                    <i class="fas fa-users sidebar-icon"></i>
-                    Kullanıcılar
+                <a href="page-images-change.php" class="sidebar-link">
+                    <i class="fas fa-image sidebar-icon"></i>
+										Ana Sayfa Resimleri
                 </a>
             </li>
-            
-            <li class="sidebar-item">
-                <a href="sellers.php" class="sidebar-link">
-                    <i class="fas fa-store sidebar-icon"></i>
-                    Satıcılar
-                </a>
-            </li>
-            
             <!-- Settings Section -->
             <li class="sidebar-caption">Ayarlar</li>
             
             <li class="sidebar-item">
-                <a href="settings.php" class="sidebar-link">
-                    <i class="fas fa-cog sidebar-icon"></i>
-                    Genel Ayarlar
-                </a>
-            </li>
-            
-            <li class="sidebar-item">
-                <a href="logout.php" class="sidebar-link">
+                <a href="../logout.php" class="sidebar-link">
                     <i class="fas fa-sign-out-alt sidebar-icon"></i>
                     Çıkış Yap
                 </a>
